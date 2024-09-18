@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据结构与算法A 第一章概论 | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据结构 数据结构的三要素：逻辑结构、存储(物理)结构、运算  数据的逻辑结构 逻辑结构反映了事物的组成结构及事物之间的逻辑关系  数据的逻辑结构可以用一个二元组B&#x3D;(K,R)来表示。其中K是数据结点集合，R是数据之间的二元关系，其中对于&lt;k,k’&gt;∈R，我们称k’为k在关系R上的后继结点；k是k’在关系R上的前驱结点   结点的类型 结点的数据类型可以是基本数据类型，也可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法A 第一章概论">
+<meta property="og:url" content="http://example.com/post/ce4c244d.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="数据结构 数据结构的三要素：逻辑结构、存储(物理)结构、运算  数据的逻辑结构 逻辑结构反映了事物的组成结构及事物之间的逻辑关系  数据的逻辑结构可以用一个二元组B&#x3D;(K,R)来表示。其中K是数据结点集合，R是数据之间的二元关系，其中对于&lt;k,k’&gt;∈R，我们称k’为k在关系R上的后继结点；k是k’在关系R上的前驱结点   结点的类型 结点的数据类型可以是基本数据类型，也可以">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg">
+<meta property="article:published_time" content="2024-09-18T09:22:00.000Z">
+<meta property="article:modified_time" content="2024-09-18T11:40:43.541Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="数据结构与算法A">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/ce4c244d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据结构与算法A 第一章概论',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-09-18 19:40:43'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">16</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据结构与算法A 第一章概论</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-09-18T09:22:00.000Z" title="Created 2024-09-18 17:22:00">2024-09-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-09-18T11:40:43.541Z" title="Updated 2024-09-18 19:40:43">2024-09-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95A/">数据结构与算法A</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数据结构与算法A 第一章概论"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><ul>
+<li>数据结构的三要素：逻辑结构、存储(物理)结构、运算</li>
+</ul>
+<h2 id="数据的逻辑结构"><a href="#数据的逻辑结构" class="headerlink" title="数据的逻辑结构"></a>数据的逻辑结构</h2><ul>
+<li><p>逻辑结构反映了事物的组成结构及事物之间的逻辑关系</p>
+</li>
+<li><p>数据的逻辑结构可以用一个二元组B&#x3D;(K,R)来表示。其中K是数据结点集合，R是数据之间的二元关系，其中对于&lt;k,k’&gt;∈R，我们称k’为k在关系R上的后继结点；k是k’在关系R上的前驱结点</p>
+</li>
+</ul>
+<h3 id="结点的类型"><a href="#结点的类型" class="headerlink" title="结点的类型"></a>结点的类型</h3><ul>
+<li>结点的数据类型可以是基本数据类型，也可以是复合数据类型</li>
+</ul>
+<h3 id="结构的分类"><a href="#结构的分类" class="headerlink" title="结构的分类"></a>结构的分类</h3><ul>
+<li><p>用R的性质来刻画数据结构的特点，并进行分类</p>
+<ol>
+<li>线性结构：r称为线性关系，也称为前驱关系。每一个结点最多只有一个前驱结点和一个后继结点。e.g.数组、链表、队列</li>
+<li>树形结构：r称为层次关系。所有结点有且仅有一个前驱，但是后继的数目不加限制</li>
+<li>图结构：结点的前驱和后继的数目不加任何约束</li>
+</ol>
+</li>
+<li><p>数学上看，树形结构和图结构的基本区别是“每个结点是否仅仅从属于一个直接前驱”而线性结构和树形结构的基本区别是“每个结点是否仅有一个直接后继”</p>
+</li>
+<li><p>自顶向下的逻辑结构分析设计方法：先明确数据结点，及其主要关系r，然后分析数据结点的数据类型。如果数据结点的逻辑结构比较复杂，那么把他作为下一个层次</p>
+</li>
+</ul>
+<h2 id="数据的存储结构"><a href="#数据的存储结构" class="headerlink" title="数据的存储结构"></a>数据的存储结构</h2><ul>
+<li><p>数据的存储结构所要解决的问题是各种逻辑结构在计算机中的物理存储表示，建立了一种逻辑结构到物理结构的映射</p>
+</li>
+<li><p>计算机主存储器的特点：</p>
+<ol>
+<li>空间相邻：提供了一种具有非负整数地址编码、存储空间相邻的单元集合</li>
+<li>随机访问：具有按地址随机访问存储空间内任意单元的能力，访问不同地址所需的访问时间基本相同</li>
+</ol>
+</li>
+<li><p>常用的基本存储映射方法有：顺序方法、链接方法、索引方法和散列方法</p>
+</li>
+</ul>
+<h3 id="顺序方法"><a href="#顺序方法" class="headerlink" title="顺序方法"></a>顺序方法</h3><ul>
+<li><p>结点按地址相邻关系顺序存储，地址相邻，节点间的逻辑关系用存储单元间的自然顺序关系表达。e.g.数组</p>
+</li>
+<li><p>顺序存储结构也称紧凑存储结构，其紧凑型指存储空间除了存储数据本身之外，没有存储其他附加信息</p>
+</li>
+</ul>
+<h3 id="链接方法"><a href="#链接方法" class="headerlink" title="链接方法"></a>链接方法</h3><ul>
+<li><p>链接方法是在结点的存储结构中附加指针域来存储结点间的逻辑结构</p>
+</li>
+<li><p>连接中的数据结点由两部分组成：</p>
+<ol>
+<li>数据域：结点本身的数据</li>
+<li>指针：存放其后继结点的指针</li>
+</ol>
+</li>
+<li><p>多个相关结点依次连接就会形成链锁</p>
+</li>
+<li><p>链接方法的优点是增删容易，缺点是定位困难。多用作动态而非静态</p>
+</li>
+</ul>
+<h3 id="索引方法"><a href="#索引方法" class="headerlink" title="索引方法"></a>索引方法</h3><p>索引方法是顺序存储的一种推广，创建由一个证书与Z映射到存储地址域D的索引函数Y:Z-&gt;D，把结点的整数索引值映射到结点的存储地址</p>
+<ul>
+<li><p>在数据结点长度不等的情况下，索引函数就不是线性函数</p>
+</li>
+<li><p>无需扫过整个文件，可以直接定位</p>
+</li>
+</ul>
+<h3 id="散列方法"><a href="#散列方法" class="headerlink" title="散列方法"></a>散列方法</h3><ul>
+<li><p>返利额方法是索引方法的眼神，散列法用散列函数进行索引值的计算，然后通过索引表求出结点的指针地址</p>
+</li>
+<li><p>其主要思想是根据结点的关键码来确定其存储地址，；利用一种散列函数的关系把关键码的值映射到存储空间的地址</p>
+</li>
+</ul>
+<h2 id="抽象数据类型"><a href="#抽象数据类型" class="headerlink" title="抽象数据类型"></a>抽象数据类型</h2><ul>
+<li><p>抽象数据类型(ADT)可以看做是定义了一组操作的一个抽象模型。其特点是将数据和操作封装在一起</p>
+</li>
+<li><p>抽象数据类型可以用三元组表示：(D,R,P)</p>
+</li>
+</ul>
+<p>ADT抽象数据类型<br>{<br>    数据对象D:&lt;数据对象的定义&gt;<br>    数据关系R:&lt;数据关系的定义&gt;<br>    基本操作P:&lt;基本操作的定义&gt;<br>} ADT抽象数据类型名</p>
+<ul>
+<li>D和R而这定义了数据的模型，是对数据的抽象；P是对D的基本操作集，定义了该数据模型的功用</li>
+</ul>
+<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><ul>
+<li>算法的性质：<ol>
+<li>通用性</li>
+<li>有效性</li>
+<li>确定性</li>
+<li>有穷性</li>
+</ol>
+</li>
+</ul>
+<h2 id="算法设计"><a href="#算法设计" class="headerlink" title="算法设计"></a>算法设计</h2><ul>
+<li>算法设计方法介绍：<ol>
+<li>穷举法：穷举法的问题具有以下特点：<ol>
+<li>对象应该是有限的，有明显的穷举范围</li>
+<li>有穷举规则，可按照某种规则列举对象</li>
+<li>一时找不出解决问题的更好途径</li>
+</ol>
+</li>
+<li>回溯法：也称试探法。当发现当前候选的解不可能是解的时候，就会退到上一步重新选择下一个候选解</li>
+<li>分治法和递归法：将大问题分割成一些规模较小的子问题</li>
+<li>贪心法和动态规划法</li>
+</ol>
+</li>
+</ul>
+<h1 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h1><ul>
+<li>算法分析是对一个算法需要多少计算时间和存储空间做定量的分析</li>
+</ul>
+<h2 id="渐进分析方法"><a href="#渐进分析方法" class="headerlink" title="渐进分析方法"></a>渐进分析方法</h2><ul>
+<li>计算函数时通常只考虑大的数据，而那些不能显著改变数量级的部分都可以忽略掉。这种方法成为渐进算法分析方法，简称渐进分析</li>
+</ul>
+<h3 id="大O表示法"><a href="#大O表示法" class="headerlink" title="大O表示法"></a>大O表示法</h3><ul>
+<li><p>定义：如果存在正数c和N，使得任意的n&gt;&#x3D;N，都有f(n)&lt;&#x3D;cg(n)，则称f(n)在集合O(g(n))中，或简称f(n)是O(g(n))的</p>
+</li>
+<li><p>大O表示法提供了一种表达函数增长率从上限的方法</p>
+</li>
+</ul>
+<h3 id="大Ω表示法"><a href="#大Ω表示法" class="headerlink" title="大Ω表示法"></a>大Ω表示法</h3><ul>
+<li><p>定义：如果存在正数c和N，使得任意的n&gt;&#x3D;N，都有f(n)&gt;&#x3D;cg(n)，则称f(n)在集合Ω(g(n))中，或简称f(n)是Ω(g(n))的</p>
+</li>
+<li><p>大Ω表示法提供了一种表达函数增长率从下限的方法</p>
+</li>
+</ul>
+<h3 id="大Θ表示法"><a href="#大Θ表示法" class="headerlink" title="大Θ表示法"></a>大Θ表示法</h3><ul>
+<li>如果一个函数既在集合O(g(n))中，又在集合Ω(g(n))中，则称其为Θ(g(n))</li>
+</ul>
+<h3 id="渐进分析的实例"><a href="#渐进分析的实例" class="headerlink" title="渐进分析的实例"></a>渐进分析的实例</h3><ul>
+<li>基础操作的时间代价主要有：运算、复制、比较等等</li>
+</ul>
+<h3 id="时间和空间的折衷"><a href="#时间和空间的折衷" class="headerlink" title="时间和空间的折衷"></a>时间和空间的折衷</h3><ul>
+<li>时空资源折衷原理：对于同一个问题求解，一般会存在多种算法。而这下算法在时间和空间开销上的优劣往往会表现出“时空折衷”的性质。为了改善一个算法的时间开销，往往可以增大空间开销为代价；反之亦然</li>
+</ul>
+<hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95A/">数据结构与算法A</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/9c2d776c.html" title="AI中的编程 CUDA编程1"><img class="cover" src="https://s2.loli.net/2024/09/14/KdVleb7SUc4EvZR.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">AI中的编程 CUDA编程1</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">数据的逻辑结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E7%82%B9%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">结点的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">结构的分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">数据的存储结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">顺序方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.2.</span> <span class="toc-text">链接方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.3.</span> <span class="toc-text">索引方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%A3%E5%88%97%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.4.</span> <span class="toc-text">散列方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">抽象数据类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.1.</span> <span class="toc-text">算法设计</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">算法分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%90%E8%BF%9B%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">渐进分析方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-number">3.1.1.</span> <span class="toc-text">大O表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%CE%A9%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-number">3.1.2.</span> <span class="toc-text">大Ω表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%CE%98%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-number">3.1.3.</span> <span class="toc-text">大Θ表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%90%E8%BF%9B%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9E%E4%BE%8B"><span class="toc-number">3.1.4.</span> <span class="toc-text">渐进分析的实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%92%8C%E7%A9%BA%E9%97%B4%E7%9A%84%E6%8A%98%E8%A1%B7"><span class="toc-number">3.1.5.</span> <span class="toc-text">时间和空间的折衷</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/ce4c244d.html" title="数据结构与算法A 第一章概论"><img src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法A 第一章概论"/></a><div class="content"><a class="title" href="/post/ce4c244d.html" title="数据结构与算法A 第一章概论">数据结构与算法A 第一章概论</a><time datetime="2024-09-18T09:22:00.000Z" title="Created 2024-09-18 17:22:00">2024-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9c2d776c.html" title="AI中的编程 CUDA编程1"><img src="https://s2.loli.net/2024/09/14/KdVleb7SUc4EvZR.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的编程 CUDA编程1"/></a><div class="content"><a class="title" href="/post/9c2d776c.html" title="AI中的编程 CUDA编程1">AI中的编程 CUDA编程1</a><time datetime="2024-09-14T10:59:00.000Z" title="Created 2024-09-14 18:59:00">2024-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9e13d013.html" title="AI中的编程 LeNet(pytorch讲解)"><img src="https://s2.loli.net/2024/09/11/fxE26VF4SbXmsRa.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的编程 LeNet(pytorch讲解)"/></a><div class="content"><a class="title" href="/post/9e13d013.html" title="AI中的编程 LeNet(pytorch讲解)">AI中的编程 LeNet(pytorch讲解)</a><time datetime="2024-09-11T11:50:00.000Z" title="Created 2024-09-11 19:50:00">2024-09-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/21681a98.html" title="CS自学指南 CS61A: Structure and Interpretation of Computer Programs"><img src="https://s2.loli.net/2024/09/09/tnFuy6NWrzES15o.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CS自学指南 CS61A: Structure and Interpretation of Computer Programs"/></a><div class="content"><a class="title" href="/post/21681a98.html" title="CS自学指南 CS61A: Structure and Interpretation of Computer Programs">CS自学指南 CS61A: Structure and Interpretation of Computer Programs</a><time datetime="2024-09-09T02:14:00.000Z" title="Created 2024-09-09 10:14:00">2024-09-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6984594a.html" title="那些年背过的单词"><img src="https://s2.loli.net/2024/09/07/uqQeP1bNMSBEVdk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="那些年背过的单词"/></a><div class="content"><a class="title" href="/post/6984594a.html" title="那些年背过的单词">那些年背过的单词</a><time datetime="2024-09-07T02:50:00.000Z" title="Created 2024-09-07 10:50:00">2024-09-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
