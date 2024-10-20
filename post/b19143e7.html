@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>可视计算与交互概论 notes整理第5-7章 | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="An undergraduate majoring in AI at PKU.">
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>可视计算与交互概论 notes整理第5-7章 | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第五章 反走样走样与反走样 在屏幕像素密度高的时候，图形整体看起来是连续的；而当屏幕像素比较低，或者对局部进行放大时，我们就能看到大量的影响观感的锯齿  走样（Aliasing）现象：锯齿、混淆、摩尔纹的不自然结果  在本质上，走样现象是我们用离散的像素近似表示连续的图形、图片时离散精度（采样频率）不够导致的。因此不管我们是在光栅化，还是处理图像，还是进行三维渲染，还是进行其他的离散化，当采样频率">
 <meta property="og:type" content="article">
 <meta property="og:title" content="可视计算与交互概论 notes整理第5-7章">
 <meta property="og:url" content="http://example.com/post/b19143e7.html">
 <meta property="og:site_name" content="w434&#39;s blog">
-<meta property="og:description" content="An undergraduate majoring in AI at PKU.">
+<meta property="og:description" content="第五章 反走样走样与反走样 在屏幕像素密度高的时候，图形整体看起来是连续的；而当屏幕像素比较低，或者对局部进行放大时，我们就能看到大量的影响观感的锯齿  走样（Aliasing）现象：锯齿、混淆、摩尔纹的不自然结果  在本质上，走样现象是我们用离散的像素近似表示连续的图形、图片时离散精度（采样频率）不够导致的。因此不管我们是在光栅化，还是处理图像，还是进行三维渲染，还是进行其他的离散化，当采样频率">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg">
 <meta property="article:published_time" content="2024-10-16T14:53:00.000Z">
-<meta property="article:modified_time" content="2024-10-16T14:55:15.310Z">
+<meta property="article:modified_time" content="2024-10-19T13:26:10.601Z">
 <meta property="article:author" content="w434">
 <meta property="article:tag" content="可视计算与交互概论">
 <meta name="twitter:card" content="summary">
@@ -55,8 +55,8 @@
   isPost: true,
   isHome: false,
   isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2024-10-16 22:55:15'
+  isToc: true,
+  postUpdate: '2024-10-19 21:26:10'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -153,4 +153,237 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">可视计算与交互概论 notes整理第5-7章</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-10-16T14:53:00.000Z" title="Created 2024-10-16 22:53:00">2024-10-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-10-16T14:55:15.310Z" title="Updated 2024-10-16 22:55:15">2024-10-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA/">可视计算与交互概论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="可视计算与交互概论 notes整理第5-7章"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA/">可视计算与交互概论</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">数据结构与算法A 第五章二叉树</div></div></a></div><div class="next-post pull-right"><a href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img class="cover" src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">可视计算与交互概论 notes整理第1-4章</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img class="cover" src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-12</div><div class="title">可视计算与交互概论 notes整理第1-4章</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/e778d720.html" title="AI中的数学 第二章典型题整理"><img src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的数学 第二章典型题整理"/></a><div class="content"><a class="title" href="/post/e778d720.html" title="AI中的数学 第二章典型题整理">AI中的数学 第二章典型题整理</a><time datetime="2024-10-16T14:58:00.000Z" title="Created 2024-10-16 22:58:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树"><img src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法A 第五章二叉树"/></a><div class="content"><a class="title" href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树">数据结构与算法A 第五章二叉树</a><time datetime="2024-10-16T14:56:00.000Z" title="Created 2024-10-16 22:56:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第5-7章"/></a><div class="content"><a class="title" href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章">可视计算与交互概论 notes整理第5-7章</a><time datetime="2024-10-16T14:53:00.000Z" title="Created 2024-10-16 22:53:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第1-4章"/></a><div class="content"><a class="title" href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章">可视计算与交互概论 notes整理第1-4章</a><time datetime="2024-10-12T09:15:00.000Z" title="Created 2024-10-12 17:15:00">2024-10-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9ec9b125.html" title="AI中的数学 第二章随机变量与概率分布"><img src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的数学 第二章随机变量与概率分布"/></a><div class="content"><a class="title" href="/post/9ec9b125.html" title="AI中的数学 第二章随机变量与概率分布">AI中的数学 第二章随机变量与概率分布</a><time datetime="2024-10-11T12:12:00.000Z" title="Created 2024-10-11 20:12:00">2024-10-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">可视计算与交互概论 notes整理第5-7章</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-10-16T14:53:00.000Z" title="Created 2024-10-16 22:53:00">2024-10-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-10-19T13:26:10.601Z" title="Updated 2024-10-19 21:26:10">2024-10-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA/">可视计算与交互概论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="可视计算与交互概论 notes整理第5-7章"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="第五章-反走样"><a href="#第五章-反走样" class="headerlink" title="第五章 反走样"></a>第五章 反走样</h1><h2 id="走样与反走样"><a href="#走样与反走样" class="headerlink" title="走样与反走样"></a>走样与反走样</h2><ul>
+<li><p>在屏幕像素密度高的时候，图形整体看起来是连续的；而当屏幕像素比较低，或者对局部进行放大时，我们就能看到大量的影响观感的锯齿</p>
+</li>
+<li><p>走样（Aliasing）现象：锯齿、混淆、摩尔纹的不自然结果</p>
+</li>
+<li><p>在本质上，走样现象是我们用离散的像素近似表示连续的图形、图片时离散精度（采样频率）不够导致的。因此不管我们是在光栅化，还是处理图像，还是进行三维渲染，还是进行其他的离散化，当采样频率不够的时候就可能出现走样现象(离散信号会导致中间变化的缺失)</p>
+</li>
+<li><p>反走样（Anti Aliasing）：为了减轻或避免走样现象的技术</p>
+</li>
+</ul>
+<h2 id="信号采样理论"><a href="#信号采样理论" class="headerlink" title="信号采样理论"></a>信号采样理论</h2><ul>
+<li>固定采样的频率（像素密度），逐渐增加连续信号的频率。连续信号的频率越高，离散化信号偏差越高，走样现象发生越严重</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/17/ISZi3oGHlh7Jtsw.png" alt="1.png"></p>
+<ul>
+<li><p>为了从数学上定义到底什么是走样，我们需要借助信号处理中的频域（Frequency domain）分析理论．频域分析的基础是傅里叶变换（Fourier transform）：是任意一个信号 f(x) 都可以展开成一系列不同频率的余弦函数 cos(2ωπx) 和正弦函数 sin(2ωπx) 的加和.不同频率对应的强度系数由 F(ω)给出</p>
+</li>
+<li><p>可以从时域信号 f(x)得到对应的频谱函数 F(ω)，也可以从频谱函数 F(ω) 得到时域信号 f(x)。通过傅里叶变换我们可以将所有发生在时域空间里的对信号的操作与对频谱函数的操作一一对应起来</p>
+</li>
+<li><p>几个重要的观察和结论</p>
+<ol>
+<li>的非周期信号 f(x)对应频谱函数 F(ω) 在整个频率空间上都有非零值</li>
+<li>越高频的部分贡献越小，也就是 F(ω) 在 |ω| 很大的时候接近于 0。截断频率ω0表示了整个信号的光滑程度，可以想象当整个信号都很光滑时，ω0 比较小，信号波动比较大或有尖锐的突起时 ω0 比较大</li>
+<li>在时域空间对信号进行离散采样，对应在频域对信号进行重复更严格的数学叫法是周期延拓（Periodic Extension）对一个截断频率为 f0 的信号以 fs 的频率采样，那么采样得到的离散信号对应的频谱函数，是将原信号的频谱函数在每隔 fs 的位置进行重复</li>
+</ol>
+</li>
+<li><p>走样现象本质上就是频谱交叠区域引入的不属于原信号的频率特征导致的</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/17/r6dowIbFeXAfVvU.png" alt="2.png"></p>
+<ul>
+<li>如果 fs &gt; 2f0，那么原信号的频谱在采样之后没有发生任何混叠。直接将高频部分的频谱函数进行截断，只保留最中心的原信号的频谱，这样就能无损失地恢复出原信号</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/17/Tp92VyJGbij8ZAv.png" alt="3.png"></p>
+<ul>
+<li><p>如果 fs &lt; 2f0，那么重复的原频谱之间就会发生交叠，这时频谱函数就会发生混淆，走样现象发生</p>
+</li>
+<li><p>奈奎斯特-香农采样定理（Nyquist-Shannon sampling theorm）：采样频率 fs 至少是原信号截至频率 f0 的两倍即可避免走样现象的发生</p>
+</li>
+</ul>
+<h2 id="反走样的基本原理"><a href="#反走样的基本原理" class="headerlink" title="反走样的基本原理"></a>反走样的基本原理</h2><ul>
+<li>反走样的目标：尽可能满足奈奎斯特-香农采样定理的条件<ol>
+<li>增加采样频率 fs</li>
+<li>降低原信号的截止频率 f0</li>
+</ol>
+</li>
+</ul>
+<h4 id="增加fs"><a href="#增加fs" class="headerlink" title="增加fs"></a>增加fs</h4><ul>
+<li><p>增加采样频率的方法就是通过增加每个像素的采样密度</p>
+</li>
+<li><p>超采样反走样（Super Sample Anti Aliasing, SSAA）：可以在每个像素内对称选择多个采样点，比如将像素一分为四，计算每个采样点的颜色然后取平均作为像素的颜色</p>
+</li>
+</ul>
+<h4 id="降低f0-模糊化"><a href="#降低f0-模糊化" class="headerlink" title="降低f0(模糊化)"></a>降低f0(模糊化)</h4><ul>
+<li><p>降低原信号的截止频率 f0，也就是对原信号进行模糊化</p>
+</li>
+<li><p>可以直接截断高频信号。这样采样之后信号就不会发生混叠，也就不会出现类似摩尔纹的走样现象</p>
+</li>
+<li><p>也可以采用低通滤波反走样</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/17/e3TC9cZ2nIFj6SX.png" alt="4.png"></p>
+<ul>
+<li><p>意模糊化一定要发生在光栅化之前。如果光栅化的走样结果已经产生了，再进行模糊化没有办法去掉这些走样，而且会让画面看起来更糟糕</p>
+</li>
+<li><p>在具体实践中有非常多的反走样算法：多重采样抗锯齿（Multisample Anti Aliasing, MSAA），时间抗锯齿（Temporal Anti Aliasing, TAA）等</p>
+</li>
+</ul>
+<hr>
+<h1 id="第六章-曲线"><a href="#第六章-曲线" class="headerlink" title="第六章 曲线"></a>第六章 曲线</h1><ul>
+<li><p>理论上说，我们可以用多段直线来近似曲线，但这种近似将会消耗较多的计算和存储资源才能达到相对光滑的视觉效果，并且在进行局部放大时仍然显示出走样</p>
+</li>
+<li><p>可以把曲线或者曲面的表示方式可以分为显式表示和隐式表示两种</p>
+<ol>
+<li>显式表示：通过给出曲线&#x2F;曲面上的一系列点的坐标的值或函数表达式来表征曲线，较为直接和简单。例如：点集，函数方程，参数化(参数曲线)参数曲线的优点在于可以容易地得到曲线上点的坐标，也容易可视化。可以得到曲线的梯度&#x2F;切向方向</li>
+<li>隐式表示：一般给出曲线&#x2F;曲面上的点所满足的性质，隐式函数方程是其中最常用的一类。优点是容易对曲线的内部&#x2F;外部或左侧&#x2F;右侧进行区分：若存在点 (x0, y0)，只需将其代入表达式 f(x0, y0) 并考察其正负即可．而缺点在于难以采样，若要从曲线上得到某点的具体坐标需要通过解方程</li>
+</ol>
+</li>
+</ul>
+<h2 id="从一阶曲线到高阶曲线"><a href="#从一阶曲线到高阶曲线" class="headerlink" title="从一阶曲线到高阶曲线"></a>从一阶曲线到高阶曲线</h2><ul>
+<li><p>直线&#x2F;线段是一类拥有最简单的数学形式的特殊曲线——一阶曲线，它可以通过在给定的两点间进行线性插值得到，在数学上对应着关于参数坐标 t ∈ [0, 1] 的一阶函数</p>
+</li>
+<li><p>给定两点 P0, P1 后通过插值获得一阶曲线：这条曲线上的任意一点<br>的坐标可以看成是参数 t 的函数：P(t) &#x3D; (1 − t)P0 + tP1, t ∈ [0, 1]</p>
+</li>
+<li><p>插值采用的一阶权重函数 w0(t)&#x3D;1 − t, w1(t) &#x3D; t 是关于 t 的线性函数，因此这个操作也被称为线性插值，记为 lerp(P0,P1, t) &#x3D; P(t)</p>
+</li>
+<li><p>一阶曲线的优势在于数学形式简单，但它的缺陷是不够视觉上不够“光滑”</p>
+</li>
+<li><p>G1 光滑：在曲线上任意一点，其两侧曲线的一阶梯度共线且同向</p>
+</li>
+<li><p>C2 光滑：在曲线上任意一点，其两侧曲线的一阶梯度相等</p>
+</li>
+<li><p>由线段连接而成的曲线是分段光滑的，但在连接点处，由于两侧线段不共线，因此它的左侧梯度和右侧梯度不共线，无法满足 G1 光滑的条件。这是一阶插值的固有问题</p>
+</li>
+<li><p>为此我们需要求助于高阶的曲线表示方法。一个最简单的高阶插值方法是拉格朗日插值 (Lagrange interpolation)，它利用高阶多项式对给定的点列进行平滑的连接。但拉格朗日插值有两个缺陷：</p>
+<ol>
+<li>随着点列数量的增加，拉格朗日插值的多项式阶数随之线性增长</li>
+<li>龙格现象(Runge’s phenomenon)：拉格朗日插值拟合出的曲线在边界附近波动较大，微小噪声就有可能造成曲线图像的大幅度改变，曲线两端出现剧烈的抖动</li>
+</ol>
+</li>
+</ul>
+<h2 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h2><ul>
+<li>贝塞尔曲线 (Bézier curve)通过在端点之间额外引入一系列点来达成对曲线形状的控制，这些点 (包括端点) 被统称为控制点。通过对控制点进行调整，我们可以轻松地控制贝塞尔曲线的形状和高阶特征</li>
+</ul>
+<h3 id="数学形式"><a href="#数学形式" class="headerlink" title="数学形式"></a>数学形式</h3><ul>
+<li><p>一条二阶贝塞尔曲线是通过两轮线性插值通过德卡斯特里奥算法 (de Casteljau’s algorithm)得到：</p>
+<ol>
+<li>第一轮，由参数 t 对 P0P1 和 P1P2 分别做线性插值，得到由同一个参数 t 分别在上述两条一阶曲线上对应的点<br>  Q0 &#x3D; lerp(P0,P1, t) &#x3D; (1 - t)P0 + tP1<br>  Q1 &#x3D; lerp(P1,P2, t) &#x3D; (1 - t)P1 + tP2</li>
+<li>第二轮，通过对 Q0Q1 做线性插值得到，得到同一个参数 t 对应的点<br>  S &#x3D; lerp(Q0, Q1, t) &#x3D; (1 - t)Q0 + tQ1</li>
+<li>令 t 遍历 [0, 1] 取值范围，即得到由 P0,P1,P2 控制的二阶贝塞尔曲线</li>
+</ol>
+</li>
+<li><p>进而我们可以将贝塞尔曲线的阶数推广到任意高，n 阶贝塞尔曲线由 n + 1 个控制点给出</p>
+</li>
+<li><p>但贝塞尔曲线每个控制点对曲线的影响不是局部的，因此随着阶数的提高，通过控制点对曲线形状做出有效控制的难度也随之提高</p>
+</li>
+<li><p>n 阶贝塞尔曲线的数学表达式为：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/19/Jj2Ms1OUNiPZVFA.png" alt="1.png"></p>
+<ul>
+<li>n 阶伯恩斯坦多项式 (Bernstein polynomials)：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/19/iuWTvLEcUx1KZDY.png" alt="2.png"></p>
+<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><ul>
+<li>贝塞尔曲线的端点：S(0) &#x3D; P0, S(1) &#x3D; P1，即，贝塞尔曲线必然经过两端控制点，但一般来说不会经过中间其余控制点</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/19/XRHyiqhNFptevOS.png" alt="3.png"></p>
+<ul>
+<li><p>端点处切线分别沿着 P0P1 连线和  PnPn-1 连线的方向</p>
+</li>
+<li><p>G1 光滑：只需要施加边界条件令它们在公共端点两旁的控制点在同一条直线上即可</p>
+</li>
+<li><p>C1 光滑：还需要令 ||Pn - Pn-1|| &#x3D; ||Pn+1 - Pn||，即，约束加强为 Pn − Pn−1 &#x3D; Pn+1 − Pn</p>
+</li>
+<li><p>贝塞尔曲线另一条重要的性质是凸包性质 (convex-hull property):贝塞尔曲线被包围在由它所有控制点组成的最小凸包当中</p>
+</li>
+<li><p>凸包性能帮助我们很好地规划贝塞尔曲线的路径</p>
+</li>
+</ul>
+<h2 id="样条曲线"><a href="#样条曲线" class="headerlink" title="样条曲线"></a>样条曲线</h2><ul>
+<li><p>样条曲线 (spline curve)不依靠另加约束就可以满足整条曲线的 C1 光滑的性质</p>
+</li>
+<li><p>样条函数作为构成样条曲线的函数基底，具有紧支撑 (compact support) 的特性：每个样条函数只会在一个子区间内取非零值，而在该子区间外取值为 0。因此每个样条函数只会对曲线的某个局部产生影响，这就为对曲线形状进行局部的控制与调整提供了便利</p>
+</li>
+<li><p>样条函数的分类：</p>
+<ol>
+<li>曲线近似的样条 (approximation splines)：不保证拟合出的曲线过每个控制点，但拥有凸包性质，如 B 样条</li>
+<li>和曲线插值的样条 (interpolation splines)：保证拟合出的曲线过每个控制点，但不具有凸包性质，如二次样条、三次样条</li>
+</ol>
+</li>
+</ul>
+<h3 id="B-样条"><a href="#B-样条" class="headerlink" title="B 样条"></a>B 样条</h3><ul>
+<li><p>B 样条是样条函数的一种，它是基函数样条 (basis splines) 的简称</p>
+</li>
+<li><p>节点 (knots)：选定参数区间 [a, b] 内一列非减的数列，满足：a &#x3D; t0 ≤ t1 ≤ ··· ≤ tm &#x3D; b，这 m + 1个数将参数区间划分成 m 段</p>
+</li>
+<li><p>节点向量 (knot vector)：由这 m + 1 个节点组成的集合</p>
+</li>
+<li><p>一个 n 阶 B 样条是由所有次数不超过 n 的 B 样条基 (B-spline basis functions) 组成的</p>
+</li>
+<li><p>记第 i 个 p 次 B 样条基为 Ni,p(t)，它们是一组根据 Cox de Boor recursion 递归定义的函数：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/19/j5M8auCeIoRE2Vl.png" alt="4.png"></p>
+<ul>
+<li>并满足性质：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/19/d8zITGmuVwPXn79.png" alt="5.png"></p>
+<ul>
+<li>给定控制点点列 {P0, P1, …, Pm}，那么利用 n 次 B 样条得到的拟合结果即为：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/19/DozwC7PGtBa1Hb4.png" alt="6.png"></p>
+<ul>
+<li><p>这个过程既可以看成是以 B 样条基为权重函数对点列 {Pi} 进行拟合，也可以看成是以 {Pi} 为权重对 B 样条基进行线性组合，从而将局部曲线组装成全局曲线</p>
+</li>
+<li><p>当 B 样条的阶数增加时，单个 B 样条基的作用范围也在扩大，每个 p 阶的 B 样条基在 p + 1 个连续子区间上取非零值，也将单个节点的对曲线的影响效果扩展到 p + 1 个附近子区间</p>
+</li>
+<li><p>节点的数值是可以相同的，若存在 ti &#x3D; ti+1 &#x3D; ··· &#x3D; t + i + k − 1,k&gt; 1，则称其为一个重复度为 k 的多重节点 (multiple knot)，否则称其为一个简单节点 (simple knot)</p>
+</li>
+<li><p>重复会降低该节点处的光滑度要求，p 阶 B 样条曲线在重复度为 k 的节点处是 Cp−k 光滑的</p>
+</li>
+<li><p>剪裁 B 样条 (clamped B-splines)：若令两端的节点重复 p+ 1 次，B 样条曲线将会经过两端端点并且两端切线平行于控制点连线</p>
+</li>
+<li><p>闭合 B 样条 (closed B-splines)：重复首尾的节点和控制点</p>
+</li>
+<li><p>若一条剪裁 B 样条曲线除两端端点外剩余内部控制点数为 p − 1，那么它就等价于一条p 阶贝塞尔曲线</p>
+</li>
+<li><p>重要扩展：非均匀有理 B 样条 (non-uniform ration B-splines，简称NURBS)。“非均匀”指的是 B 样条的节点在参数区间内不等距分布，“有理”指的是 B 样条对每个控制点也额外施加了一个权值，当权值均等于 1 时，NURBS 曲线就退化成了普通的 b 样条曲线</p>
+</li>
+<li><p>因此 NURBS 实质上是齐次坐标 (homogeneous coordinate) 思想下的 B 样条，用权值的形式取代了多次重复设置节点这一笨重的操作，一条 NURBS 曲线的数学形式一般为：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/19/eSoWMpU8GqPvI3b.png" alt="7.png"></p>
+<h3 id="三次样条"><a href="#三次样条" class="headerlink" title="三次样条"></a>三次样条</h3><ul>
+<li><p>而两点不能唯一决定一条曲线段，因此在进行高阶插值时，需要添加额外的约束来帮助我们决定高阶函数系数，如端点处的导数约束或二阶导数约束，从而作出合理的插值</p>
+</li>
+<li><p>给出点列 {P0, P1, …, Pm}，其中每个点的坐标为 Pi &#x3D; (xi, yi)T, i &#x3D; 0,…,m．三次样条曲线假设每个子区间 [xi−1, xi], i &#x3D; 1,…, m 内的曲线段可以用一个三次函数来刻画：fi(x) &#x3D; aix3 + bix2 + cix + di，并且满足的如下的连续性要求：</p>
+<ol>
+<li>fi(x) 两端满足插值特性<br>  fi(xi−1) &#x3D; yi−1, fi(xi) &#x3D; yi, i &#x3D; 1, ··· , m</li>
+<li>公共顶点的一阶导数连续<br>  fi’ (xi) &#x3D; fi+1’(xi), i &#x3D; 1, ··· , m − 1</li>
+<li>公共顶点的二阶导数连续<br>  fi” (xi) &#x3D; fi+1”(xi), i &#x3D; 1, ··· , m − 1</li>
+</ol>
+</li>
+<li><p>对 m + 1 个点做三次样条插值，m 段曲线共包含 4m个待定系数，相应地，需要 4m 个约束来帮助我们确定系数．以上三组连续性要求共ᨀ供了 2m + (m − 1) + (m − 1) &#x3D; 4m − 2 个约束，剩余两个约束来源于对最两侧的线段端点 (x0, y0) 和 (xm, ym) 的约束</p>
+</li>
+<li><p>边界条件(boundary conditions):额外引入的对最外侧端点的约束:</p>
+<ol>
+<li>给定端点处的一阶导数 f1’(x0), fm’(xm)</li>
+<li>给定端点处的二阶导数 f1” (x0), fm”(xm)，全为 0 时一般称为自然边界条件</li>
+<li>周期性边界条件:若点列中 y0 &#x3D; ym，另外要求 f1’(x0) &#x3D; fm’(xm), f1” (x0) &#x3D; fm”(xm)，则可得到周期性三次样条</li>
+</ol>
+</li>
+<li><p>三次样条曲线是使得泛函 J(f) &#x3D; 从x0到xm积分(|f”(x)|²dx)值最小的函数，而曲线的二阶导是对曲线曲率的近似刻画</p>
+</li>
+<li><p>三次样条曲线保证了曲线的插值特性，并且满足全局 C2 光滑的特性，即，曲线上一阶、二阶导数处处存在且连续</p>
+</li>
+</ul>
+<h3 id="曲线图形的光栅化"><a href="#曲线图形的光栅化" class="headerlink" title="曲线图形的光栅化"></a>曲线图形的光栅化</h3><ul>
+<li><p>为了将曲线显示在屏幕上，我们同样需要对曲线进行光栅化操作将其转化成位点阵图</p>
+</li>
+<li><p>自适应细分 (adaptive subdivision)根据曲线不同位置的曲率大小动态地调整细分的程度，从而在弯曲程度较大的地方获得更多的细节而在平滑的地方节省算力</p>
+</li>
+<li><p>曲线版本的 DDA 算法：根据参数 t 对曲线进行采样，并将采样对应的像素点绘制在屏幕上．为了提高效率，采样可以通过增量累加的方式进行的</p>
+</li>
+<li><p>用变体的布雷森汉姆算法：曲线的情形下，像素点 (x, y)到曲线的偏差可以定义为 e &#x3D; F(x, y)，这里 F(x, y) 是曲线转化成对应的隐式方程，当像素点在曲线上时，偏差值为 0。对于曲线F(x, y)&#x3D;0，首先对曲线进行细分从而保证其分段单调。不妨假设其单增，当我们已绘<br>制像素点 (x, y)，算法需要从 (x + 1, y), (x, y + 1), (x + 1, y + 1) 中选取下一个需要绘制的点，算法以 (x + 1, y + 1) 的角度考察是否需要在 x 或 y 方向上步进一个像素：分别计算偏差值 ex &#x3D; F(x, y + 1), ey &#x3D; F(x+ 1, y), exy &#x3D; F(x+ 1, y + 1) 若偏差 | exy | &lt; | ex |，则需要在 x 方向上加 1；若偏差 | exy | &lt; | ey |，则需要在 y 方向上加 1。条件等价于：ey +exy &gt; 0及 exy + ex &lt; 0，由此来确定变体布雷森汉姆算法的下一个绘制点</p>
+</li>
+<li><p>对于由曲线组成的图案类似地可以利用扫描线方法绘制：当扫描线与图形产生多个交点时，第奇数交点到第偶数交点的中间线段对应需要绘制的像素，而第偶数交点到第奇数交点间的线段则不需要绘制</p>
+</li>
+<li><p>TTF(truetypefont) 文件格式在渲染字体时将采用了类似的思想：将外部轮廓定义为顺时针环绕而内部轮廓定义为逆时针环绕，从某一像素点 P 向任意方向做射线，当自左向右跨越轮廓边界时将环绕数加 1，自右向左跨越时将环绕数减 1，于是当最终结果非零时则表示点 P 在内部，为零则表示在外部</p>
+</li>
+</ul>
+<hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA/">可视计算与交互概论</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">数据结构与算法A 第五章二叉树</div></div></a></div><div class="next-post pull-right"><a href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img class="cover" src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">可视计算与交互概论 notes整理第1-4章</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img class="cover" src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-12</div><div class="title">可视计算与交互概论 notes整理第1-4章</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E5%8F%8D%E8%B5%B0%E6%A0%B7"><span class="toc-number">1.</span> <span class="toc-text">第五章 反走样</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%B0%E6%A0%B7%E4%B8%8E%E5%8F%8D%E8%B5%B0%E6%A0%B7"><span class="toc-number">1.1.</span> <span class="toc-text">走样与反走样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%87%E6%A0%B7%E7%90%86%E8%AE%BA"><span class="toc-number">1.2.</span> <span class="toc-text">信号采样理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E8%B5%B0%E6%A0%B7%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">反走样的基本原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0fs"><span class="toc-number">1.3.0.1.</span> <span class="toc-text">增加fs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%8D%E4%BD%8Ef0-%E6%A8%A1%E7%B3%8A%E5%8C%96"><span class="toc-number">1.3.0.2.</span> <span class="toc-text">降低f0(模糊化)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E6%9B%B2%E7%BA%BF"><span class="toc-number">2.</span> <span class="toc-text">第六章 曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E4%B8%80%E9%98%B6%E6%9B%B2%E7%BA%BF%E5%88%B0%E9%AB%98%E9%98%B6%E6%9B%B2%E7%BA%BF"><span class="toc-number">2.1.</span> <span class="toc-text">从一阶曲线到高阶曲线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF"><span class="toc-number">2.2.</span> <span class="toc-text">贝塞尔曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%BD%A2%E5%BC%8F"><span class="toc-number">2.2.1.</span> <span class="toc-text">数学形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-number">2.2.2.</span> <span class="toc-text">性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B7%E6%9D%A1%E6%9B%B2%E7%BA%BF"><span class="toc-number">2.3.</span> <span class="toc-text">样条曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#B-%E6%A0%B7%E6%9D%A1"><span class="toc-number">2.3.1.</span> <span class="toc-text">B 样条</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1"><span class="toc-number">2.3.2.</span> <span class="toc-text">三次样条</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E7%BA%BF%E5%9B%BE%E5%BD%A2%E7%9A%84%E5%85%89%E6%A0%85%E5%8C%96"><span class="toc-number">2.3.3.</span> <span class="toc-text">曲线图形的光栅化</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/e778d720.html" title="AI中的数学 第二章典型题整理"><img src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的数学 第二章典型题整理"/></a><div class="content"><a class="title" href="/post/e778d720.html" title="AI中的数学 第二章典型题整理">AI中的数学 第二章典型题整理</a><time datetime="2024-10-16T14:58:00.000Z" title="Created 2024-10-16 22:58:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树"><img src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法A 第五章二叉树"/></a><div class="content"><a class="title" href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树">数据结构与算法A 第五章二叉树</a><time datetime="2024-10-16T14:56:00.000Z" title="Created 2024-10-16 22:56:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第5-7章"/></a><div class="content"><a class="title" href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章">可视计算与交互概论 notes整理第5-7章</a><time datetime="2024-10-16T14:53:00.000Z" title="Created 2024-10-16 22:53:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第1-4章"/></a><div class="content"><a class="title" href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章">可视计算与交互概论 notes整理第1-4章</a><time datetime="2024-10-12T09:15:00.000Z" title="Created 2024-10-12 17:15:00">2024-10-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9ec9b125.html" title="AI中的数学 第二章随机变量与概率分布"><img src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的数学 第二章随机变量与概率分布"/></a><div class="content"><a class="title" href="/post/9ec9b125.html" title="AI中的数学 第二章随机变量与概率分布">AI中的数学 第二章随机变量与概率分布</a><time datetime="2024-10-11T12:12:00.000Z" title="Created 2024-10-11 20:12:00">2024-10-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
