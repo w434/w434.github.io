@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>可视计算与交互概论 notes整理第8-12章 | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="An undergraduate majoring in AI at PKU.">
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>可视计算与交互概论 notes整理第8-12章 | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第八章 几何表示 在几何部分，如何表示空间中的几何体是贯穿其中的主题  几何表示：描述三维物体的形状 计算机中表示几何体的常见方法： 显式表示方法：点云 (point cloud)、多边形网格 (polygon mesh)、细分表面 (subdivision surface) 等显式表示方法 隐式表示方法：水平集 (level set)、代数曲面 (algebraic surface)    多边">
 <meta property="og:type" content="article">
 <meta property="og:title" content="可视计算与交互概论 notes整理第8-12章">
 <meta property="og:url" content="http://example.com/post/5f62da59.html">
 <meta property="og:site_name" content="w434&#39;s blog">
-<meta property="og:description" content="An undergraduate majoring in AI at PKU.">
+<meta property="og:description" content="第八章 几何表示 在几何部分，如何表示空间中的几何体是贯穿其中的主题  几何表示：描述三维物体的形状 计算机中表示几何体的常见方法： 显式表示方法：点云 (point cloud)、多边形网格 (polygon mesh)、细分表面 (subdivision surface) 等显式表示方法 隐式表示方法：水平集 (level set)、代数曲面 (algebraic surface)    多边">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg">
 <meta property="article:published_time" content="2024-10-21T06:22:00.000Z">
-<meta property="article:modified_time" content="2024-10-21T06:23:27.428Z">
+<meta property="article:modified_time" content="2024-10-22T02:51:50.540Z">
 <meta property="article:author" content="w434">
 <meta property="article:tag" content="可视计算与交互概论">
 <meta name="twitter:card" content="summary">
@@ -55,8 +55,8 @@
   isPost: true,
   isHome: false,
   isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2024-10-21 14:23:27'
+  isToc: true,
+  postUpdate: '2024-10-22 10:51:50'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -153,4 +153,312 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">可视计算与交互概论 notes整理第8-12章</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-10-21T06:22:00.000Z" title="Created 2024-10-21 14:22:00">2024-10-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-10-21T06:23:27.428Z" title="Updated 2024-10-21 14:23:27">2024-10-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA/">可视计算与交互概论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="可视计算与交互概论 notes整理第8-12章"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA/">可视计算与交互概论</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/e778d720.html" title="AI中的数学 第二章典型题整理"><img class="cover" src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">AI中的数学 第二章典型题整理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img class="cover" src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-12</div><div class="title">可视计算与交互概论 notes整理第1-4章</div></div></a></div><div><a href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章"><img class="cover" src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-16</div><div class="title">可视计算与交互概论 notes整理第5-7章</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/5f62da59.html" title="可视计算与交互概论 notes整理第8-12章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第8-12章"/></a><div class="content"><a class="title" href="/post/5f62da59.html" title="可视计算与交互概论 notes整理第8-12章">可视计算与交互概论 notes整理第8-12章</a><time datetime="2024-10-21T06:22:00.000Z" title="Created 2024-10-21 14:22:00">2024-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e778d720.html" title="AI中的数学 第二章典型题整理"><img src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的数学 第二章典型题整理"/></a><div class="content"><a class="title" href="/post/e778d720.html" title="AI中的数学 第二章典型题整理">AI中的数学 第二章典型题整理</a><time datetime="2024-10-16T14:58:00.000Z" title="Created 2024-10-16 22:58:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树"><img src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法A 第五章二叉树"/></a><div class="content"><a class="title" href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树">数据结构与算法A 第五章二叉树</a><time datetime="2024-10-16T14:56:00.000Z" title="Created 2024-10-16 22:56:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第5-7章"/></a><div class="content"><a class="title" href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章">可视计算与交互概论 notes整理第5-7章</a><time datetime="2024-10-16T14:53:00.000Z" title="Created 2024-10-16 22:53:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第1-4章"/></a><div class="content"><a class="title" href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章">可视计算与交互概论 notes整理第1-4章</a><time datetime="2024-10-12T09:15:00.000Z" title="Created 2024-10-12 17:15:00">2024-10-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">可视计算与交互概论 notes整理第8-12章</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-10-21T06:22:00.000Z" title="Created 2024-10-21 14:22:00">2024-10-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-10-22T02:51:50.540Z" title="Updated 2024-10-22 10:51:50">2024-10-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA/">可视计算与交互概论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="可视计算与交互概论 notes整理第8-12章"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="第八章-几何表示"><a href="#第八章-几何表示" class="headerlink" title="第八章 几何表示"></a>第八章 几何表示</h1><ul>
+<li>在几何部分，如何表示空间中的几何体是贯穿其中的主题</li>
+</ul>
+<h2 id="几何表示：描述三维物体的形状"><a href="#几何表示：描述三维物体的形状" class="headerlink" title="几何表示：描述三维物体的形状"></a>几何表示：描述三维物体的形状</h2><ul>
+<li>计算机中表示几何体的常见方法：<ol>
+<li>显式表示方法：点云 (point cloud)、多边形网格 (polygon mesh)、细分表面 (subdivision surface) 等显式表示方法</li>
+<li>隐式表示方法：水平集 (level set)、代数曲面 (algebraic surface)</li>
+</ol>
+</li>
+</ul>
+<h2 id="多边形网格模型"><a href="#多边形网格模型" class="headerlink" title="多边形网格模型"></a>多边形网格模型</h2><ul>
+<li><p>多边形网格模型通过记录顶点和多边形来表示几何体的表面</p>
+</li>
+<li><p>多边形网格模型是由一组顶点、边和面组成，这些定义了物体的形<br>状，由顶点列表、边列表和面列表构成。</p>
+<ol>
+<li>顶点是 3D 空间中的单一点</li>
+<li>边是连接两个顶点的线</li>
+<li>面是边的封闭环。面通常是三角形或四边形，并可用于表示曲面或其他复杂形状</li>
+</ol>
+</li>
+<li><p>欧拉定理：多面体的顶点数 v、边数 e、面数f 满足 v - e + f &#x3D; 2</p>
+</li>
+<li><p>多边形网格相较于其他几何表达有很多优点：</p>
+<ol>
+<li>容易理解和使用，也能十分简便地进行渲染和几何形状处理</li>
+<li>非常通用，它可以用来创建各种形状，从简单的立方体到复杂的角色</li>
+<li>可扩展性高：可以用于创建 3D 打印模型，以及逼真的动画和模拟</li>
+</ol>
+</li>
+<li><p>如果要使用网格模型表达光滑的曲面，则需要大量的面片才能让模型变得精细</p>
+</li>
+</ul>
+<h3 id="三角网格"><a href="#三角网格" class="headerlink" title="三角网格"></a>三角网格</h3><ul>
+<li><p>三角网格是最常用的几何表示方式，通过记录组成每个三角面片的顶点坐标，可以唯一表达一个几何体</p>
+</li>
+<li><p>一种常见的表示三角网格的数据结构是分别记录所有顶点的三维坐标，以及每个面片的三个顶点的下标</p>
+</li>
+<li><p>例如一个四面体就可以按照如下的方式进行记录。这种数据结构通过共享顶点位置，减少了存储占用，同时保证了网格的整体性，即改变一个顶点在 3 维空间中的位置可以让与该顶点有关的所有三角面片发生移动</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/21/Qrl7Lvp5n9JtG4T.png" alt="1.png"></p>
+<h3 id="四边形网格"><a href="#四边形网格" class="headerlink" title="四边形网格"></a>四边形网格</h3><ul>
+<li>四边形网格也是较为常用的一种网格表示，所有多边形面片全部是四边形构成，优点：<ol>
+<li>结构规整，易于存储</li>
+<li>其四边形特性在纹理映射贴图时的计算非常方便</li>
+</ol>
+</li>
+</ul>
+<h2 id="几何表面细分"><a href="#几何表面细分" class="headerlink" title="几何表面细分"></a>几何表面细分</h2><p><img src="https://s2.loli.net/2024/10/22/jhrwo8vDFLifQKd.png" alt="1.png"></p>
+<ul>
+<li><p>通过增加组成几何表面的网格面片数量，减小每个面片的面积，可以使几何表面看起来更加光滑</p>
+</li>
+<li><p>网格细分 (mesh subdivision)：也称为网格的上采样，是指通过反复细分初始的多边形网格，不断得到更精细的网格的过程</p>
+</li>
+</ul>
+<h3 id="Catmull-Clark-细分"><a href="#Catmull-Clark-细分" class="headerlink" title="Catmull-Clark 细分"></a>Catmull-Clark 细分</h3><ul>
+<li><p>Catmull-Clark 细分是最常用的几何表面细分方法之一，通过将表面的多边形细分为更小的多边形，用相邻的顶点重新定位先前的顶点，对三维多边形网格表面起到平滑效果</p>
+</li>
+<li><p>Catmull-Clark 细分法采用网格中包含的每一个原始多边形，并将多边形细分为四边形，基于平均值构建新的顶点，并根据周围环境调整原始多边形的先前顶点</p>
+</li>
+<li><p>Catmull-Clark 算法每一次细分由增设面点（face point）、增设边点（edge point）、更新顶点 (vertex point)、形成新的边和面四个步骤组成</p>
+<ol>
+<li>增设面点：对多面体的每个面片计算一个面点，这个面点是这个多边形面上所有顶点坐标的平均值</li>
+<li>增设边点：对多面体的每条边计算一个边点，找出该条边的两个端点和共享该条边的两个面的面点，对这四个点的坐标取平均</li>
+<li>更新顶点：对于多边形原有的每个顶点 v，使用（1）所有包含顶点 v 的边的中点 (注意不是上述步骤中的边点) 的平均值 R，（2）所有包含顶点 v 的多边形面片的面点的平均值 F,（3）以及顶点 v 的原有值的加权平均值来调整其三维坐标．加权平均遵循以下公式：<br>  F + 2R + (n − 3)v &#x2F; n (其中 n 是面点的数量)</li>
+<li>形成新的边和面:将每个面点连接到所有构成了它所在的原始面的边的边点，将每个新顶点连接到所有连接着它原始点的边的边点.新的面就由这些边包围而成</li>
+</ol>
+</li>
+<li><p>不论原多边形网格是何结构，新得到的多边形网格将只由四边形构成。在不断细分的过程中，表面会不断趋向平滑和圆润</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/r9obshBDPvl43yF.png" alt="2.png"></p>
+<h3 id="Loop-细分"><a href="#Loop-细分" class="headerlink" title="Loop 细分"></a>Loop 细分</h3><ul>
+<li><p>Loop 细分是常见的针对三角网格模型的细分方法。每一次细分将三角面片细分为四个更小的面片，迭代下去使几何表面变得平滑</p>
+</li>
+<li><p>Loop 细分的过程由计算新顶点和更新原有顶点两步组成：</p>
+<ol>
+<li>计算新顶点：<ol>
+<li>对于每一条边，如果这条边被两个三角形面所包含则由这条边的两个端点 v0, v2 和“跨过”这条边的两个顶点 v1, v3 加权平均计算出新顶点 ep<br> ep &#x3D;3&#x2F;8(v0 + v2) + 1&#x2F;8(v1 + v3)</li>
+<li>如果这条边只被一个三角形面所包含（即为边界上的边），则直接取这条边的中点作为新顶点</li>
+</ol>
+</li>
+<li>更新原有顶点：对于每个原有顶点 v，根据以下公式更新后的位置 v′<br>  <img src="https://s2.loli.net/2024/10/22/9JidWa1YC28QtAO.png" alt="3.png"><br>  其中 n 为顶点 v 的度数，vi 为与 v 有边相连的顶点，当 n &#x3D; 3 时 u &#x3D; 3&#x2F;16，否则 u &#x3D;3&#x2F;8n</li>
+</ol>
+</li>
+<li><p>通过不断地生成新顶点和更新原有顶点，每一次细分后连接新顶点与原有顶点，三角面片变得更加精细，得到的几何表面更加平滑</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/b9Ch43fMeDsrjUz.png" alt="4.png"></p>
+<h2 id="网格参数化"><a href="#网格参数化" class="headerlink" title="网格参数化"></a>网格参数化</h2><ul>
+<li>网格参数化 (mesh parameterization)是将三维和二维联系起来的桥梁</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/KCHTcoUYLkR4jyF.png" alt="5.png"></p>
+<ul>
+<li><p>纹理映射技术：通过二维纹理空间和三维曲面之间的对应关系，计算三维曲面上每一点颜色值。这个过程需要建立三维曲面和二维纹理平面之间的一一映射，也就是参数化的过程，即计算三维空间曲面的每个网格顶点对应的两个纹理空间中坐标值 (u, v)</p>
+</li>
+<li><p>参数化的另一个具体应用是世界地图的绘制．通常可以采用球面坐标系来表示地球表面的每一个点，给定半径后，每一个点对应着唯一一组方位角和仰角。但实际中地球是在平面上画出的，典型的有立体投影 (或球极平面投影)、墨卡托投影和朗伯投影等方法</p>
+<ol>
+<li>球极平面投影：将一个圆球面通过指定极点射影至一个平面的映射．能够保持角度不变，但是面积会发生改变，尤其在极点附近</li>
+<li>墨卡托投影：投影后经线是一组竖直的等距离平行直线，纬线是垂直于经线的一组平行直线。各相邻纬线间隔由赤道向两极增大。一点上任何方向的长度比均相等，即没有角度变形，而面积变形显著，随远离标准纬线而增大。该投影具有等角航线被表示成直线的特性</li>
+<li>朗伯投影：一种等面积的平面投影，它不仅可以精确记录面积，也能不改变方向，一般用于绘制精度要求较高的地质图或导航图</li>
+</ol>
+</li>
+<li><p>平面参数化的分类：</p>
+<ol>
+<li>开网格参数化，这种情形下网格是具有边界的开网格，又分为固定边界映射和自由边界映射</li>
+<li>闭网格参数化，这种情形下网格构成一个封闭曲面，通常人为指定一条边界将封闭网格切开，然后转化为开网格进行参数化</li>
+</ol>
+</li>
+</ul>
+<h3 id="弹簧模型"><a href="#弹簧模型" class="headerlink" title="弹簧模型"></a>弹簧模型</h3><ul>
+<li><p>开网格的平面参数化中，最基础的模型是弹簧模型：网格顶点作为图节点，网格边作为连接节点的边，形成多个弹簧连接的一个整体</p>
+</li>
+<li><p>建立从网格到纹理空间的参数化映射，也就是将每个网格顶点 si &#x3D; (xi, yi, zi) ∈ R3 映射成二维参数空间中的点ti &#x3D; (ui, vi) ∈ R2，可以采用弹簧系统的能量函数来描述参数化后的系统状态：弹簧的拉伸最后会达到平衡状态，使得整个系统能量最低，这个状态也就是参数化的最终结果</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/1mEJopecjzgwxrD.png" alt="6.png"></p>
+<ul>
+<li>总能量定义为加权的弹簧能量：其中 n 是节点总数，Dij 是连接第 i 和第 j 个顶点的弹簧的劲度系数，也是其所对应边在系统中的权重</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/MrNV5PlYH8iQj4e.png" alt="7.png"></p>
+<p><img src="https://s2.loli.net/2024/10/22/NfySFv23nUtJdqb.png" alt="8.png"></p>
+<ul>
+<li><p>网格每个顶点在参数化后可以表示为相邻顶点的线性组合，组合系数 λij 是连接该顶点的弹簧系数的加权平均，也被称为仿射组合系数</p>
+</li>
+<li><p>在指定好组合系数之后，该方程变成关于顶点参数化坐标的线性方程组。如果不增加约束条件，那么零解是其平凡解．可以通过对系统施加额外约束从而得到非平凡解</p>
+</li>
+<li><p>一种约束条件采用固定边界映射，也称为重心坐标映射方法：将开网格边界上的顶点首先映射到指定的凸多边形边界上，那么这些顶点对应的参数化坐标在方程组中变为已知，从而可以求解内部顶点的参数化后的坐标</p>
+</li>
+<li><p>在弹簧系统中，可以通过设置合适的仿射组合系数来引导平面网格的参数化</p>
+<ol>
+<li>凸组合，即保证凸多边形的加权平均仍然在凸多边形内部</li>
+<li>线性重构，即如果网格本身是平面上的网格，组合后的点保持不变</li>
+</ol>
+</li>
+<li><p>常用的仿射组合系数有三种：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/DVTA3FLJY4RkZfI.png" alt="9.png"></p>
+<hr>
+<h1 id="第九章-几何处理"><a href="#第九章-几何处理" class="headerlink" title="第九章 几何处理"></a>第九章 几何处理</h1><h2 id="离散微分几何"><a href="#离散微分几何" class="headerlink" title="离散微分几何"></a>离散微分几何</h2><ul>
+<li><p>传统的微分几何是在连续空间中的进行几何分析的，如光滑的参数化曲面，而计算机中的一切量都是离散的，如由连续曲面离散化成的三角网格，离散微分几何就是将二者进行联系的桥梁</p>
+</li>
+<li><p>对于离散的三角网格而言，在边或顶点的连接处，很多微分量是没有良定义的，因为由三角网格定义出的几何形状只能给出 C0 连续性</p>
+</li>
+</ul>
+<h3 id="局部平均区域"><a href="#局部平均区域" class="headerlink" title="局部平均区域"></a>局部平均区域</h3><ul>
+<li><p>局部平均区域 (local averaging region)：从积分的角度描述微分量，计算这个微分量在顶点周围邻域内的积分值，然后假定该微分量在顶点周围邻域内变化很小，可以被近似看成一个定值，于是将积分值除以邻域面积，就可以得到该微分量</p>
+</li>
+<li><p>顶点邻域的选取方法会直接影响到离散微分量的结果和准确度：</p>
+<ol>
+<li>若选取的邻域较大，那么得到的微分量在空间上会更为平滑</li>
+<li>若选取的邻域较小，得到的微分量会更加准确，同时对于网格上的噪声也会更加敏感</li>
+</ol>
+</li>
+<li><p>三种定义邻域的方式：</p>
+<ol>
+<li>重心单元 (barycentric cell)，即把三角形的两边的中点和三角形的重心顺次连起来</li>
+<li>泰森多边形单元 (Voronoi cell)，是由每条边的中垂线确定的区域，根据中垂线的性质，每个三角形内，蓝色区域中的点到 x 的距离都会小于另两个顶点，但若顶点周围存在钝角三角形，则蓝色区域会超出三角形</li>
+<li>混合泰森多边形单元 (mixed Voronoi cell) 是对上一种方法的改进，在出现钝角三角形时，用三条边的中点连线来框选出该三角形内的蓝色区域</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/LcGNhRCETJnlDt8.png" alt="1.png"></p>
+<h3 id="法向量"><a href="#法向量" class="headerlink" title="法向量"></a>法向量</h3><ul>
+<li>三角形内部点的法向量可以唯一定义成三角形所在平面的法向量，而顶点的法向量则可以通过对顶点周围三角形法向量取平均得到：其中，Ω(x) 是与顶点 x 邻接的三角形的集合，αT 及 n(T) 分别是三角形 T 的权重和法向<br>量</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/fKlNiD9oEnX6UOv.png" alt="2.png"></p>
+<ul>
+<li>对于权重 αT 的选择有很多方式，常见的有以下三种：<ol>
+<li>αT &#x3D; 1．取常数权重是最容易计算的，不过这种取法没有考虑任何三角形的信息，对于不规则的网格会得到一些反常的结果</li>
+<li>αT &#x3D; area(T)．根据三角形面积大小进行加权比常数权重更加合理，且面积大小可以通过两条边叉乘得到，便于计算。但遇到过于不规则的网格时这种做法也不够可靠</li>
+<li>αT &#x3D; θ(T)．根据三角形对应顶点 x 处的角度进行加权可以给出更好的结果，不过这种做法计算起来比较麻烦</li>
+</ol>
+</li>
+</ul>
+<h3 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h3><ul>
+<li><p>对单个三角形而言，给定三个顶点 xi, xj , xk 上的函数值 fi, fj ,fk，则在三角形内部任一点 x 上的函数值 f(x) 可以根据点 x 的重心坐标 (barycentric coordinate) 进行线性插值得到：f(x) &#x3D; α(x)fi + β(x)fj + γ(x)fk。其中权重 α, β, γ 是点 x 关于顶点 xi, xj , xk 的重心坐标，且满足 α + β + γ &#x3D; 1</p>
+</li>
+<li><p>重心坐标表征的是该点到各顶点的相对位置，一组重心坐标可以唯一地确三角形中的一点</p>
+</li>
+<li><p>那么函数 f(x) 的导数为：∇xf(x) &#x3D; fi∇xα + fj∇xβ + fk∇xγ</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/LUvk9AeGRIVWMmB.png" alt="3.png"></p>
+<ul>
+<li>代入重心坐标的表达式可以算得：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/mL5ItelMJBbYP9A.png" alt="4.png"></p>
+<h3 id="离散拉普拉斯算子"><a href="#离散拉普拉斯算子" class="headerlink" title="离散拉普拉斯算子"></a>离散拉普拉斯算子</h3><ul>
+<li><p>拉普拉斯算子被定义为函数梯度的散度：∆f &#x3D; div∇f</p>
+</li>
+<li><p>对于标量函数来说，即 ∆f &#x3D; ∑i(∂²f&#x2F;∂xi²) ∈R,从定义中可以看出，拉普拉斯算子是一个二阶微分量</p>
+</li>
+<li><p>拉普拉斯算子应用在标量函数上表达的是函数的趋势，应用在几何表面上刻画的就是几何形状的走向,例如曲面的平均曲率来刻画某处的弯曲程度</p>
+</li>
+<li><p>记函数 S 是映射到三维空间中的曲面，曲面上某点处的平均曲率为 H，法向量为 n，则有：∆S &#x3D; −2Hn ∈ R3</p>
+</li>
+<li><p>在离散情形下，由于三角形面内的梯度是定值，所以拉普拉斯算子恒为 0。因此我们通常从三角形顶点的值出发研究拉普拉斯算子，函数 f(xi) 在顶点 xi处的拉普拉斯算子的一般形式可以写成：ωij 是标量权重，Ω(i) 是顶点 xi 的邻居顶点集合</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/1eXMHSnksZb9QIB.png" alt="5.png"></p>
+<ul>
+<li>不同权重选取方式对应着不同的离散拉普拉斯算子</li>
+</ul>
+<h3 id="均匀拉普拉斯"><a href="#均匀拉普拉斯" class="headerlink" title="均匀拉普拉斯"></a>均匀拉普拉斯</h3><ul>
+<li>均匀拉普拉斯 (uniform Laplacian) 是最简单的一种形式，它将权重取为定值，定义为：其中 Ni 表示邻居顶点的数量</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/nst1JTjgd8OSw6H.png" alt="6.png"></p>
+<ul>
+<li><p>均匀拉普拉斯算子计算的是函数 f 从 xi 到其所有周围顶点 xj 的差的平均值</p>
+</li>
+<li><p>但实际上它并不是一种恰当的定义方式。我们不能保证一个平面经过三角网格划分后，网格顶点 xi一定处于它所有邻居的中心</p>
+</li>
+</ul>
+<h3 id="余切拉普拉斯"><a href="#余切拉普拉斯" class="headerlink" title="余切拉普拉斯"></a>余切拉普拉斯</h3><ul>
+<li>通过局部平均区域思想得到的余切拉普拉斯 (cotangent Laplacian)：以通过混合有限元 (mixed finite element) 或者有限体积(finite volume) 方法得到</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/cW8prxuOg6JAmli.png" alt="7.png"></p>
+<ul>
+<li>当式中两个角度大于 π 时，(cotαij + cotβij ) 会变为负数，这会导致一些三角形发生旋转</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/SEtaCQbLXOclk9f.png" alt="8.png"></p>
+<h2 id="网格平滑"><a href="#网格平滑" class="headerlink" title="网格平滑"></a>网格平滑</h2><ul>
+<li><p>网格平滑 (smoothing) 也称为网格降噪 (denoising)：降噪一般是指去掉噪音（高频信息）保留整体形状（低频信息）从而获得一个相对光滑的几何模型的过程，比如去掉扫描或者采集数据因为误差或者其他原因导致的噪声</p>
+</li>
+<li><p>平滑在统计学中指的是通过一个近似函数对输入数据进行较好的拟合，从而保留重要的模式，去掉噪音或者其他不重要的信息</p>
+</li>
+</ul>
+<h3 id="拉普拉斯平滑-Laplacian-smooting"><a href="#拉普拉斯平滑-Laplacian-smooting" class="headerlink" title="拉普拉斯平滑 (Laplacian smooting)"></a>拉普拉斯平滑 (Laplacian smooting)</h3><ul>
+<li><p>借助扩散流的数学模型来帮助理解，它常被用来平滑给定的时空信号 f(x, t)。扩散流公式写作：∂f(x, t)&#x2F;∂t &#x3D; λ∆f(x, t) </p>
+</li>
+<li><p>扩散流的过程应用到网格平滑上，也就是将带噪音的顶点坐标理解成杂乱分布的热量。随着扩散过程的进行，热量分布趋于平衡，对应着顶点构成的表面趋于平滑</p>
+</li>
+<li><p>因此，我们可以通过定义在表面上的拉普拉斯算子，利用扩散流模型，对表面进行平滑</p>
+</li>
+<li><p>首先，我们需要对公式中的时空信息进行离散化</p>
+<ol>
+<li>对于空间上的离散化，我们依旧把函数值离散为网格顶点上的值，记 f(t) &#x3D; (f(v1, t), …, f(vn, t))T，于是对每个顶点有：<br> <img src="https://s2.loli.net/2024/10/22/zjRsxhy2uN5B9SX.png" alt="9.png"><br> 写成矩阵形式为 ∂f(t)&#x2F;∂t &#x3D; λLf(t)</li>
+<li>对于时间上的离散化，我们可以采用均匀间隔的时间步长 h 将时间划分为若干段 (0, h, 2h, . . . , t, t+h, t + 2h, . . .)，于是通过有限差分可以将偏微分用差值来近似，即：<br> <img src="https://s2.loli.net/2024/10/22/hecj4wXBHqlVAb1.png" alt="10.png"><br> 这种差分格式被称为显式欧拉，它的形式可以改写为：<br> <img src="https://s2.loli.net/2024/10/22/BUEkQhaLbdTc19q.png" alt="11.png"></li>
+</ol>
+</li>
+<li><p>此式给出了经过时空离散化后函数值的迭代更新方法，每经过一个 h 时间步，用此式更新每个顶点上的函数值，直至达到设定的迭代停止条件</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/lGrFc95ZK1nd7pE.png" alt="12.png"></p>
+<ul>
+<li><p>在两种不同的拉普拉斯算子下，可以得到不同的平滑效果。在取余切算子时，由于满足∆x &#x3D; −2Hn 公式，于是所有顶点将沿着平均曲率定义的方向移动，因此也称为平均曲率流(mean curvature flow)</p>
+</li>
+<li><p>在取均匀算子的情况下，因为没有考虑面的信息，只考虑了顶点位置，那么平滑不会沿着曲率方向，而是会往重心方向移动，即将每个顶点往相邻顶点的平均位置移动。这个过程等价于某种能量函数最小化，平衡状态下的形状应该是所有边长度相同。这种方式定义的拉普拉斯算子不反映网格形状，可能导致局部几何特征的失真</p>
+</li>
+<li><p>余切算子能更好地保持几何特征，而均匀算子导致了三角网格切向的松弛</p>
+</li>
+</ul>
+<h2 id="网格简化"><a href="#网格简化" class="headerlink" title="网格简化"></a>网格简化</h2><ul>
+<li><p>网格简化算法可以生成不同细节层次 (Level Of Detail，简称 LoD) 的模型，于是可以在不同情况下选择不同细节层次的模型来渲染</p>
+</li>
+<li><p>网格简化 (mesh simplification) 的目标是用更少的面片数来表达原有模型，降低模型精度的同时保持模型的整体形状</p>
+<ol>
+<li>静态简化：化预先计算好一系列不同简化率的模型，在实时运行的程序中可以按照模型离视点 (view point) 的距离选择不同版本的模型进行渲染</li>
+<li>动态简化：静态简化的延伸，在运行过程中按照需要对模型进行简化，一般使用局部的几何变换来实现，从而生成具有连续的具有不同分辨率的近似模型</li>
+</ol>
+</li>
+<li><p>简化网格一般可以通过移除顶点或坍缩边来进行，相对来说边坍缩（edge collapsing）算法是更为简单而常用的，它通过删除网格中的边来实现简化的效果</p>
+</li>
+<li><p>核心：设计一种方法来选出需要被删除的边，并将这条边两端顶点合并成一个点放置在新的位置上</p>
+</li>
+<li><p>根据不同原则设计出的不同方法直接关系到简化后的模型的质量，不良的处理方法甚至会导致网格模型出现拓扑上的错误</p>
+</li>
+<li><p>为了衡量坍缩某条边对模型造成的影响，我们需要引入一种误差度量的方式，一种最常用的方式是二次误差度量 (quadratic error metrics)</p>
+</li>
+<li><p>在删除一条边后，我们需要引入一个新的顶点，通过最小化新的顶点与之前对应的平面的 L2 距离，我们可以得到删除这条边会引入的二次度量误差，于是我们可以选取引入二次度量误差最小的边进行坍缩</p>
+</li>
+<li><p>使得这条边二次度量误差最小化的顶点，也将被设置为边坍缩后的新顶点</p>
+</li>
+<li><p>这种设置方式优于取边中点或局部区域平均，可以更好地保留模型的几何特征。利用这种贪心的思想，通过不断的迭代坍缩，我们就能实现对网格的简化</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/89HRcUWSjFaPvYn.png" alt="13.png"></p>
+<h2 id="网格编辑"><a href="#网格编辑" class="headerlink" title="网格编辑"></a>网格编辑</h2><ul>
+<li><p>网格编辑 (mesh editing)：操纵和修改网格表面的几何形状，同时能够保留原始网格几何细节 (detail preserving) 的操作</p>
+</li>
+<li><p>对于定义在区域 Ω 上的目标颜色场 g(x, y)，泊松图像编辑通过求解下面的优化问题来得到融入后的颜色场 f(x, y)：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/BYlcMHLVwGkqisX.png" alt="1.png"></p>
+<ul>
+<li><p>它在保证边界上无缝衔接的同时使得填补后区域的颜色梯度 ∇f 与给定颜色场的梯度 ∇g尽可能接近.拉普拉斯编辑是 ∇g &#x3D; 0 的一类特殊情况，它完成的是图像补全的任务</p>
+</li>
+<li><p>类似的思想在三维的应用就是拉普拉斯网格编辑技术.通过尽可能对齐编辑后网格上的拉普拉斯微分坐标来保留细节内容，拉普拉斯微分坐标本质上就是每个网格顶点上关于位置坐标的均匀拉普拉斯算子，记为：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/mgItEozYkXZHnsK.png" alt="2.png"></p>
+<ul>
+<li><p>它是一种相对坐标，在给定边界条件的情况下可以与世界空间的位置坐标互相转化</p>
+</li>
+<li><p>拉普拉斯坐标是网格顶点坐标的线性组合，与点的法向和曲率无关，因此可以被用来描述局部特征</p>
+</li>
+<li><p>拉普拉斯网格编辑的思路:在交互中指定一些顶点的目标位置后，重建一个既满足这些顶点约束、又尽可能保持局部拉普拉斯微分坐标的网格。</p>
+</li>
+<li><p>具体来说，设给出的具有 n个顶点的网格模型的顶点坐标为 {v1, . . . , vn} ，首先计算出对应的拉普拉斯坐标：∆i &#x3D;L(vi), i &#x3D; 1, . . . , n．而后对需要调整的顶点给出约束：v′j &#x3D; uj , j ∈ C，其中 C 是受约束点的集合。于是我们可以构造出拉普拉斯网格编辑对应的最优化问题：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/22/l6rJE5gk2wVasZt.png" alt="3.png"></p>
+<ul>
+<li>利用最小二乘方法求解该优化问题即可得到生成编辑后的网格</li>
+</ul>
+<hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA/">可视计算与交互概论</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/e778d720.html" title="AI中的数学 第二章典型题整理"><img class="cover" src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">AI中的数学 第二章典型题整理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img class="cover" src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-12</div><div class="title">可视计算与交互概论 notes整理第1-4章</div></div></a></div><div><a href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章"><img class="cover" src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-16</div><div class="title">可视计算与交互概论 notes整理第5-7章</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0-%E5%87%A0%E4%BD%95%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.</span> <span class="toc-text">第八章 几何表示</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E8%A1%A8%E7%A4%BA%EF%BC%9A%E6%8F%8F%E8%BF%B0%E4%B8%89%E7%BB%B4%E7%89%A9%E4%BD%93%E7%9A%84%E5%BD%A2%E7%8A%B6"><span class="toc-number">1.1.</span> <span class="toc-text">几何表示：描述三维物体的形状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">多边形网格模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E8%A7%92%E7%BD%91%E6%A0%BC"><span class="toc-number">1.2.1.</span> <span class="toc-text">三角网格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC"><span class="toc-number">1.2.2.</span> <span class="toc-text">四边形网格</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E8%A1%A8%E9%9D%A2%E7%BB%86%E5%88%86"><span class="toc-number">1.3.</span> <span class="toc-text">几何表面细分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Catmull-Clark-%E7%BB%86%E5%88%86"><span class="toc-number">1.3.1.</span> <span class="toc-text">Catmull-Clark 细分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Loop-%E7%BB%86%E5%88%86"><span class="toc-number">1.3.2.</span> <span class="toc-text">Loop 细分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC%E5%8F%82%E6%95%B0%E5%8C%96"><span class="toc-number">1.4.</span> <span class="toc-text">网格参数化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%B9%E7%B0%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">弹簧模型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">第九章 几何处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E5%BE%AE%E5%88%86%E5%87%A0%E4%BD%95"><span class="toc-number">2.1.</span> <span class="toc-text">离散微分几何</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%B9%B3%E5%9D%87%E5%8C%BA%E5%9F%9F"><span class="toc-number">2.1.1.</span> <span class="toc-text">局部平均区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%95%E5%90%91%E9%87%8F"><span class="toc-number">2.1.2.</span> <span class="toc-text">法向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6"><span class="toc-number">2.1.3.</span> <span class="toc-text">梯度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%AE%97%E5%AD%90"><span class="toc-number">2.1.4.</span> <span class="toc-text">离散拉普拉斯算子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%87%E5%8C%80%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF"><span class="toc-number">2.1.5.</span> <span class="toc-text">均匀拉普拉斯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%99%E5%88%87%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF"><span class="toc-number">2.1.6.</span> <span class="toc-text">余切拉普拉斯</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC%E5%B9%B3%E6%BB%91"><span class="toc-number">2.2.</span> <span class="toc-text">网格平滑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E5%B9%B3%E6%BB%91-Laplacian-smooting"><span class="toc-number">2.2.1.</span> <span class="toc-text">拉普拉斯平滑 (Laplacian smooting)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC%E7%AE%80%E5%8C%96"><span class="toc-number">2.3.</span> <span class="toc-text">网格简化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC%E7%BC%96%E8%BE%91"><span class="toc-number">2.4.</span> <span class="toc-text">网格编辑</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/5f62da59.html" title="可视计算与交互概论 notes整理第8-12章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第8-12章"/></a><div class="content"><a class="title" href="/post/5f62da59.html" title="可视计算与交互概论 notes整理第8-12章">可视计算与交互概论 notes整理第8-12章</a><time datetime="2024-10-21T06:22:00.000Z" title="Created 2024-10-21 14:22:00">2024-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e778d720.html" title="AI中的数学 第二章典型题整理"><img src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的数学 第二章典型题整理"/></a><div class="content"><a class="title" href="/post/e778d720.html" title="AI中的数学 第二章典型题整理">AI中的数学 第二章典型题整理</a><time datetime="2024-10-16T14:58:00.000Z" title="Created 2024-10-16 22:58:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树"><img src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法A 第五章二叉树"/></a><div class="content"><a class="title" href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树">数据结构与算法A 第五章二叉树</a><time datetime="2024-10-16T14:56:00.000Z" title="Created 2024-10-16 22:56:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第5-7章"/></a><div class="content"><a class="title" href="/post/b19143e7.html" title="可视计算与交互概论 notes整理第5-7章">可视计算与交互概论 notes整理第5-7章</a><time datetime="2024-10-16T14:53:00.000Z" title="Created 2024-10-16 22:53:00">2024-10-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第1-4章"/></a><div class="content"><a class="title" href="/post/42c5f110.html" title="可视计算与交互概论 notes整理第1-4章">可视计算与交互概论 notes整理第1-4章</a><time datetime="2024-10-12T09:15:00.000Z" title="Created 2024-10-12 17:15:00">2024-10-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
