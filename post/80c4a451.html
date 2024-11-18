@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机视觉 02 Image Formation | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="CameraBiuld a camera with a sensor 物体会向传感器的各个位置传光，导致传感器各个位置接收到物体各个位置传来的光，最后的成像模糊不清   Pinhole Camera(小孔成像) 大部分的光被阻隔，使得每个图像点对应传感器上的一个像素点  小孔成像呈现倒立的像     小孔成像的数学模型：数学上为了方便，将所成的像沿小孔对称使其与物体在同一侧，从而可以根据相似关系求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机视觉 02 Image Formation">
+<meta property="og:url" content="http://example.com/post/80c4a451.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="CameraBiuld a camera with a sensor 物体会向传感器的各个位置传光，导致传感器各个位置接收到物体各个位置传来的光，最后的成像模糊不清   Pinhole Camera(小孔成像) 大部分的光被阻隔，使得每个图像点对应传感器上的一个像素点  小孔成像呈现倒立的像     小孔成像的数学模型：数学上为了方便，将所成的像沿小孔对称使其与物体在同一侧，从而可以根据相似关系求">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg">
+<meta property="article:published_time" content="2024-11-18T02:23:00.000Z">
+<meta property="article:modified_time" content="2024-11-18T07:26:36.596Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="计算机视觉">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/80c4a451.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机视觉 02 Image Formation',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-18 15:26:36'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">49</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机视觉 02 Image Formation</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-18T02:23:00.000Z" title="Created 2024-11-18 10:23:00">2024-11-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-18T07:26:36.596Z" title="Updated 2024-11-18 15:26:36">2024-11-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机视觉 02 Image Formation"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Camera"><a href="#Camera" class="headerlink" title="Camera"></a>Camera</h1><h2 id="Biuld-a-camera-with-a-sensor"><a href="#Biuld-a-camera-with-a-sensor" class="headerlink" title="Biuld a camera with a sensor"></a>Biuld a camera with a sensor</h2><ul>
+<li>物体会向传感器的各个位置传光，导致传感器各个位置接收到物体各个位置传来的光，最后的成像模糊不清</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/WjLOhpZtSHqwkMT.png" alt="image.png"></p>
+<h2 id="Pinhole-Camera-小孔成像"><a href="#Pinhole-Camera-小孔成像" class="headerlink" title="Pinhole Camera(小孔成像)"></a>Pinhole Camera(小孔成像)</h2><ul>
+<li><p>大部分的光被阻隔，使得每个图像点对应传感器上的一个像素点</p>
+</li>
+<li><p>小孔成像呈现倒立的像</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/aPkvDVAUlJxc5XM.png" alt="image-1.png"></p>
+<ul>
+<li>小孔成像的数学模型：数学上为了方便，将所成的像沿小孔对称使其与物体在同一侧，从而可以根据相似关系求解</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/uGaKFlekXOVzWvc.png" alt="image-2.png"></p>
+<p><img src="https://s2.loli.net/2024/11/18/anwrAuRgLSDyI1l.png" alt="image-3.png"></p>
+<h2 id="Coordinate-Frames-重点"><a href="#Coordinate-Frames-重点" class="headerlink" title="Coordinate Frames(重点)"></a>Coordinate Frames(重点)</h2><ul>
+<li>世界坐标 -&gt; 相机坐标(以相机为原点) -&gt; 图像坐标 -&gt; 像素坐标</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/VJ9tvEBIrfhPx8m.png" alt="image-4.png"></p>
+<ul>
+<li><p>相机矩阵：建立了从三维到二维的投影关系。成像的过程就是三维空间坐标到二维图像坐标的变化，是一个投影的过程</p>
+</li>
+<li><p>用[xw yw zw]来表示一个空间点的坐标，用[x y]来表示对应于成像平面上的一个图像点的坐标（不是像素坐标），那么这两个点肯定是有一种变换关系联系起来的，把这个变换关系记为P：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/HKGbur1A4QMqxfa.png" alt="image-5.png"></p>
+<h2 id="Camera-Parameters"><a href="#Camera-Parameters" class="headerlink" title="Camera Parameters"></a>Camera Parameters</h2><ul>
+<li><p>图像坐标系：以图像左上角为原点建立以像素为单位的直接坐标系u-v。像素的横坐标u与纵坐标v分别是在其图像数组中所在的列数与所在行数</p>
+</li>
+<li><p>图像坐标系的主点：相机光轴与图像平面的交点（一般位于图像平面的中心处）</p>
+</li>
+<li><p>由于我们拿到的图像是以像素来衡量的，因此还需要将图像坐标系转化为像素坐标系。由于(u,v)只代表像素的列数与行数，而像素在图像中的位置并没有用物理单位表示出来，所以，我们还要建立以物理单位（如毫米）表示的图像坐标系x-y，主要的用途：求主点坐标</p>
+</li>
+</ul>
+<h3 id="Extrinsic-Camera-parameters"><a href="#Extrinsic-Camera-parameters" class="headerlink" title="Extrinsic Camera parameters"></a>Extrinsic Camera parameters</h3><ul>
+<li><p>外参矩阵：将世界坐标系转换成相机坐标系。由平移矩阵和旋转矩阵二合一而成。记为M</p>
+</li>
+<li><p>世界坐标系：世界坐标系是为了描述相机的位置而被引入的</p>
+</li>
+<li><p>相机坐标系：O点为摄像机光心（投影中心），Xc轴和Yc轴与成像平面坐标系的x轴和y轴平行，Zc轴为摄像机的光轴，和图像平面垂直。光轴与图像平面的交点为图像的主点O1,由点O与Xc,Yc,Zc轴组成的直角坐标系称为摄像机的坐标系。OO1为摄像机的焦距</p>
+</li>
+<li><p>平移向量t和旋转矩阵R可以用来表示相机坐标系与世界坐标系的关系</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/AwxBGPk5C8uObsq.png" alt="image-8.png"></p>
+<p><img src="https://s2.loli.net/2024/11/18/Zhp9gQKldLnHy7D.png" alt="image-9.png"></p>
+<ul>
+<li>由于是齐次坐标系，最后是1，所以实际上是三维</li>
+</ul>
+<h3 id="Intrinsic-Camera-Parameters"><a href="#Intrinsic-Camera-Parameters" class="headerlink" title="Intrinsic Camera Parameters"></a>Intrinsic Camera Parameters</h3><ul>
+<li>内参矩阵：将相机平面投影到图像平面</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/jyHTMuLA8e9VU47.png" alt="image-10.png"></p>
+<ul>
+<li><p>其中f是焦距，起到缩放作用、cx,cy是二维空间上的平移，也就是主点的实际位置，单位是像素。Projection最后一行如果为1则是正交投影(比例不变)，如果是0则是透视投影</p>
+</li>
+<li><p>一个重要的相似关系：xs&#x2F;f &#x3D; xc&#x2F;zc</p>
+</li>
+<li><p>将图像的主点定义为该坐标系的原点O1，且x轴与u轴平行，y轴与v轴平行，假设(u0,v0)代表O1在u-v坐标系下的坐标，dx与dy分别表示每个像素在横轴x和纵轴y上的物理尺寸，则图像中的每个像素在u-v坐标系中的坐标和在x-y坐标系中的坐标之间都存在如下的关系：u &#x3D; x &#x2F; dx + u0; v &#x3D; y &#x2F; dy + v0;(dx,dy的单位是：长度&#x2F;像素)</p>
+</li>
+<li><p>可将上式用齐次坐标与矩阵形式表示为：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/rcPkK7S9AFZy2Ru.png" alt="image-7.png"></p>
+<ul>
+<li>等式右边的前三个矩阵合并，得到下式的内参矩阵：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/g1cxXMAkH5pz6vS.png" alt="image-11.png"></p>
+<ul>
+<li>正交投影和透视投影：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/dkHz5GNQtJbVnUg.png" alt="image-12.png"></p>
+<ul>
+<li>summary:</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/8EzKi7ARN14sokp.png" alt="image-13.png"></p>
+<ul>
+<li>s是错切，一般为0；α控制缩放x,y的比例不同，一般相同α &#x3D; 1</li>
+</ul>
+<h2 id="Properties-of-Projection-投影的性质"><a href="#Properties-of-Projection-投影的性质" class="headerlink" title="Properties of Projection(投影的性质)"></a>Properties of Projection(投影的性质)</h2><ul>
+<li><p>投影不是线性变化</p>
+</li>
+<li><p>直线投影后还是直线，点投影后还是点</p>
+</li>
+<li><p>投影后角度会发生变化</p>
+</li>
+<li><p>平行线会相交于vanishing point。穿过vanishing point的直线成为Vanishing line</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/dvAaJ2Dz7oCKnR6.png" alt="image-14.png"></p>
+<h2 id="Vanishing-Points"><a href="#Vanishing-Points" class="headerlink" title="Vanishing Points"></a>Vanishing Points</h2><ul>
+<li>在其次坐标的思想下，无穷远点可描述，因此Vanishing point可以用其次坐标的思想描述</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/AM8GeKHTLj2wC9k.png" alt="image-15.png"></p>
+<ul>
+<li>由于相同方向的平行线有相同的Vanishing point，两点确定一条直线。所以找Vanishing line的方法：两点透视法，找两组方向不同的平行线，相交于两个Vanishing point，从而确定Vanishing line</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/7O6WaYrtJKqIF8b.png" alt="image-16.png"></p>
+<h1 id="Lens-镜头"><a href="#Lens-镜头" class="headerlink" title="Lens(镜头)"></a>Lens(镜头)</h1><h2 id="Pinhole-Camera"><a href="#Pinhole-Camera" class="headerlink" title="Pinhole Camera"></a>Pinhole Camera</h2><ul>
+<li>孔太小的问题：图像暗、需要长曝光，可能发生衍射；孔太大的问题：图像模糊</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/g7IxRS6JnqcNfF1.png" alt="image-17.png"></p>
+<p><img src="https://s2.loli.net/2024/11/18/uxZ1zETkGVBWD7C.png" alt="image-18.png"></p>
+<h2 id="Camera-with-Lens"><a href="#Camera-with-Lens" class="headerlink" title="Camera with Lens"></a>Camera with Lens</h2><ul>
+<li><p>镜头可以得到大光圈和清晰的图像</p>
+</li>
+<li><p>镜头的作用是捕捉更多的光线，同时尽可能地保留理想针孔相机的抽象性。同时，镜头可以改变光的路径</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/9De5jIJ1KquLoTB.png" alt="image-19.png"></p>
+<ul>
+<li>薄透镜方程：(通过相似△推导)</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/78Zpgo5hGvwIcez.png" alt="image-20.png"></p>
+<h2 id="Depth-of-Field-视野、景深DoF"><a href="#Depth-of-Field-视野、景深DoF" class="headerlink" title="Depth of Field (视野、景深DoF)"></a>Depth of Field (视野、景深DoF)</h2><ul>
+<li>对于固定焦距和图像平面，对象“聚焦”的距离是特定,。其他点被投影到图像中的“混淆圈”</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/8aRYJKDgxdXZcr7.png" alt="image-21.png"></p>
+<ul>
+<li><p>景深：场景中最近和最远的对象之间的距离，这些对象在图像中看起来清晰得可以接受</p>
+</li>
+<li><p>影响景深的因素：</p>
+<ol>
+<li>光圈大小：光圈越小，景深越大。小光圈减少了光量，从而需要增加曝光，图像噪点更多<br>  <img src="https://s2.loli.net/2024/11/18/Ovc7BWALJT5fgGK.png" alt="image-22.png"></li>
+<li>焦距：焦距越大，景深越小。视野是照相机观察到的世界的角度范围<br>  <img src="https://s2.loli.net/2024/11/18/VhyKECoDPcJvMHp.png" alt="image-23.png"></li>
+<li>拍摄距离：拍摄距离越远，景深越大</li>
+</ol>
+</li>
+</ul>
+<h1 id="Lens-Aberrations-镜头像差-畸变"><a href="#Lens-Aberrations-镜头像差-畸变" class="headerlink" title="Lens Aberrations(镜头像差&#x2F;畸变)"></a>Lens Aberrations(镜头像差&#x2F;畸变)</h1><h2 id="Radial-Distortion"><a href="#Radial-Distortion" class="headerlink" title="Radial Distortion"></a>Radial Distortion</h2><ul>
+<li><p>短焦、广角易产生Radial Distortion，本质：图像的内容多而传感器的显示有限</p>
+</li>
+<li><p>在镜头边缘尤为明显</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/18/AjPwtKZmyCx8LXz.png" alt="image-24.png"></p>
+<h2 id="Chromatic-Aberration-色差"><a href="#Chromatic-Aberration-色差" class="headerlink" title="Chromatic Aberration (色差)"></a>Chromatic Aberration (色差)</h2><ul>
+<li><p>玻璃的折射率随波长略有变化 </p>
+</li>
+<li><p>简单镜头会受到色差的影响，即不同颜色的光倾向于聚焦在略有不同的距离（模糊、色偏） </p>
+</li>
+<li><p>为了减少色差和其他类型的像差，大多数摄影镜头是由不同的玻璃元件（具有不同的涂层）制成的复合镜头</p>
+</li>
+</ul>
+<h2 id="Vignetting-暗角"><a href="#Vignetting-暗角" class="headerlink" title="Vignetting(暗角)"></a>Vignetting(暗角)</h2><ul>
+<li><p>暗角是亮度向图像边缘下降的趋势 </p>
+</li>
+<li><p>机械暗角：光束的阴影部分永远不会到达图像</p>
+</li>
+</ul>
+<h1 id="Color"><a href="#Color" class="headerlink" title="Color"></a>Color</h1><ul>
+<li>Two-types of Light Sensitive Receptors<ol>
+<li>视锥细胞：一共有三种，对颜色敏感</li>
+<li>视杆细胞：对颜色不明感，对明暗敏感</li>
+</ol>
+</li>
+</ul>
+<h1 id="Image-Sensing"><a href="#Image-Sensing" class="headerlink" title="Image Sensing"></a>Image Sensing</h1><hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/204c5630.html" title="计算机视觉 03 Image Processing"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">计算机视觉 03 Image Processing</div></div></a></div><div class="next-post pull-right"><a href="/post/ed36b304.html" title="AI中的数学 第四章概率极限定理"><img class="cover" src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">AI中的数学 第四章概率极限定理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/204c5630.html" title="计算机视觉 03 Image Processing"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 03 Image Processing</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">49</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Camera"><span class="toc-number">1.</span> <span class="toc-text">Camera</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Biuld-a-camera-with-a-sensor"><span class="toc-number">1.1.</span> <span class="toc-text">Biuld a camera with a sensor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pinhole-Camera-%E5%B0%8F%E5%AD%94%E6%88%90%E5%83%8F"><span class="toc-number">1.2.</span> <span class="toc-text">Pinhole Camera(小孔成像)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Coordinate-Frames-%E9%87%8D%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">Coordinate Frames(重点)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Camera-Parameters"><span class="toc-number">1.4.</span> <span class="toc-text">Camera Parameters</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Extrinsic-Camera-parameters"><span class="toc-number">1.4.1.</span> <span class="toc-text">Extrinsic Camera parameters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Intrinsic-Camera-Parameters"><span class="toc-number">1.4.2.</span> <span class="toc-text">Intrinsic Camera Parameters</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Properties-of-Projection-%E6%8A%95%E5%BD%B1%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-number">1.5.</span> <span class="toc-text">Properties of Projection(投影的性质)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vanishing-Points"><span class="toc-number">1.6.</span> <span class="toc-text">Vanishing Points</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lens-%E9%95%9C%E5%A4%B4"><span class="toc-number">2.</span> <span class="toc-text">Lens(镜头)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pinhole-Camera"><span class="toc-number">2.1.</span> <span class="toc-text">Pinhole Camera</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Camera-with-Lens"><span class="toc-number">2.2.</span> <span class="toc-text">Camera with Lens</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Depth-of-Field-%E8%A7%86%E9%87%8E%E3%80%81%E6%99%AF%E6%B7%B1DoF"><span class="toc-number">2.3.</span> <span class="toc-text">Depth of Field (视野、景深DoF)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lens-Aberrations-%E9%95%9C%E5%A4%B4%E5%83%8F%E5%B7%AE-%E7%95%B8%E5%8F%98"><span class="toc-number">3.</span> <span class="toc-text">Lens Aberrations(镜头像差&#x2F;畸变)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Radial-Distortion"><span class="toc-number">3.1.</span> <span class="toc-text">Radial Distortion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chromatic-Aberration-%E8%89%B2%E5%B7%AE"><span class="toc-number">3.2.</span> <span class="toc-text">Chromatic Aberration (色差)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vignetting-%E6%9A%97%E8%A7%92"><span class="toc-number">3.3.</span> <span class="toc-text">Vignetting(暗角)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Color"><span class="toc-number">4.</span> <span class="toc-text">Color</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Image-Sensing"><span class="toc-number">5.</span> <span class="toc-text">Image Sensing</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/204c5630.html" title="计算机视觉 03 Image Processing"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 03 Image Processing"/></a><div class="content"><a class="title" href="/post/204c5630.html" title="计算机视觉 03 Image Processing">计算机视觉 03 Image Processing</a><time datetime="2024-11-18T05:05:00.000Z" title="Created 2024-11-18 13:05:00">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/80c4a451.html" title="计算机视觉 02 Image Formation"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 02 Image Formation"/></a><div class="content"><a class="title" href="/post/80c4a451.html" title="计算机视觉 02 Image Formation">计算机视觉 02 Image Formation</a><time datetime="2024-11-18T02:23:00.000Z" title="Created 2024-11-18 10:23:00">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/ed36b304.html" title="AI中的数学 第四章概率极限定理"><img src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的数学 第四章概率极限定理"/></a><div class="content"><a class="title" href="/post/ed36b304.html" title="AI中的数学 第四章概率极限定理">AI中的数学 第四章概率极限定理</a><time datetime="2024-11-17T12:14:00.000Z" title="Created 2024-11-17 20:14:00">2024-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/5c433cb.html" title="可视计算与交互概论 notes整理第12-14章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第12-14章"/></a><div class="content"><a class="title" href="/post/5c433cb.html" title="可视计算与交互概论 notes整理第12-14章">可视计算与交互概论 notes整理第12-14章</a><time datetime="2024-11-11T09:52:00.000Z" title="Created 2024-11-11 17:52:00">2024-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c047bfd7.html" title="数据结构与算法A 第七章图"><img src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法A 第七章图"/></a><div class="content"><a class="title" href="/post/c047bfd7.html" title="数据结构与算法A 第七章图">数据结构与算法A 第七章图</a><time datetime="2024-11-11T07:54:00.000Z" title="Created 2024-11-11 15:54:00">2024-11-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
