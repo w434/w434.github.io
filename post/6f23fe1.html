@@ -1,0 +1,402 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机视觉 09 Structure from Motion | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Structure from Motion 输入：多张照片  输出：相机的参数以及位置和场景的3D模型    Structure from Motion vs Calibration &amp; Triangulation Calibration：  输入：从 3D 到 2D 的点对 输出：相机参数   Triangulation:  输入：相机的参数和2D点对 输出：3D点   Structur">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机视觉 09 Structure from Motion">
+<meta property="og:url" content="http://example.com/post/6f23fe1.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="Structure from Motion 输入：多张照片  输出：相机的参数以及位置和场景的3D模型    Structure from Motion vs Calibration &amp; Triangulation Calibration：  输入：从 3D 到 2D 的点对 输出：相机参数   Triangulation:  输入：相机的参数和2D点对 输出：3D点   Structur">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg">
+<meta property="article:published_time" content="2024-11-28T07:29:00.000Z">
+<meta property="article:modified_time" content="2024-11-28T13:32:06.605Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="计算机视觉">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/6f23fe1.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机视觉 09 Structure from Motion',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-28 21:32:06'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机视觉 09 Structure from Motion</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-28T07:29:00.000Z" title="Created 2024-11-28 15:29:00">2024-11-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-28T13:32:06.605Z" title="Updated 2024-11-28 21:32:06">2024-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机视觉 09 Structure from Motion"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Structure-from-Motion"><a href="#Structure-from-Motion" class="headerlink" title="Structure from Motion"></a>Structure from Motion</h1><ul>
+<li><p>输入：多张照片</p>
+</li>
+<li><p>输出：相机的参数以及位置和场景的3D模型</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/KdYCMAWPGn3hOl8.png" alt="image.png"></p>
+<h2 id="Structure-from-Motion-vs-Calibration-Triangulation"><a href="#Structure-from-Motion-vs-Calibration-Triangulation" class="headerlink" title="Structure from Motion vs Calibration &amp; Triangulation"></a>Structure from Motion vs Calibration &amp; Triangulation</h2><ul>
+<li><p>Calibration：</p>
+<ol>
+<li>输入：从 3D 到 2D 的点对</li>
+<li>输出：相机参数</li>
+</ol>
+</li>
+<li><p>Triangulation:</p>
+<ol>
+<li>输入：相机的参数和2D点对</li>
+<li>输出：3D点</li>
+</ol>
+</li>
+<li><p>Structure from Motion</p>
+<ol>
+<li>输入：2D到2D的点对</li>
+<li>输出：3D点以及相机参数</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/3yP9SOIokiJaCmY.png" alt="image.png"></p>
+<h2 id="Structure-from-Motion-Problem-formulation-问题设置"><a href="#Structure-from-Motion-Problem-formulation-问题设置" class="headerlink" title="Structure from Motion: Problem formulation(问题设置)"></a>Structure from Motion: Problem formulation(问题设置)</h2><ul>
+<li>输入：n 个固定 3D 点的 m 个图像（忽略可见性），使得：Pi是第i个相机的参数，Xj是3D其次坐标，二者均为未知。Xij是第i张图片的投影点</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/Z3ei9czlSFfwxaE.png" alt="image.png"></p>
+<ul>
+<li>输出：估计 m 个投影矩阵 Pi 和 n 个 3D 点 Xj 来自 mn 对应关系Xij</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/bDzmL4HFjQV1SrK.png" alt="image.png"></p>
+<h2 id="The-Ambiguity-of-Structure-from-Motion"><a href="#The-Ambiguity-of-Structure-from-Motion" class="headerlink" title="The Ambiguity of Structure from Motion"></a>The Ambiguity of Structure from Motion</h2><ul>
+<li>SFM有歧义性是不可解的，因此必须加以约束才可解出唯一值，否则会得到一族解。例如下图对同一个场景，相机既可能来自右上方，也可能来自左下方</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/pxk8vMFtQejAaz6.png" alt="image.png"></p>
+<ul>
+<li>缩放歧义性：将场景缩放 k 倍，并将摄像机矩阵缩放 1&#x2F;k，然后场景的投影将保持完全相同。没有参考测量，就无法恢复场景的绝对比例，只能重建相对尺寸不变</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/6935ieJQUmKvy7W.png" alt="image.png"></p>
+<ul>
+<li>如果我们使用变换 Q 变换场景并将逆变换应用于相机矩阵，则图像观测值不会改变：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/aoI9ztL7cilG64s.png" alt="image.png"></p>
+<h3 id="Projective-Ambiguity"><a href="#Projective-Ambiguity" class="headerlink" title="Projective Ambiguity"></a>Projective Ambiguity</h3><ul>
+<li>Q没有任何约束的时候，会产生投影歧义性</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/oZVMiWEITvdFw2j.png" alt="image.png"></p>
+<ul>
+<li>此时Q是4x4满秩矩阵</li>
+</ul>
+<h3 id="Affine-Ambiguity-仿射歧义性"><a href="#Affine-Ambiguity-仿射歧义性" class="headerlink" title="Affine Ambiguity(仿射歧义性)"></a>Affine Ambiguity(仿射歧义性)</h3><ul>
+<li>如果我们施加并行约束，我们可以得到一个达到仿射歧义性的重建。约束Q的最后一行为[0…0,1]，仿射歧义性能保持平行关系</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/C7DHJdvYz4fWKP9.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2024/11/28/ovlKxtnpYf2QcMJ.png" alt="image.png"></p>
+<h3 id="Similarity-Ambiguity-相似歧义性"><a href="#Similarity-Ambiguity-相似歧义性" class="headerlink" title="Similarity Ambiguity(相似歧义性)"></a>Similarity Ambiguity(相似歧义性)</h3><ul>
+<li>遵循摄像机参数和&#x2F;或场景的正交性约束的重建（也称为度量重建）。限制Q只包含缩放，旋转或平移可重建达到相似歧义性。能保证直角不变，和真实世界保持相似关系</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/SGLW8bpte54i39m.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2024/11/28/E5Y1PvxseOtMkwc.png" alt="image.png"></p>
+<h2 id="Affine-Structure-from-Motion"><a href="#Affine-Structure-from-Motion" class="headerlink" title="Affine Structure from Motion"></a>Affine Structure from Motion</h2><ul>
+<li>affine or weak perspective cameras(弱视角相机)：假设相机距离物体很远的时候，可以近似用正交矩阵估计投影矩阵以简化数学计算</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/Q7GVpyveqXmOMsu.png" alt="image.png"></p>
+<ul>
+<li>正交矩阵：丢弃掉3D点的Z坐标</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/RCvJZy26jQuYXWF.png" alt="image.png"></p>
+<h3 id="Affine-Camera"><a href="#Affine-Camera" class="headerlink" title="Affine Camera"></a>Affine Camera</h3><ul>
+<li>在正交投影下，相机矩阵可以写成如下形式。其中第一个矩阵代表内参，即2D仿射变换，第二个矩阵为正交投影矩阵，第三个矩阵对应3D齐次坐标变换</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/jOCsrPloiTf6zDp.png" alt="image.png"></p>
+<ul>
+<li><p>将此相机称为仿射相机，将用它来执行 SFM</p>
+</li>
+<li><p>投影矩阵是 3D 到 2D 线性映射加上平移：，写成分块矩阵形式如下：其中，t是平移量</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/sqfj52xlYP9byhg.png" alt="image.png"></p>
+<ul>
+<li>在非齐次坐标中：其中将第一行记为a1,第二行记为a2,则a1,a2为投影矩阵的两个基(投影轴)，写成AX+t可得t是世界坐标系的原点坐标的投影(t1,t2)</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/PlwF5viQrEY2XmT.png" alt="image.png"></p>
+<ul>
+<li>Affine Structure from Motion给出n 个固定 3D 点的 m 张图像，使得：其中红色部分的A,X,t都是未知</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/BsO2NUWbhJRXcQo.png" alt="image.png"></p>
+<ul>
+<li><p>使用 mn 对应关系 xij 估计 m 个投影矩阵 Ai 和平移向量 ti 和 n 个点 Xj</p>
+</li>
+<li><p>重建定义为具有 12 个自由度的任意仿射变换 Q：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/pUkJwzFAluWnKiy.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2024/11/28/IH1Dum8Rgzw657Y.png" alt="image.png"></p>
+<ul>
+<li><p>一个点关于x,y各得一个方程，一个点得到两个方程</p>
+</li>
+<li><p>2mn个已知变量(xij)，8m+3n个未知变量(Ai,ti和Xi)</p>
+</li>
+<li><p>为了能够解决这个问题，我们必须有 2mn ≥ 8m + 3n − 12，因为仿射歧义性带走了 12 个自由度</p>
+</li>
+<li><p>而对于两个图片，即m&#x3D;2，可得n≥4，至少需要4个对应点</p>
+</li>
+<li><p>化简技巧1: centering:通过减去每个视图中图像点的质心来使数据居中，即将投影点归一化。先计算平均点，再将原点平移到平均点的位置</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/cQGXTwdnVLAqitD.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2024/11/28/lGV9cjtKWsv5EDA.png" alt="image.png"></p>
+<ul>
+<li>通过将世界坐标系的原点定义为 3D 点的质心，无需将 3D 数据居中（和平移歧义）</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/9jpIQ4vArZRBHdJ.png" alt="image.png"></p>
+<ul>
+<li><p>上述公式展开中：m是相机索引，n是点的索引，Ai是投影矩阵，Xi是投影坐标点</p>
+</li>
+<li><p>根据矩阵秩将 M、S 从 D 分解：D &#x3D; MS。D的秩一定为3，因为M的秩为3，且D的秩为3</p>
+</li>
+</ul>
+<h3 id="Factorizing-the-Measurement-Matrix"><a href="#Factorizing-the-Measurement-Matrix" class="headerlink" title="Factorizing the Measurement Matrix"></a>Factorizing the Measurement Matrix</h3><ul>
+<li>根据矩阵秩从 D 分解 M、S:SVD 分解：Mm×n &#x3D; Um×m ⋅ Σm×n⋅ Vn×n.T</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/FBeoyUSZ3zCbYjJ.png" alt="image.png"></p>
+<ul>
+<li>求得U,V,利用SVD低秩近似，可以只取前K(3)个大的奇异值，将小的置为0</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/tjIZSPx25vznoVB.png" alt="image.png"></p>
+<h2 id="Eliminating-the-Affine-Ambiguity"><a href="#Eliminating-the-Affine-Ambiguity" class="headerlink" title="Eliminating the Affine Ambiguity"></a>Eliminating the Affine Ambiguity</h2><ul>
+<li><p>加入其他约束可以消除仿射歧义，但仍有其他歧义</p>
+</li>
+<li><p>添加约束：使每个相机矩阵 AiQ 代表一个正交投影，即具有正交轴（行），即保直角</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/QPWcrImHZB5TRCK.png" alt="image.png"></p>
+<ul>
+<li>设 a1 和 a2 是 2 × 3 正交投影矩阵的行：通过投影轴正交可得m个约束，从而使Q变得唯一可解</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/Unex1siDMA3c74K.png" alt="image.png"></p>
+<ul>
+<li>但是限制并非是线性的，所以需要设L &#x3D; QQ.T得到关于L的等式且L是线性的。可以通过最小二乘法的到L，然后再通过Cholesky分解得到Q</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/UWiTtRhZym2IS3Q.png" alt="image.png"></p>
+<h2 id="Dealing-with-Missing-Data"><a href="#Dealing-with-Missing-Data" class="headerlink" title="Dealing with Missing Data"></a>Dealing with Missing Data</h2><ul>
+<li><p>到目前为止，我们假设所有点在所有视图中都可见</p>
+</li>
+<li><p>实际上，测量矩阵通常如下所示：由于有遮挡，是稀疏的，不可能看到所有点</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/BrVfY2mWKGzlZAq.png" alt="image.png"></p>
+<ul>
+<li><p>可能的解决方案：将矩阵分解为密集的子块，分解每个子块，并融合结果，逐块求解。然而在现实中却行不通</p>
+</li>
+<li><p>增量法(Incremental bilinear refinement):先求解，求解完后向右拓展一列以解决新的3D点，通过triangulation求解；再向下拓展一行以解决新的相机校准，用calibration求解，然后重复迭代此过程</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/F1P7HJ3lvEK9Bir.png" alt="image.png"></p>
+<h2 id="Projective-Structure-from-Motion-宽松条件下求解SFM"><a href="#Projective-Structure-from-Motion-宽松条件下求解SFM" class="headerlink" title="Projective Structure from Motion(宽松条件下求解SFM)"></a>Projective Structure from Motion(宽松条件下求解SFM)</h2><ul>
+<li>n 个固定 3D 点的 m 张图像，使得（忽略可见性）：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/K4gfYLj5yuUBPVZ.png" alt="image.png"></p>
+<ul>
+<li><p>问题：根据 mn 对应关系 Xij 估计 m 个投影矩阵 Pi 和 n 个 3D 点 Xj</p>
+</li>
+<li><p>在没有校准信息的情况下，相机和点最多只能恢复 4 × 4 投影变换Q,Q是一族解</p>
+</li>
+<li><p>2𝑚𝑛 ≥ 11𝑚 + 3𝑛 − 15时可解，对于两个相机，至少需要7个点</p>
+</li>
+</ul>
+<h3 id="Projective-SFM-Two-Camera-Case"><a href="#Projective-SFM-Two-Camera-Case" class="headerlink" title="Projective SFM: Two-Camera Case"></a>Projective SFM: Two-Camera Case</h3><ul>
+<li>流程：<ol>
+<li>使用归一化八点算法(normalized eight-point algorithm)估计两个视图之间的基本矩阵 F</li>
+<li>将第一个相机矩阵设置为 [I | 0]</li>
+<li>然后第二个相机矩阵由 [A | t] 给出，其中 t 是极点 （F.Tt &#x3D; 0），A &#x3D; −[t × ]F</li>
+</ol>
+</li>
+</ul>
+<h3 id="Cameras-from-the-Fundamental-Matrix"><a href="#Cameras-from-the-Fundamental-Matrix" class="headerlink" title="Cameras from the Fundamental Matrix"></a>Cameras from the Fundamental Matrix</h3><p><img src="https://s2.loli.net/2024/11/28/XYhdjOCIMKlvrL5.png" alt="image.png"></p>
+<ul>
+<li><p>上述过程为基础矩阵的另一种定义方式。F与H无关，H是另一个投影矩阵</p>
+</li>
+<li><p>任务转化为：从F中分解A,b</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/NqUzQ7POiWDC8Ag.png" alt="image.png"></p>
+<h3 id="Self-calibration"><a href="#Self-calibration" class="headerlink" title="Self-calibration"></a>Self-calibration</h3><ul>
+<li><p>自校准是从透视（或仿射）重建中恢复度量重建的问题</p>
+</li>
+<li><p>可以通过对相机或者世界坐标系假设来消除歧义性完成自校准</p>
+</li>
+</ul>
+<h1 id="ncremental-Structure-from-Motion"><a href="#ncremental-Structure-from-Motion" class="headerlink" title="ncremental Structure from Motion"></a>ncremental Structure from Motion</h1><h2 id="Incremental-SFM"><a href="#Incremental-SFM" class="headerlink" title="Incremental SFM"></a>Incremental SFM</h2><ul>
+<li><p>核心思想：增量地增加相机的3D点</p>
+</li>
+<li><p>流程：</p>
+<ol>
+<li>使用基础矩阵初始化相机参数 Mi &#x3D; [Ri ，ti]</li>
+<li>使用Triangulation初始化3D点Xj</li>
+<li>再使用校准和可见的已知点求解相机矩阵，用3D点和2D点匹配可得一个新的相机</li>
+<li>增量式的重复上述过程</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/7DzJU4lhIGQZCL1.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2024/11/28/WRzATHMkXicwE7l.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2024/11/28/jSKmqTAlLXzMpxN.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2024/11/28/dYDujn2S9mUL4HG.png" alt="image.png"></p>
+<ul>
+<li>问题：没有考虑3D点和相机放在一个整体进行优化</li>
+</ul>
+<h2 id="Bundle-Adjustment"><a href="#Bundle-Adjustment" class="headerlink" title="Bundle Adjustment"></a>Bundle Adjustment</h2><ul>
+<li>用于调整3D点和相机的非线性方法(更新P,X)：最小化重投影误差。其中，wij代表可见性，0代表不可见；1代表可见</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/28/KlZ6RqkLPEtUIgY.png" alt="image.png"></p>
+<h1 id="Photo-Tourism-a-Representative-SFM-Pipeline"><a href="#Photo-Tourism-a-Representative-SFM-Pipeline" class="headerlink" title="Photo Tourism: a Representative SFM Pipeline"></a>Photo Tourism: a Representative SFM Pipeline</h1><h2 id="Feature-Detection"><a href="#Feature-Detection" class="headerlink" title="Feature Detection"></a>Feature Detection</h2><ul>
+<li>Detect SIFT features,Other popular features: SURF, ORB, BRISK, …</li>
+</ul>
+<h2 id="Feature-Matching"><a href="#Feature-Matching" class="headerlink" title="Feature Matching"></a>Feature Matching</h2><ul>
+<li><p>使用近似最近邻匹配来匹配每对影像之间的特征(高维空间上的最近邻插值)</p>
+</li>
+<li><p>使用 RANSAC 通过归一化八点法估计每对之间的基矩阵</p>
+</li>
+</ul>
+<h2 id="Incremental-SFM-1"><a href="#Incremental-SFM-1" class="headerlink" title="Incremental SFM"></a>Incremental SFM</h2><ul>
+<li><p>选择一对具有大量内部值的图像（最好是 EXIF 数据）</p>
+<ol>
+<li>从 EXIF 初始化内部参数（焦距、主点）</li>
+<li>使用五点算法估计外部参数（R 和 t）</li>
+<li>使用三角测量初始化模型点</li>
+</ol>
+</li>
+<li><p>当剩余图像存在时</p>
+<ol>
+<li>查找与模型中的图像具有许多特征匹配的图像</li>
+<li>对特征匹配运行 RANSAC 以将新图像注册到模型</li>
+<li>三角测量新点 </li>
+<li>执行bundle adjustment平差以定期重新优化所有内容 </li>
+<li>（可选）与 EXIF 数据或地面控制点的 GPS 对齐</li>
+</ol>
+</li>
+</ul>
+<hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">计算机视觉 08 Two-View Stereo</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/80c4a451.html" title="计算机视觉 02 Image Formation"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 02 Image Formation</div></div></a></div><div><a href="/post/204c5630.html" title="计算机视觉 03 Image Processing"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 03 Image Processing</div></div></a></div><div><a href="/post/e6fed564.html" title="计算机视觉 04 Feature Detection"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-19</div><div class="title">计算机视觉 04 Feature Detection</div></div></a></div><div><a href="/post/26185b9c.html" title="计算机视觉 05 Image Stitching"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-19</div><div class="title">计算机视觉 05 Image Stitching</div></div></a></div><div><a href="/post/80ee00fd.html" title="计算机视觉 06 3D Vision and Camera Calibration"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-20</div><div class="title">计算机视觉 06 3D Vision and Camera Calibration</div></div></a></div><div><a href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-27</div><div class="title">计算机视觉 07 Epipolar Geometry</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Structure-from-Motion"><span class="toc-number">1.</span> <span class="toc-text">Structure from Motion</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Structure-from-Motion-vs-Calibration-Triangulation"><span class="toc-number">1.1.</span> <span class="toc-text">Structure from Motion vs Calibration &amp; Triangulation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Structure-from-Motion-Problem-formulation-%E9%97%AE%E9%A2%98%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">Structure from Motion: Problem formulation(问题设置)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Ambiguity-of-Structure-from-Motion"><span class="toc-number">1.3.</span> <span class="toc-text">The Ambiguity of Structure from Motion</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Projective-Ambiguity"><span class="toc-number">1.3.1.</span> <span class="toc-text">Projective Ambiguity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Affine-Ambiguity-%E4%BB%BF%E5%B0%84%E6%AD%A7%E4%B9%89%E6%80%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text">Affine Ambiguity(仿射歧义性)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Similarity-Ambiguity-%E7%9B%B8%E4%BC%BC%E6%AD%A7%E4%B9%89%E6%80%A7"><span class="toc-number">1.3.3.</span> <span class="toc-text">Similarity Ambiguity(相似歧义性)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Affine-Structure-from-Motion"><span class="toc-number">1.4.</span> <span class="toc-text">Affine Structure from Motion</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Affine-Camera"><span class="toc-number">1.4.1.</span> <span class="toc-text">Affine Camera</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Factorizing-the-Measurement-Matrix"><span class="toc-number">1.4.2.</span> <span class="toc-text">Factorizing the Measurement Matrix</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Eliminating-the-Affine-Ambiguity"><span class="toc-number">1.5.</span> <span class="toc-text">Eliminating the Affine Ambiguity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dealing-with-Missing-Data"><span class="toc-number">1.6.</span> <span class="toc-text">Dealing with Missing Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Projective-Structure-from-Motion-%E5%AE%BD%E6%9D%BE%E6%9D%A1%E4%BB%B6%E4%B8%8B%E6%B1%82%E8%A7%A3SFM"><span class="toc-number">1.7.</span> <span class="toc-text">Projective Structure from Motion(宽松条件下求解SFM)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Projective-SFM-Two-Camera-Case"><span class="toc-number">1.7.1.</span> <span class="toc-text">Projective SFM: Two-Camera Case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cameras-from-the-Fundamental-Matrix"><span class="toc-number">1.7.2.</span> <span class="toc-text">Cameras from the Fundamental Matrix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Self-calibration"><span class="toc-number">1.7.3.</span> <span class="toc-text">Self-calibration</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ncremental-Structure-from-Motion"><span class="toc-number">2.</span> <span class="toc-text">ncremental Structure from Motion</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Incremental-SFM"><span class="toc-number">2.1.</span> <span class="toc-text">Incremental SFM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bundle-Adjustment"><span class="toc-number">2.2.</span> <span class="toc-text">Bundle Adjustment</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Photo-Tourism-a-Representative-SFM-Pipeline"><span class="toc-number">3.</span> <span class="toc-text">Photo Tourism: a Representative SFM Pipeline</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Feature-Detection"><span class="toc-number">3.1.</span> <span class="toc-text">Feature Detection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feature-Matching"><span class="toc-number">3.2.</span> <span class="toc-text">Feature Matching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Incremental-SFM-1"><span class="toc-number">3.3.</span> <span class="toc-text">Incremental SFM</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 09 Structure from Motion"/></a><div class="content"><a class="title" href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion">计算机视觉 09 Structure from Motion</a><time datetime="2024-11-28T07:29:00.000Z" title="Created 2024-11-28 15:29:00">2024-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 08 Two-View Stereo"/></a><div class="content"><a class="title" href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo">计算机视觉 08 Two-View Stereo</a><time datetime="2024-11-27T12:59:00.000Z" title="Created 2024-11-27 20:59:00">2024-11-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 07 Epipolar Geometry"/></a><div class="content"><a class="title" href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry">计算机视觉 07 Epipolar Geometry</a><time datetime="2024-11-27T05:28:00.000Z" title="Created 2024-11-27 13:28:00">2024-11-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/8d41d104.html" title="可视计算与交互概论 test2复习笔记"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 test2复习笔记"/></a><div class="content"><a class="title" href="/post/8d41d104.html" title="可视计算与交互概论 test2复习笔记">可视计算与交互概论 test2复习笔记</a><time datetime="2024-11-25T12:43:00.000Z" title="Created 2024-11-25 20:43:00">2024-11-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/8ab5b2fd.html" title="可视计算与交互概论 notes整理第15-17章"><img src="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可视计算与交互概论 notes整理第15-17章"/></a><div class="content"><a class="title" href="/post/8ab5b2fd.html" title="可视计算与交互概论 notes整理第15-17章">可视计算与交互概论 notes整理第15-17章</a><time datetime="2024-11-20T10:39:00.000Z" title="Created 2024-11-20 18:39:00">2024-11-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
