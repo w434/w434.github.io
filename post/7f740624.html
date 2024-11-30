@@ -1,0 +1,403 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机视觉 10 Multi-View Stereo | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Multi-View Stereo 和Two-View Stereo的区别：多张图片重建三维而非两张对应的图片  输入：使用校准相机拍摄同一物体或场景的多张图像  任意数量的图像 任意摄像机位置（摄像机网络或视频） 通常校准具有SFM或特殊设备的相机   输出：计算相应 3D 形状的表示。不同于两相机的单视角深度问题，要求重建稠密的3D表达  体素表达：通过0,1控制显示 三角网络表达 点云表达">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机视觉 10 Multi-View Stereo">
+<meta property="og:url" content="http://example.com/post/7f740624.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="Multi-View Stereo 和Two-View Stereo的区别：多张图片重建三维而非两张对应的图片  输入：使用校准相机拍摄同一物体或场景的多张图像  任意数量的图像 任意摄像机位置（摄像机网络或视频） 通常校准具有SFM或特殊设备的相机   输出：计算相应 3D 形状的表示。不同于两相机的单视角深度问题，要求重建稠密的3D表达  体素表达：通过0,1控制显示 三角网络表达 点云表达">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg">
+<meta property="article:published_time" content="2024-11-29T13:54:00.000Z">
+<meta property="article:modified_time" content="2024-11-30T06:31:00.141Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="计算机视觉">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/7f740624.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机视觉 10 Multi-View Stereo',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-30 14:31:00'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机视觉 10 Multi-View Stereo</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-29T13:54:00.000Z" title="Created 2024-11-29 21:54:00">2024-11-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-30T06:31:00.141Z" title="Updated 2024-11-30 14:31:00">2024-11-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机视觉 10 Multi-View Stereo"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Multi-View-Stereo"><a href="#Multi-View-Stereo" class="headerlink" title="Multi-View Stereo"></a>Multi-View Stereo</h1><ul>
+<li><p>和Two-View Stereo的区别：多张图片重建三维而非两张对应的图片</p>
+</li>
+<li><p>输入：使用校准相机拍摄同一物体或场景的多张图像</p>
+<ol>
+<li>任意数量的图像</li>
+<li>任意摄像机位置（摄像机网络或视频）</li>
+<li>通常校准具有SFM或特殊设备的相机</li>
+</ol>
+</li>
+<li><p>输出：计算相应 3D 形状的表示。不同于两相机的单视角深度问题，要求重建稠密的3D表达</p>
+<ol>
+<li>体素表达：通过0,1控制显示</li>
+<li>三角网络表达</li>
+<li>点云表达<br>  <img src="https://s2.loli.net/2024/11/29/6k8BlUcXdeGRMWt.png" alt="image.png"></li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/29/4sYHLMEgNVrP9l7.png" alt="image.png"></p>
+<ul>
+<li>核心思想：多图片的一致性，稠密的重建要求稠密的一致性</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/29/jUHzolqfVvmREwW.png" alt="image.png"></p>
+<ul>
+<li>找一个参考图，衡量像素块的相似程度，构建函数图像找到误差最小的进行重建，其中，参考图在其他相机中的对应点都在极线上</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/29/YGf51WunbdrLmOV.png" alt="image.png"></p>
+<h2 id="Why-Multi-View-Stereo-为什么需要多个视角"><a href="#Why-Multi-View-Stereo-为什么需要多个视角" class="headerlink" title="Why Multi-View Stereo?(为什么需要多个视角)"></a>Why Multi-View Stereo?(为什么需要多个视角)</h2><ul>
+<li>对象表面上的不同点在某些相机子集中将更加清晰可见。如果视角不够则可能出现遮挡，倾斜的情况从而导致重建出的3D物体不完整</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/29/Dkq9t2LPGd6OQFp.png" alt="image.png"></p>
+<ul>
+<li>多视角可以减小误差使得相交区域更小从而形成更强的约束</li>
+</ul>
+<h1 id="MVS"><a href="#MVS" class="headerlink" title="MVS"></a>MVS</h1><p><img src="https://s2.loli.net/2024/11/29/cf1uqGdVt4Rrsy3.png" alt="image.png"></p>
+<h2 id="Visual-Hull-based-MVS-基于体素"><a href="#Visual-Hull-based-MVS-基于体素" class="headerlink" title="Visual Hull based MVS(基于体素)"></a>Visual Hull based MVS(基于体素)</h2><ul>
+<li><p>核心思想：在多个(3个)视角进行拍摄，重建轮廓线：</p>
+<ol>
+<li>有像素的部分记为1</li>
+<li>没有像素的部分记为0</li>
+<li>然后投影至3D</li>
+<li>求交进行重建</li>
+</ol>
+</li>
+<li><p>如下图所示，三个相机进行拍摄，货色部分为物体的投影，然后投影到3D进行求交，重建</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/29/auChY7358KZerLj.png" alt="image.png"></p>
+<h2 id="Plane-Sweep-Stereo-基于体素"><a href="#Plane-Sweep-Stereo-基于体素" class="headerlink" title="Plane-Sweep Stereo(基于体素)"></a>Plane-Sweep Stereo(基于体素)</h2><ul>
+<li>核心思想：<ol>
+<li>首先设位于中间的相机为reference相机，设若干深度值，将图像映到不同深度的平面上</li>
+<li>对于两侧的相机应用homography变换映射到不同的深度平面上</li>
+<li>对于不同深度的每一个像素进行三图像的叠加，计算体素的颜色方差D</li>
+<li>D越小，一致性越好，选择这个深度作为所求</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/29/3iOAsLPcaBX2tHg.png" alt="image.png"></p>
+<h2 id="Depth-Map-based-MVS"><a href="#Depth-Map-based-MVS" class="headerlink" title="Depth Map based MVS"></a>Depth Map based MVS</h2><ul>
+<li>流程:(相机可以未经校准)<ol>
+<li>使用相邻视图计算深度图</li>
+<li>将深度图合并到一个volume中。两两计算深度，投影形成点云，找重叠大的</li>
+<li>从volume中提取 3D 曲面，提取连续曲面</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/b4sELogBfdGwWeX.png" alt="image.png"></p>
+<h3 id="Compute-Depth-Maps-如何挑选邻域计算深度"><a href="#Compute-Depth-Maps-如何挑选邻域计算深度" class="headerlink" title="Compute Depth Maps(如何挑选邻域计算深度)"></a>Compute Depth Maps(如何挑选邻域计算深度)</h3><ul>
+<li><p>相邻视图之间的遮挡效果很小。因此选定参考图片时，选相邻图片来计算深度</p>
+</li>
+<li><p>使用匹配分数查找每个像素的最佳匹配，而无需进行强局部正则化;或直接使用双视图立体方法</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/7vxTwyuatFmIEil.png" alt="image.png"></p>
+<h3 id="Effect-of-Early-Local-Regularization"><a href="#Effect-of-Early-Local-Regularization" class="headerlink" title="Effect of Early Local Regularization"></a>Effect of Early Local Regularization</h3><ul>
+<li><p>不要过早的进行局部约束，对缺失部分进行平滑约束后于真实值相差过多，加权平均后偏离实际值很多</p>
+</li>
+<li><p>应该先完成拼接后进行优化</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/R1uAGqe3SkphLfb.png" alt="image.png"></p>
+<h2 id="Patch-based-MVS"><a href="#Patch-based-MVS" class="headerlink" title="Patch-based MVS"></a>Patch-based MVS</h2><ul>
+<li><p>稠密的重建需要稠密的一致性</p>
+</li>
+<li><p>核心思想：基于patch的重建 + 迭代扩展和过滤</p>
+</li>
+<li><p>一个块一个块的找一致性，重建图像块，迭代，对初始重建拓展，最后将不合理的过滤</p>
+</li>
+<li><p>流程：</p>
+<ol>
+<li>Feature detection：Harris corner; DoG</li>
+<li>Feature matching</li>
+<li>Patch expansion and filtering</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/VlmBiEFpDRISGaw.png" alt="image.png"></p>
+<h3 id="What-is-a-Patch"><a href="#What-is-a-Patch" class="headerlink" title="What is a Patch"></a>What is a Patch</h3><ul>
+<li><p>A patch consists of:</p>
+<ol>
+<li>Position (x, y, z)(中心位置)</li>
+<li>Normal (nx, ny, nz)(法向方向)</li>
+<li>Visible images V(p)(可见度0,1)</li>
+<li>Extent (radius)(半径，覆盖范围)</li>
+</ol>
+</li>
+<li><p>Patch：切线平面近似</p>
+</li>
+<li><p>设置范围，使 p 在 V（p） 中大约为 9x9 像素</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/j57lB2aIMOZkLqD.png" alt="image.png"></p>
+<h3 id="Why-Patches"><a href="#Why-Patches" class="headerlink" title="Why Patches"></a>Why Patches</h3><ul>
+<li><p>容易转化为其他的3D表达，容易添加约束</p>
+</li>
+<li><p>可以灵活的表达物体和场景</p>
+</li>
+</ul>
+<h3 id="Photo-Consistency"><a href="#Photo-Consistency" class="headerlink" title="Photo Consistency"></a>Photo Consistency</h3><ul>
+<li><p>优化patch需要误差函数，而误差函数基于一致性N(I,J,p)，其中I,J是图片，p是patch</p>
+</li>
+<li><p>Photo-consistency N(I, J, p) of p between two images I and J：首先将照片I渲染到图像中，颜色为Ixy。然后将图片J渲染到图像中，颜色为Jxy</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/nI67uHXDUEpNVG9.png" alt="image.png"></p>
+<ul>
+<li>多个图像Muti-View的N函数叠加得到优化函数N(p),N(p)与c(p)和n(p)相关</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/9owu13TizdgDfHq.png" alt="image.png"></p>
+<h3 id="Reconstruct-Patch-p"><a href="#Reconstruct-Patch-p" class="headerlink" title="Reconstruct Patch p"></a>Reconstruct Patch p</h3><ul>
+<li><p>给定初始估计：Position c(p)、Normal n(p)、Visible images V(p)</p>
+</li>
+<li><p>通过如下公式优化c(p),n(p):</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/TKrcy5zuM6bkqZC.png" alt="image.png"></p>
+<ul>
+<li><p>优化position c(p)：约束patch在法向量上前后移动，在法向量线上计算argmaxN</p>
+</li>
+<li><p>优化normal n(p)：约束patch在固定position上左右旋转，找到argmaxN(p)</p>
+</li>
+<li><p>优化V(p):如果投影后覆盖不足，就置为0。启发式更新V(p)</p>
+<ol>
+<li>图像间两两计算N<br>  <img src="https://s2.loli.net/2024/11/30/b2WCdqRsInYx3DV.png" alt="image.png"></li>
+<li>依次假设某图像为ref，计算与该图像相关的Nsum，得到一致性<br>  <img src="https://s2.loli.net/2024/11/30/YNEV4ahvZqwUgQk.png" alt="image.png"></li>
+<li>将patch绑定到Nsum最大的image中，记为ref_image</li>
+<li>考察其他图片与ref_image的N,如果大于设定的阈值则V(p)&#x3D;1,否则置为0<br>  <img src="https://s2.loli.net/2024/11/30/bx6iLmeDfWZop7j.png" alt="image.png"><br>  <img src="https://s2.loli.net/2024/11/30/M6tan7lrkcZzKR2.png" alt="image.png"></li>
+</ol>
+</li>
+</ul>
+<h3 id="Verify-a-Patch"><a href="#Verify-a-Patch" class="headerlink" title="Verify a Patch"></a>Verify a Patch</h3><ul>
+<li><p>为什么要再次验证：</p>
+<ol>
+<li>纹理可能会意外匹配</li>
+<li>光一致性必须相当高才具有置信度</li>
+</ol>
+</li>
+<li><p>验证的流程：</p>
+<ol>
+<li>在V(p)中必须保持很高的一致性，N足够大</li>
+<li>V(p) ≥ 3，至少有三张照片可见</li>
+</ol>
+</li>
+<li><p>满足上述条件的patch保留，否则删去</p>
+</li>
+</ul>
+<h3 id="Feature-Detection"><a href="#Feature-Detection" class="headerlink" title="Feature Detection"></a>Feature Detection</h3><ul>
+<li>在局部用Harris corner detector进行角点检测，使用DoG检测blobs</li>
+</ul>
+<h3 id="Feature-matching"><a href="#Feature-matching" class="headerlink" title="Feature matching"></a>Feature matching</h3><h4 id="Initial-Feature-Matching"><a href="#Initial-Feature-Matching" class="headerlink" title="Initial Feature Matching"></a>Initial Feature Matching</h4><ul>
+<li>先用triangulation得到c(p)，然后用极点几何进行热证匹配，对应点一定在极线上，因此可以沿着极线找到最佳匹配。同时将image1,2加入到v(p)中</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/g7vNt5jAUZSOuwx.png" alt="image.png"></p>
+<ul>
+<li>渲染后看image3是否可见，设置阈值和N进行比较</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/ae5LiHFZCVtUsG1.png" alt="image.png"></p>
+<ul>
+<li>然后进行优化：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/C9q3xQnrwauY2zS.png" alt="image.png"></p>
+<ul>
+<li>然后检验是否保留，验证并更新v(p)</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/3ovlEcXNOtPayjW.png" alt="image.png"></p>
+<ul>
+<li>最后将保留的patch标记，代表已经重建。重复上述过程</li>
+</ul>
+<h4 id="Patch-Expansion"><a href="#Patch-Expansion" class="headerlink" title="Patch Expansion"></a>Patch Expansion</h4><ul>
+<li><p>首先先得到初始的patch，然后对每个patch进行循环：</p>
+</li>
+<li><p>如果一个patch没有被重建，但是邻居都已经被重建，这时候什么都不做</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/E4rljoHyDfqd5Bx.png" alt="image.png"></p>
+<ul>
+<li>如果找到patch，其邻居没有被重建，那么就用这个patch初始化邻居进行expansion</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/CSqPzrYgUFo2wcQ.png" alt="image.png"></p>
+<ul>
+<li>先用p重建q，然后再对q和邻居的patch进行调整，最后进行验证</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/yIeHwrN2AJqaDG8.png" alt="image.png"></p>
+<ul>
+<li>迭代流程：<ol>
+<li>先通过特征检测和匹配选出置信度高的patch</li>
+<li>然后用这些置信度高的patch更新扩展邻居空patch</li>
+</ol>
+</li>
+</ul>
+<h4 id="Patch-Filtering"><a href="#Patch-Filtering" class="headerlink" title="Patch Filtering"></a>Patch Filtering</h4><p><img src="https://s2.loli.net/2024/11/30/a5IyHLqFN3QjtsX.png" alt="image.png"></p>
+<h3 id="summary-of-Patch-based-MVS"><a href="#summary-of-Patch-based-MVS" class="headerlink" title="summary of Patch-based MVS"></a>summary of Patch-based MVS</h3><ul>
+<li><p>优点：</p>
+<ol>
+<li>灵活，用patch</li>
+<li>容易抽取出3D网格</li>
+<li>可以当成黑盒</li>
+<li>对物体和场景都是高效的</li>
+</ol>
+</li>
+<li><p>缺点：</p>
+<ol>
+<li>严重依赖一致性N函数</li>
+<li>容易受到光照，阴影的影响</li>
+<li>运行时间长</li>
+</ol>
+</li>
+</ul>
+<h2 id="Towards-Internet-Scale-Multi-View-Stereo"><a href="#Towards-Internet-Scale-Multi-View-Stereo" class="headerlink" title="Towards Internet-Scale Multi-View Stereo"></a>Towards Internet-Scale Multi-View Stereo</h2><ul>
+<li>采用分而治之的思想，运用聚类先将摄像机分成小块，在小块中使用MVS</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/6ieLPSpdIxUwaMQ.png" alt="image.png"></p>
+<h2 id="COLMAP-MVS"><a href="#COLMAP-MVS" class="headerlink" title="COLMAP MVS"></a>COLMAP MVS</h2><h2 id="Deep-Learning-for-MVS"><a href="#Deep-Learning-for-MVS" class="headerlink" title="Deep Learning for MVS"></a>Deep Learning for MVS</h2><p><img src="https://s2.loli.net/2024/11/30/ATbnFug59kE3sLS.png" alt="image.png"></p>
+<h1 id="Neural-Radiance-Field"><a href="#Neural-Radiance-Field" class="headerlink" title="Neural Radiance Field"></a>Neural Radiance Field</h1><ul>
+<li>输入输出和MVS基本相同。输入不同视角下的多张图片，先用SFM估计相机参数变为已知，然后优化表达3D</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/ycpd5FZq8vKgIst.png" alt="image.png"></p>
+<h2 id="Volume-Rendering-体渲染"><a href="#Volume-Rendering-体渲染" class="headerlink" title="Volume Rendering(体渲染)"></a>Volume Rendering(体渲染)</h2><ul>
+<li><p>只吸收的体渲染</p>
+</li>
+<li><p>只发光的体渲染</p>
+</li>
+</ul>
+<h3 id="Volume-Rendering-Absorption-Only"><a href="#Volume-Rendering-Absorption-Only" class="headerlink" title="Volume Rendering: Absorption Only"></a>Volume Rendering: Absorption Only</h3><p><img src="https://s2.loli.net/2024/11/30/aoVBSshRnLOpmAd.jpg" alt="1.jpg"></p>
+<p><img src="https://s2.loli.net/2024/11/30/8sTY62ca7PjqHlI.jpg" alt="2.jpg"></p>
+<p><img src="https://s2.loli.net/2024/11/30/FSt3lxi9eTh4uGw.jpg" alt="3.jpg"></p>
+<h1 id="Gaussian-Splatting"><a href="#Gaussian-Splatting" class="headerlink" title="Gaussian Splatting"></a>Gaussian Splatting</h1><p><img src="https://s2.loli.net/2024/11/30/PksQtIyv8m1SWUa.jpg" alt="4.jpg"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">计算机视觉 11 Photometric Stereo</div></div></a></div><div class="next-post pull-right"><a href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">计算机视觉 09 Structure from Motion</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/80c4a451.html" title="计算机视觉 02 Image Formation"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 02 Image Formation</div></div></a></div><div><a href="/post/204c5630.html" title="计算机视觉 03 Image Processing"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 03 Image Processing</div></div></a></div><div><a href="/post/e6fed564.html" title="计算机视觉 04 Feature Detection"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-19</div><div class="title">计算机视觉 04 Feature Detection</div></div></a></div><div><a href="/post/26185b9c.html" title="计算机视觉 05 Image Stitching"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-19</div><div class="title">计算机视觉 05 Image Stitching</div></div></a></div><div><a href="/post/80ee00fd.html" title="计算机视觉 06 3D Vision and Camera Calibration"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-20</div><div class="title">计算机视觉 06 3D Vision and Camera Calibration</div></div></a></div><div><a href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-27</div><div class="title">计算机视觉 07 Epipolar Geometry</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Multi-View-Stereo"><span class="toc-number">1.</span> <span class="toc-text">Multi-View Stereo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-Multi-View-Stereo-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%A4%9A%E4%B8%AA%E8%A7%86%E8%A7%92"><span class="toc-number">1.1.</span> <span class="toc-text">Why Multi-View Stereo?(为什么需要多个视角)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MVS"><span class="toc-number">2.</span> <span class="toc-text">MVS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Visual-Hull-based-MVS-%E5%9F%BA%E4%BA%8E%E4%BD%93%E7%B4%A0"><span class="toc-number">2.1.</span> <span class="toc-text">Visual Hull based MVS(基于体素)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Plane-Sweep-Stereo-%E5%9F%BA%E4%BA%8E%E4%BD%93%E7%B4%A0"><span class="toc-number">2.2.</span> <span class="toc-text">Plane-Sweep Stereo(基于体素)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Depth-Map-based-MVS"><span class="toc-number">2.3.</span> <span class="toc-text">Depth Map based MVS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Compute-Depth-Maps-%E5%A6%82%E4%BD%95%E6%8C%91%E9%80%89%E9%82%BB%E5%9F%9F%E8%AE%A1%E7%AE%97%E6%B7%B1%E5%BA%A6"><span class="toc-number">2.3.1.</span> <span class="toc-text">Compute Depth Maps(如何挑选邻域计算深度)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Effect-of-Early-Local-Regularization"><span class="toc-number">2.3.2.</span> <span class="toc-text">Effect of Early Local Regularization</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Patch-based-MVS"><span class="toc-number">2.4.</span> <span class="toc-text">Patch-based MVS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-a-Patch"><span class="toc-number">2.4.1.</span> <span class="toc-text">What is a Patch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why-Patches"><span class="toc-number">2.4.2.</span> <span class="toc-text">Why Patches</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Photo-Consistency"><span class="toc-number">2.4.3.</span> <span class="toc-text">Photo Consistency</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reconstruct-Patch-p"><span class="toc-number">2.4.4.</span> <span class="toc-text">Reconstruct Patch p</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Verify-a-Patch"><span class="toc-number">2.4.5.</span> <span class="toc-text">Verify a Patch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Feature-Detection"><span class="toc-number">2.4.6.</span> <span class="toc-text">Feature Detection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Feature-matching"><span class="toc-number">2.4.7.</span> <span class="toc-text">Feature matching</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Initial-Feature-Matching"><span class="toc-number">2.4.7.1.</span> <span class="toc-text">Initial Feature Matching</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Patch-Expansion"><span class="toc-number">2.4.7.2.</span> <span class="toc-text">Patch Expansion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Patch-Filtering"><span class="toc-number">2.4.7.3.</span> <span class="toc-text">Patch Filtering</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#summary-of-Patch-based-MVS"><span class="toc-number">2.4.8.</span> <span class="toc-text">summary of Patch-based MVS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Towards-Internet-Scale-Multi-View-Stereo"><span class="toc-number">2.5.</span> <span class="toc-text">Towards Internet-Scale Multi-View Stereo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#COLMAP-MVS"><span class="toc-number">2.6.</span> <span class="toc-text">COLMAP MVS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep-Learning-for-MVS"><span class="toc-number">2.7.</span> <span class="toc-text">Deep Learning for MVS</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Neural-Radiance-Field"><span class="toc-number">3.</span> <span class="toc-text">Neural Radiance Field</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Volume-Rendering-%E4%BD%93%E6%B8%B2%E6%9F%93"><span class="toc-number">3.1.</span> <span class="toc-text">Volume Rendering(体渲染)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Volume-Rendering-Absorption-Only"><span class="toc-number">3.1.1.</span> <span class="toc-text">Volume Rendering: Absorption Only</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gaussian-Splatting"><span class="toc-number">4.</span> <span class="toc-text">Gaussian Splatting</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 11 Photometric Stereo"/></a><div class="content"><a class="title" href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo">计算机视觉 11 Photometric Stereo</a><time datetime="2024-11-30T06:30:00.000Z" title="Created 2024-11-30 14:30:00">2024-11-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7f740624.html" title="计算机视觉 10 Multi-View Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 10 Multi-View Stereo"/></a><div class="content"><a class="title" href="/post/7f740624.html" title="计算机视觉 10 Multi-View Stereo">计算机视觉 10 Multi-View Stereo</a><time datetime="2024-11-29T13:54:00.000Z" title="Created 2024-11-29 21:54:00">2024-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 09 Structure from Motion"/></a><div class="content"><a class="title" href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion">计算机视觉 09 Structure from Motion</a><time datetime="2024-11-28T07:29:00.000Z" title="Created 2024-11-28 15:29:00">2024-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 08 Two-View Stereo"/></a><div class="content"><a class="title" href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo">计算机视觉 08 Two-View Stereo</a><time datetime="2024-11-27T12:59:00.000Z" title="Created 2024-11-27 20:59:00">2024-11-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 07 Epipolar Geometry"/></a><div class="content"><a class="title" href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry">计算机视觉 07 Epipolar Geometry</a><time datetime="2024-11-27T05:28:00.000Z" title="Created 2024-11-27 13:28:00">2024-11-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
