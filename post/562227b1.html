@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机视觉 11 Photometric Stereo | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="An undergraduate majoring in AI at PKU.">
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机视觉 11 Photometric Stereo | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Photometric Stereo 一个3D物体在不同的光照条件下重建法向量，再进一步求解三维  通过在不同照明条件下观察对象的表面法线来估计该对象的表面法线  为什么要估计法向：  法向量与颜色相关 法向量可以得到梯度从而得到平面   输入：使用固定相机和不同的光照条件拍摄多张图像。相机不动，光线改变    Image Intensity Image Intensity &#x3D; 𝒇 (">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机视觉 11 Photometric Stereo">
 <meta property="og:url" content="http://example.com/post/562227b1.html">
 <meta property="og:site_name" content="w434&#39;s blog">
-<meta property="og:description" content="An undergraduate majoring in AI at PKU.">
+<meta property="og:description" content="Photometric Stereo 一个3D物体在不同的光照条件下重建法向量，再进一步求解三维  通过在不同照明条件下观察对象的表面法线来估计该对象的表面法线  为什么要估计法向：  法向量与颜色相关 法向量可以得到梯度从而得到平面   输入：使用固定相机和不同的光照条件拍摄多张图像。相机不动，光线改变    Image Intensity Image Intensity &#x3D; 𝒇 (">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg">
 <meta property="article:published_time" content="2024-11-30T06:30:00.000Z">
-<meta property="article:modified_time" content="2024-11-30T06:31:12.377Z">
+<meta property="article:modified_time" content="2024-11-30T14:34:43.933Z">
 <meta property="article:author" content="w434">
 <meta property="article:tag" content="计算机视觉">
 <meta name="twitter:card" content="summary">
@@ -55,8 +55,8 @@
   isPost: true,
   isHome: false,
   isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2024-11-30 14:31:12'
+  isToc: true,
+  postUpdate: '2024-11-30 22:34:43'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -153,4 +153,275 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机视觉 11 Photometric Stereo</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-30T06:30:00.000Z" title="Created 2024-11-30 14:30:00">2024-11-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-30T06:31:12.377Z" title="Updated 2024-11-30 14:31:12">2024-11-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机视觉 11 Photometric Stereo"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/7f740624.html" title="计算机视觉 10 Multi-View Stereo"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">计算机视觉 10 Multi-View Stereo</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/80c4a451.html" title="计算机视觉 02 Image Formation"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 02 Image Formation</div></div></a></div><div><a href="/post/204c5630.html" title="计算机视觉 03 Image Processing"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 03 Image Processing</div></div></a></div><div><a href="/post/e6fed564.html" title="计算机视觉 04 Feature Detection"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-19</div><div class="title">计算机视觉 04 Feature Detection</div></div></a></div><div><a href="/post/26185b9c.html" title="计算机视觉 05 Image Stitching"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-19</div><div class="title">计算机视觉 05 Image Stitching</div></div></a></div><div><a href="/post/80ee00fd.html" title="计算机视觉 06 3D Vision and Camera Calibration"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-20</div><div class="title">计算机视觉 06 3D Vision and Camera Calibration</div></div></a></div><div><a href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-27</div><div class="title">计算机视觉 07 Epipolar Geometry</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 11 Photometric Stereo"/></a><div class="content"><a class="title" href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo">计算机视觉 11 Photometric Stereo</a><time datetime="2024-11-30T06:30:00.000Z" title="Created 2024-11-30 14:30:00">2024-11-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7f740624.html" title="计算机视觉 10 Multi-View Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 10 Multi-View Stereo"/></a><div class="content"><a class="title" href="/post/7f740624.html" title="计算机视觉 10 Multi-View Stereo">计算机视觉 10 Multi-View Stereo</a><time datetime="2024-11-29T13:54:00.000Z" title="Created 2024-11-29 21:54:00">2024-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 09 Structure from Motion"/></a><div class="content"><a class="title" href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion">计算机视觉 09 Structure from Motion</a><time datetime="2024-11-28T07:29:00.000Z" title="Created 2024-11-28 15:29:00">2024-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 08 Two-View Stereo"/></a><div class="content"><a class="title" href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo">计算机视觉 08 Two-View Stereo</a><time datetime="2024-11-27T12:59:00.000Z" title="Created 2024-11-27 20:59:00">2024-11-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 07 Epipolar Geometry"/></a><div class="content"><a class="title" href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry">计算机视觉 07 Epipolar Geometry</a><time datetime="2024-11-27T05:28:00.000Z" title="Created 2024-11-27 13:28:00">2024-11-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机视觉 11 Photometric Stereo</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-30T06:30:00.000Z" title="Created 2024-11-30 14:30:00">2024-11-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-30T14:34:43.933Z" title="Updated 2024-11-30 22:34:43">2024-11-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机视觉 11 Photometric Stereo"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Photometric-Stereo"><a href="#Photometric-Stereo" class="headerlink" title="Photometric Stereo"></a>Photometric Stereo</h1><ul>
+<li><p>一个3D物体在不同的光照条件下重建法向量，再进一步求解三维</p>
+</li>
+<li><p>通过在不同照明条件下观察对象的表面法线来估计该对象的表面法线</p>
+</li>
+<li><p>为什么要估计法向：</p>
+<ol>
+<li>法向量与颜色相关</li>
+<li>法向量可以得到梯度从而得到平面</li>
+</ol>
+</li>
+<li><p>输入：使用固定相机和不同的光照条件拍摄多张图像。相机不动，光线改变</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/ulJY2fgOqHPCQZN.png" alt="image.png"></p>
+<h2 id="Image-Intensity"><a href="#Image-Intensity" class="headerlink" title="Image Intensity"></a>Image Intensity</h2><ul>
+<li><p>Image Intensity &#x3D; 𝒇 (Light, Surface Reflectance,Surface Normal)。其中Intensity表示图像颜色，为已知。Light已知。Surface Reflectance反映了物体的材质为未知。Surface Normal为法向量为所求</p>
+</li>
+<li><p>目标是从约束不足的图像强度中恢复法线</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/XIupcn8rYywg7hU.png" alt="image.png"></p>
+<ul>
+<li>解决歧义性：<ol>
+<li>多张图片消除歧义性</li>
+<li>人为的增加假设或限制</li>
+</ol>
+</li>
+</ul>
+<h2 id="Surface-Reflectance"><a href="#Surface-Reflectance" class="headerlink" title="Surface Reflectance"></a>Surface Reflectance</h2><ul>
+<li><p>镜面反射(Specular reflection)：光线围绕 Surface Normal 反射</p>
+</li>
+<li><p>漫反射(Diffuse reflection)：光线向各个方向均匀散射</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/VIwoQp7ZKNTec8H.png" alt="image.png"></p>
+<ul>
+<li>此外还有折射、表面内传到和磷光等复杂现象</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/39UcKkzo7gIFTlG.png" alt="image.png"></p>
+<h2 id="Surface-Reflectance-BRDF"><a href="#Surface-Reflectance-BRDF" class="headerlink" title="Surface Reflectance: BRDF"></a>Surface Reflectance: BRDF</h2><p><img src="https://s2.loli.net/2024/11/30/YyoCewZVJMb6vL1.png" alt="image.png"></p>
+<ul>
+<li><p>BRDF 是双向反射分布函数 （Bidirectional Reflectance Distribution Function） 的缩写</p>
+</li>
+<li><p>BRDF 描述了当光线从一个方向照射到表面上时，从一个方向观察表面时表面的亮度。是一个定义在半球上的分布函数</p>
+</li>
+<li><p>光从某个角度打在半球上，称为冲击函数，散射到各个方向的分布密度为BRDF，其中i是入射相关变量，e是出射相关变量：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/Qj4KtFduiMZ1BWv.png" alt="image.png"></p>
+<ul>
+<li>为简单起见，我们主要关注漫反射</li>
+</ul>
+<h2 id="Diffuse-Reflection"><a href="#Diffuse-Reflection" class="headerlink" title="Diffuse Reflection"></a>Diffuse Reflection</h2><ul>
+<li><p>此时BRDF均匀分布，对于每一个位置都是一个常数</p>
+</li>
+<li><p>Lambert’s Law for diffuse reflection：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/P1aT72KVMmuIyNH.png" alt="image.png"></p>
+<ul>
+<li><p>I：反射强度，或每单位面积表面的总功率</p>
+</li>
+<li><p>ρ：反照率，表面反射的入射辐照度的分数，由材质决定</p>
+</li>
+<li><p>S：光的方向及其大小与其强度成正比。或者将光强储存在ρ中</p>
+</li>
+<li><p>n：单位表面法线</p>
+</li>
+</ul>
+<h2 id="Surface-Gradient-and-Normal"><a href="#Surface-Gradient-and-Normal" class="headerlink" title="Surface Gradient and Normal"></a>Surface Gradient and Normal</h2><p><img src="https://s2.loli.net/2024/11/30/UE7lmf2FkPvRZMh.jpg" alt="1.jpg"></p>
+<ul>
+<li>从而推导出N &#x3D; (p,q,1).其中p是-z对x求偏导，q是-z对y求偏导</li>
+</ul>
+<h2 id="Gradient-Space"><a href="#Gradient-Space" class="headerlink" title="Gradient Space"></a>Gradient Space</h2><p><img src="https://s2.loli.net/2024/11/30/IlM8xQvrHSpP4fe.png" alt="image.png"></p>
+<ul>
+<li><p>平面 z &#x3D; 1 称为梯度空间(Gradient Space)或 pq 平面(pqPlane)</p>
+</li>
+<li><p>Gradient Space 中的每个点 (p,q) 对应于一个唯一的方向:</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/pS89urn2IUywthx.png" alt="image.png"></p>
+<ul>
+<li>平面的法向和光源的方向都可以用p,q表达</li>
+</ul>
+<h2 id="Reflectance-Map"><a href="#Reflectance-Map" class="headerlink" title="Reflectance Map"></a>Reflectance Map</h2><ul>
+<li><p>对于给定的光源 s 和表面反射率(材质)，点 x、y 处的图像强度 I 取决于点法线 （p， q， 1）</p>
+</li>
+<li><p>描述此关系的函数是reflectance map:𝐼 &#x3D; 𝑅(p,q)</p>
+</li>
+<li><p>给定光源情况下，不同法向方向对应不同的颜色：法向方向和光源方向一样的时候亮度最高</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/MQLJqkwHPxA7nl8.png" alt="image.png"></p>
+<ul>
+<li>等亮度线：以光源为中心，椭圆范围内的亮度一样，对应法向与夹角相等的方向</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/EiC5K4dkagWlzVb.png" alt="image.png"></p>
+<h2 id="Photometric-Stereo-1"><a href="#Photometric-Stereo-1" class="headerlink" title="Photometric Stereo"></a>Photometric Stereo</h2><ul>
+<li><p>在不同光照下使用多个图像，解决表面方向的歧义性</p>
+</li>
+<li><p>光源方向 i： si &#x3D; (psi , qsi)。i已知即可求出reflectance map</p>
+</li>
+<li><p>光源 i 的反射率图：Ri(p,q)</p>
+</li>
+<li><p>光源 i 产生的光照强度：Ii（x， y）</p>
+</li>
+<li><p>每张图片可求出该光照条件下对应reflectance map中的哪一个线，多张图片即可形成多条线在R(p,q)坐标系中相交，交点即为所求</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/3oPuFtXwIVcEUij.png" alt="image.png"></p>
+<ul>
+<li><p>流程：</p>
+<ol>
+<li>使用 K 个已知光源采集 K 张图像</li>
+<li>使用已知的源方向和 BRDF，为每个源方向构建reflectance map</li>
+<li>对于每个像素位置 x， y ，找到 p， q 作为 K 曲线的交点，这给出了像素 x， y 处的表面法线</li>
+</ol>
+</li>
+<li><p>K的最小值取决于材质，特殊情况下，对于漫反射，最小的 K 为 3</p>
+</li>
+</ul>
+<h3 id="Photometric-Stereo-Lambertian-Case"><a href="#Photometric-Stereo-Lambertian-Case" class="headerlink" title="Photometric Stereo: Lambertian Case"></a>Photometric Stereo: Lambertian Case</h3><ul>
+<li><p>在三个光源下在 x、y 点处测得的图像强度：𝐼i &#x3D; 𝜌𝒔i ⋅ 𝑁,i &#x3D; 1,2,3</p>
+</li>
+<li><p>可以写成矩阵形式：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/yvJXK9qBtefwAWg.png" alt="image.png"></p>
+<ul>
+<li>可以使用单位长约束的最小二乘法求解，或求特征向量求解：其中，s1,s2,s3线性无关才能求解</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/ajBiFcu8X5k2yZE.png" alt="image.png"></p>
+<ul>
+<li>使用更多 （K&gt;3） 光源可以获得更好的结果：最小二乘法求解N</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/DuRpIMqkZUlEeHF.png" alt="image.png"></p>
+<h3 id="Calibration-based-Photometric-Stereo"><a href="#Calibration-based-Photometric-Stereo" class="headerlink" title="Calibration based Photometric Stereo"></a>Calibration based Photometric Stereo</h3><ul>
+<li><p>前面的方法基于 Lambertian 假设，而更一般的情况不一定是漫反射的</p>
+</li>
+<li><p>这里我们介绍一种通用反射率模型的方法：使用已知大小、形状（例如球体）和与场景对象相同的反射率的校准对象。例如想要重建某个物体可以先用同样材质造一个球</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/v4htxVBRTSYg2dE.png" alt="image.png"></p>
+<ul>
+<li><p>方向一致性：具有相同表面法线的点在不同照明下产生相同的强度集（忽略全局照明）</p>
+</li>
+<li><p>流程：</p>
+<ol>
+<li>在 K 个不同的光源下捕获 K &gt; 3 张图像。球体上的每个点都会产生对应于 K 光源的 K 图像强度 I1，I2， … ，IK</li>
+<li>使用球体的已知大小，计算球体上每个点的表面法线(p,q,1)</li>
+<li>为 K 元组创建查找表：(I1，I2， … ，IK) → (p,q),对应K个颜色值，每个点构造查找表</li>
+<li>在相同的 K 个光源下捕获场景对象的 K 个图像</li>
+<li>对于场景中的每个像素，使用查找表映射 (I1，I2、… 、IK) → (p,q)</li>
+</ol>
+</li>
+</ul>
+<h2 id="Shape-from-Normals-本质：做积分"><a href="#Shape-from-Normals-本质：做积分" class="headerlink" title="Shape from Normals(本质：做积分)"></a>Shape from Normals(本质：做积分)</h2><ul>
+<li><p>输入：梯度&#x2F;法向量图</p>
+</li>
+<li><p>输出：深度&#x2F;形状图</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/It7BSDPfM8WYAv6.png" alt="image.png"></p>
+<h3 id="Shape-from-Normals-Integration-based-Method"><a href="#Shape-from-Normals-Integration-based-Method" class="headerlink" title="Shape from Normals: Integration-based Method"></a>Shape from Normals: Integration-based Method</h3><ul>
+<li>格林公式(第二型曲面积分)：积分与路径无关</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/FgtHxnj843phs1B.png" alt="image.png"></p>
+<ul>
+<li><p>z（x， y） 可以通过从参考点 x0， y0 沿任何路径积分获得</p>
+</li>
+<li><p>将 z（x0， y0）定义为 0</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/3asL9lTrHzv4JnI.png" alt="image.png"></p>
+<ul>
+<li><p>现实中会有误差，由于积分与路径无关，因而可以多选几个路径求平均</p>
+</li>
+<li><p>流程：</p>
+<ol>
+<li>Initialize the reference depth 𝑧 (0,0) &#x3D; 0</li>
+<li>计算第一列的深度值:<br> for 𝑦 &#x3D; 1 𝑡𝑜 𝐻 − 1<br>   𝑧 (0, 𝑦) &#x3D; 𝑧 (0, 𝑦 − 1) − 𝑞 (0,𝑦)</li>
+<li>计算每行的深度值:<br> for 𝑦 &#x3D; 1 𝑡𝑜 𝐻 − 1<br> for 𝑥 &#x3D; 1 𝑡𝑜 𝑊 − 1<br>     𝑧 (𝑥, 𝑦) &#x3D; 𝑧 (𝑥 − 1, 𝑦 − 1) − 𝑞 (𝑥, 𝑦)</li>
+</ol>
+</li>
+<li><p>一种解决方案：使用不同的路径计算深度图，并找到计算的深度图的平均值以减少错误</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/ODaB8VHnIj4g7Fe.png" alt="image.png"></p>
+<h3 id="Estimating-Shape-using-Least-Squares-类似泊松方程"><a href="#Estimating-Shape-using-Least-Squares-类似泊松方程" class="headerlink" title="Estimating Shape using Least Squares(类似泊松方程)"></a>Estimating Shape using Least Squares(类似泊松方程)</h3><ul>
+<li>最小化测量的表面梯度与估计表面的表面梯度之间的能量函数：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/7ylEY6UKjGeB2fv.png" alt="image.png"></p>
+<ul>
+<li><p>得到的线性方程组也称为泊松方程</p>
+</li>
+<li><p>可以用最小二乘球z</p>
+</li>
+</ul>
+<h2 id="Shape-from-Shading"><a href="#Shape-from-Shading" class="headerlink" title="Shape from Shading"></a>Shape from Shading</h2><ul>
+<li><p>Shape from Shading, a special case of photometric stereo</p>
+</li>
+<li><p>输入：图像 I、源方向 s 和surface reflectance model</p>
+</li>
+<li><p>输出：每种intensity的表面梯度 （p， q）</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/iCaMEmLKb32NDSH.png" alt="image.png"></p>
+<ul>
+<li>一个点对应reflectance map中的一条线，需要人为的增加约束才可求解</li>
+</ul>
+<h3 id="Constraints-from-Human-Perception"><a href="#Constraints-from-Human-Perception" class="headerlink" title="Constraints from Human Perception:"></a>Constraints from Human Perception:</h3><ul>
+<li>Light from Above</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/Cw9XZ8kmahJSzgj.png" alt="image.png"></p>
+<ul>
+<li>Boundaries Influence Perceived Shape</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/w1iBsGAbjxItlT5.png" alt="image.png"></p>
+<ul>
+<li><p>均匀明暗变化</p>
+</li>
+<li><p>根据周围的物体感知形状</p>
+</li>
+</ul>
+<h3 id="Stereographic-Projection"><a href="#Stereographic-Projection" class="headerlink" title="Stereographic Projection"></a>Stereographic Projection</h3><ul>
+<li><p>Gradient Space的问题：𝑝 or 𝑞 is infinite when 𝜃 &#x3D; 90°</p>
+</li>
+<li><p>将原点上移形成fg space，错开求交，数值更稳定，可以通过p,q求得f,g</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/8xp4JIBC1weyALF.png" alt="image.png"></p>
+<ul>
+<li>半球上可见的表面渐变的所有可能值都位于 fg 平面上半径为 2 的圆内：I &#x3D; R (f，g)</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/dbnDTtxMuN6eLiW.png" alt="image.png"></p>
+<h3 id="Occluding-Boundaries-Constraint-边界约束"><a href="#Occluding-Boundaries-Constraint-边界约束" class="headerlink" title="Occluding Boundaries Constraint(边界约束)"></a>Occluding Boundaries Constraint(边界约束)</h3><p><img src="https://s2.loli.net/2024/11/30/JIquiDCQSR9kFNg.png" alt="image.png"></p>
+<ul>
+<li><p>n 是边界上的表面法线，e 是边界上的边方向，v 是视图方向。可以通过叉乘得到n的方向</p>
+</li>
+<li><p>遮挡边界上的表面梯度 f、g 是已知的，可以用作边界条件</p>
+</li>
+</ul>
+<h3 id="Image-Intensity-Constraint"><a href="#Image-Intensity-Constraint" class="headerlink" title="Image Intensity Constraint"></a>Image Intensity Constraint</h3><ul>
+<li>假设：图像强度（辐照度）应等于反射图：I (x，y) &#x3D; Rs (f，g) ，也可以视为数据项</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/cRbehBWqIL72x6E.png" alt="image.png"></p>
+<ul>
+<li>目标：惩罚图像辐照度和反射率图之间的误差</li>
+</ul>
+<h3 id="Smoothness-Constraint"><a href="#Smoothness-Constraint" class="headerlink" title="Smoothness Constraint"></a>Smoothness Constraint</h3><ul>
+<li>假设：对象表面是平滑的。也就是说，梯度值 （f， g） 变化缓慢</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/enKQvXIagiBmPoj.png" alt="image.png"></p>
+<ul>
+<li>目标：在表面估计过程中惩罚 f 和 g 的快速变化</li>
+</ul>
+<h3 id="Shape-from-Shading-1"><a href="#Shape-from-Shading-1" class="headerlink" title="Shape from Shading"></a>Shape from Shading</h3><ul>
+<li>查找最小化函数的所有图像点的表面梯度 （f， g）：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/1dFXjb8uAhDSmn6.png" alt="image.png"></p>
+<ul>
+<li><p>其中 es 是平滑度约束，er 是图像辐照度误差，λ 是权重</p>
+</li>
+<li><p>遮挡边界上的已知表面梯度 （f， g） 保持为常数</p>
+</li>
+<li><p>可以使用优化算法和数值迭代算法求解：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/30/xnoaBfvIyUgckTw.png" alt="image.png"></p>
+<hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/7f740624.html" title="计算机视觉 10 Multi-View Stereo"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">计算机视觉 10 Multi-View Stereo</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/80c4a451.html" title="计算机视觉 02 Image Formation"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 02 Image Formation</div></div></a></div><div><a href="/post/204c5630.html" title="计算机视觉 03 Image Processing"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-18</div><div class="title">计算机视觉 03 Image Processing</div></div></a></div><div><a href="/post/e6fed564.html" title="计算机视觉 04 Feature Detection"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-19</div><div class="title">计算机视觉 04 Feature Detection</div></div></a></div><div><a href="/post/26185b9c.html" title="计算机视觉 05 Image Stitching"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-19</div><div class="title">计算机视觉 05 Image Stitching</div></div></a></div><div><a href="/post/80ee00fd.html" title="计算机视觉 06 3D Vision and Camera Calibration"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-20</div><div class="title">计算机视觉 06 3D Vision and Camera Calibration</div></div></a></div><div><a href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry"><img class="cover" src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-27</div><div class="title">计算机视觉 07 Epipolar Geometry</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Photometric-Stereo"><span class="toc-number">1.</span> <span class="toc-text">Photometric Stereo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Image-Intensity"><span class="toc-number">1.1.</span> <span class="toc-text">Image Intensity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Surface-Reflectance"><span class="toc-number">1.2.</span> <span class="toc-text">Surface Reflectance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Surface-Reflectance-BRDF"><span class="toc-number">1.3.</span> <span class="toc-text">Surface Reflectance: BRDF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Diffuse-Reflection"><span class="toc-number">1.4.</span> <span class="toc-text">Diffuse Reflection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Surface-Gradient-and-Normal"><span class="toc-number">1.5.</span> <span class="toc-text">Surface Gradient and Normal</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gradient-Space"><span class="toc-number">1.6.</span> <span class="toc-text">Gradient Space</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reflectance-Map"><span class="toc-number">1.7.</span> <span class="toc-text">Reflectance Map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Photometric-Stereo-1"><span class="toc-number">1.8.</span> <span class="toc-text">Photometric Stereo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Photometric-Stereo-Lambertian-Case"><span class="toc-number">1.8.1.</span> <span class="toc-text">Photometric Stereo: Lambertian Case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Calibration-based-Photometric-Stereo"><span class="toc-number">1.8.2.</span> <span class="toc-text">Calibration based Photometric Stereo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shape-from-Normals-%E6%9C%AC%E8%B4%A8%EF%BC%9A%E5%81%9A%E7%A7%AF%E5%88%86"><span class="toc-number">1.9.</span> <span class="toc-text">Shape from Normals(本质：做积分)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Shape-from-Normals-Integration-based-Method"><span class="toc-number">1.9.1.</span> <span class="toc-text">Shape from Normals: Integration-based Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Estimating-Shape-using-Least-Squares-%E7%B1%BB%E4%BC%BC%E6%B3%8A%E6%9D%BE%E6%96%B9%E7%A8%8B"><span class="toc-number">1.9.2.</span> <span class="toc-text">Estimating Shape using Least Squares(类似泊松方程)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shape-from-Shading"><span class="toc-number">1.10.</span> <span class="toc-text">Shape from Shading</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Constraints-from-Human-Perception"><span class="toc-number">1.10.1.</span> <span class="toc-text">Constraints from Human Perception:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stereographic-Projection"><span class="toc-number">1.10.2.</span> <span class="toc-text">Stereographic Projection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Occluding-Boundaries-Constraint-%E8%BE%B9%E7%95%8C%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.10.3.</span> <span class="toc-text">Occluding Boundaries Constraint(边界约束)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Image-Intensity-Constraint"><span class="toc-number">1.10.4.</span> <span class="toc-text">Image Intensity Constraint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Smoothness-Constraint"><span class="toc-number">1.10.5.</span> <span class="toc-text">Smoothness Constraint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shape-from-Shading-1"><span class="toc-number">1.10.6.</span> <span class="toc-text">Shape from Shading</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 11 Photometric Stereo"/></a><div class="content"><a class="title" href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo">计算机视觉 11 Photometric Stereo</a><time datetime="2024-11-30T06:30:00.000Z" title="Created 2024-11-30 14:30:00">2024-11-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7f740624.html" title="计算机视觉 10 Multi-View Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 10 Multi-View Stereo"/></a><div class="content"><a class="title" href="/post/7f740624.html" title="计算机视觉 10 Multi-View Stereo">计算机视觉 10 Multi-View Stereo</a><time datetime="2024-11-29T13:54:00.000Z" title="Created 2024-11-29 21:54:00">2024-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 09 Structure from Motion"/></a><div class="content"><a class="title" href="/post/6f23fe1.html" title="计算机视觉 09 Structure from Motion">计算机视觉 09 Structure from Motion</a><time datetime="2024-11-28T07:29:00.000Z" title="Created 2024-11-28 15:29:00">2024-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 08 Two-View Stereo"/></a><div class="content"><a class="title" href="/post/eb294d4.html" title="计算机视觉 08 Two-View Stereo">计算机视觉 08 Two-View Stereo</a><time datetime="2024-11-27T12:59:00.000Z" title="Created 2024-11-27 20:59:00">2024-11-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 07 Epipolar Geometry"/></a><div class="content"><a class="title" href="/post/df1a2548.html" title="计算机视觉 07 Epipolar Geometry">计算机视觉 07 Epipolar Geometry</a><time datetime="2024-11-27T05:28:00.000Z" title="Created 2024-11-27 13:28:00">2024-11-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
