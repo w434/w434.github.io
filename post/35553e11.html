@@ -1,0 +1,464 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据结构与算法A 第九章文件管理和外排序 | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="主存储器和外存储器 计算机存储器是用来存储程序和数据的部件，主要有两种：  主存储器(内存、主存)： 随机访问存储器(RAM) 高速缓存 ( cache ) 视频存储器 ( video memory )   外存储器(外存): 硬盘 (几百G - 几百T， 1012B ) 磁带 (几个P， 1015B )     内存的优缺点:  优点：访问速度快 缺点：造价高，存储容量小，断电丢数据   CPU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法A 第九章文件管理和外排序">
+<meta property="og:url" content="http://example.com/post/35553e11.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="主存储器和外存储器 计算机存储器是用来存储程序和数据的部件，主要有两种：  主存储器(内存、主存)： 随机访问存储器(RAM) 高速缓存 ( cache ) 视频存储器 ( video memory )   外存储器(外存): 硬盘 (几百G - 几百T， 1012B ) 磁带 (几个P， 1015B )     内存的优缺点:  优点：访问速度快 缺点：造价高，存储容量小，断电丢数据   CPU">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg">
+<meta property="article:published_time" content="2024-12-08T09:59:00.000Z">
+<meta property="article:modified_time" content="2024-12-08T14:00:37.768Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="数据结构与算法A">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/35553e11.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据结构与算法A 第九章文件管理和外排序',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-08 22:00:37'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">63</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据结构与算法A 第九章文件管理和外排序</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-12-08T09:59:00.000Z" title="Created 2024-12-08 17:59:00">2024-12-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-12-08T14:00:37.768Z" title="Updated 2024-12-08 22:00:37">2024-12-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95A/">数据结构与算法A</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数据结构与算法A 第九章文件管理和外排序"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="主存储器和外存储器"><a href="#主存储器和外存储器" class="headerlink" title="主存储器和外存储器"></a>主存储器和外存储器</h1><ul>
+<li><p>计算机存储器是用来存储程序和数据的部件，主要有两种：</p>
+<ol>
+<li>主存储器(内存、主存)：<ol>
+<li>随机访问存储器(RAM)</li>
+<li>高速缓存 ( cache )</li>
+<li>视频存储器 ( video memory )</li>
+</ol>
+</li>
+<li>外存储器(外存):<ol>
+<li>硬盘 (几百G - 几百T， 1012B )</li>
+<li>磁带 (几个P， 1015B )</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>内存的优缺点:</p>
+<ol>
+<li>优点：访问速度快</li>
+<li>缺点：造价高，存储容量小，断电丢数据</li>
+</ol>
+</li>
+<li><p>CPU 直接与主存沟通，对存储在内存地址的数据进行访问时，所需要的时间可以看作是一个很小的常数</p>
+</li>
+<li><p>外存的优缺点：</p>
+<ol>
+<li>优点：价格低、信息不易失 、便携性</li>
+<li>缺点：存取速度慢。一般的内存访问存取时间的单位是纳秒，外存一次访问时间则以毫秒或秒为数量级</li>
+</ol>
+</li>
+<li><p>为了解决存取速度的问题，外存上的数据通常采用分块存取的方式，外存空间被划分为长度固定的存储块，称为“页”，数据以页块作为单位进行存取</p>
+</li>
+</ul>
+<h1 id="文件的组织和管理"><a href="#文件的组织和管理" class="headerlink" title="文件的组织和管理"></a>文件的组织和管理</h1><ul>
+<li><p>文件是存储在外存上的数据结构，是由大量性质相同的记录组成的集合</p>
+</li>
+<li><p>记录：具有独立逻辑意义的数据块，是文件的基本数据单位</p>
+</li>
+<li><p>按照记录的类型，文件可以分为两类：</p>
+<ol>
+<li>操作系统的文件：一组连续的字符序列，没有明显的结构</li>
+<li>数据库文件：有结构的记录集合</li>
+</ol>
+</li>
+<li><p>按照记录信息长度，文件可以分为两类：</p>
+<ol>
+<li>定长文件：每一条记录均含有相同的信息长度</li>
+<li>不定长文件：记录不是相等长度的</li>
+</ol>
+</li>
+<li><p>按照关键码的个数，文件可以分为两类：</p>
+<ol>
+<li>单关键码文件：记录中只有一个标识关键码</li>
+<li>多关键码文件：记录中除了有一个主关键码以外还有若干个次关键码</li>
+</ol>
+</li>
+<li><p>文件的操作往往以记录为单位进行</p>
+</li>
+<li><p>文件的操作处理方式：</p>
+<ol>
+<li>实时：要求有较短的应答响应时间，尽可能快的完成检索或修改任务</li>
+<li>批量：允许较长时间反馈</li>
+</ol>
+</li>
+</ul>
+<h2 id="文件组织"><a href="#文件组织" class="headerlink" title="文件组织"></a>文件组织</h2><ul>
+<li><p>逻辑文件( logical file )：对高级程序语言的编程人员而言，连续的字节构成记录，记录构成逻辑文件</p>
+</li>
+<li><p>物理文件( physical file )：成块地分布在整个磁盘中</p>
+</li>
+<li><p>文件逻辑组织有三种形式：</p>
+<ol>
+<li>顺序结构的定长记录</li>
+<li>顺序结构的变长记录</li>
+<li>按关键码存取的记录</li>
+</ol>
+</li>
+<li><p>常见的物理组织结构：</p>
+<ol>
+<li>顺序结构——顺序文件</li>
+<li>计算寻址结构——散列文件</li>
+<li>带索引的结构——带索引文件</li>
+<li>倒排文件：倒排是一种特殊的索引</li>
+</ol>
+</li>
+<li><p>文件上的操作：</p>
+<ol>
+<li>检索：在文件中寻找满足一定条件的记录</li>
+<li>修改：是指对记录中某些数据值进行修改。若对关键码值进行修改，这相当于删除加插入</li>
+<li>插入：向文件中增加一个新记录</li>
+<li>排序：对指定好的数据项，按其值的大小把文件中的记录排成序列，较常用的是按关键码值的排序</li>
+</ol>
+</li>
+</ul>
+<h2 id="C-的标准输入输出流类"><a href="#C-的标准输入输出流类" class="headerlink" title="C++ 的标准输入输出流类"></a>C++ 的标准输入输出流类</h2><ul>
+<li><p>C++语言以“流”的概念直接支持二进制序列文件结构，C++流的另一个主要用途是作为文件存取机制</p>
+</li>
+<li><p>文件流是以外存文件为输入&#x2F;输出对象的数据流：每一个文件都有一个内存缓冲区与之对应：</p>
+<ol>
+<li>输入文件流：从外存文件流向内存的数据</li>
+<li>输出文件流：从内存流向外存文件的数据</li>
+</ol>
+</li>
+<li><p>标准输入输出流类：</p>
+<ol>
+<li>istream 是通用输入流和其它输入流的基类，支持输入</li>
+<li>ostream 是通用输出流和其它输出流的基类，支持输出</li>
+<li>iostream 是通用输入输出流和其它输入输出流的基类，支持输入输出</li>
+</ol>
+</li>
+<li><p>3个用于文件操作的文件类：</p>
+<ol>
+<li>ifstream 类，从 istream 类派生，支持从磁盘文件的输入</li>
+<li>ofstream 类，从 ostream 类派生，支持向磁盘文件的输出</li>
+<li>fstream 类，从 iostream 类派生，支持对磁盘文件的输入和输出</li>
+</ol>
+</li>
+<li><p>fstream类的主要成员函数：</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream.h&gt;</span> <span class="comment">// fstream = ifstream + ofstream</span></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fstream::open</span><span class="params">(<span class="type">char</span>*name, openmode mode)</span></span>; </span><br><span class="line"><span class="comment">// 打开文件</span></span><br><span class="line">fstream::<span class="built_in">read</span>(<span class="type">char</span>*ptr, <span class="type">int</span> numbytes); <span class="comment">// 从文件当前位置读入字节</span></span><br><span class="line">fstream::<span class="built_in">write</span>(<span class="type">char</span>*ptr, <span class="type">int</span> numbtyes); <span class="comment">// 向文件当前位置写入字节</span></span><br><span class="line"><span class="comment">// seekg和seekp：在文件中移动当前位置</span></span><br><span class="line"><span class="comment">// 以便在文件中的任何位置读出或写入字节</span></span><br><span class="line">fstream::<span class="built_in">seekg</span>(<span class="type">int</span> pos); <span class="comment">// 输入时用于设置读取位置</span></span><br><span class="line">fstream::<span class="built_in">seekg</span>(<span class="type">int</span> pos, ios::curr);</span><br><span class="line">fstream::<span class="built_in">seekp</span>(<span class="type">int</span> pos); <span class="comment">// 设置输出时的写入位置</span></span><br><span class="line">fstream::<span class="built_in">seekp</span>(<span class="type">int</span> pos, ios::end);</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fstream::close</span><span class="params">()</span></span>; <span class="comment">// 处理结束后关闭文件</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>文件常见的三个基本操作：</p>
+<ol>
+<li>文件指针定位</li>
+<li>在当前文件指针位置读取</li>
+<li>向当前文件指针位置写入</li>
+</ol>
+</li>
+<li><p>缓冲区和缓冲池：</p>
+<ol>
+<li>目的：减少磁盘访问次数</li>
+<li>方法：缓冲 ( buffering ) 或缓存( caching )</li>
+</ol>
+</li>
+<li><p>存储在一个缓冲区中的信息经常称为一页( page )，往往是一次 I&#x2F;O 的量。缓冲区合起来称为缓冲池( buffer pool )</p>
+</li>
+<li><p>新的页块申请缓冲区时，把最近最不可能被再次引用的缓冲区释放来存放新页：</p>
+<ol>
+<li>“先进先出”( FIFO ) </li>
+<li>“最不频繁使用”( LFU )</li>
+<li>“最近最少使用”( LRU )</li>
+</ol>
+</li>
+</ul>
+<h1 id="外排序"><a href="#外排序" class="headerlink" title="外排序"></a>外排序</h1><ul>
+<li><p>外排序：对外存设备上(文件)的排序技术</p>
+</li>
+<li><p>待排的文件非常大，内存放不下，只能分段处理</p>
+</li>
+<li><p>通常由两个相对独立的阶段组成：</p>
+<ol>
+<li>文件形成尽可能长的初始顺串（run ），作为待归并段，将来处理</li>
+<li>处理顺串，最后形成对整个数据文件的排列文件</li>
+</ol>
+</li>
+<li><p>外排序的时间组成：</p>
+<ol>
+<li>产生初始顺串的内排序所需时间</li>
+<li>初始化顺串和归并过程所需的读写（I&#x2F;O）时间</li>
+<li>内部归并所需要的时间</li>
+</ol>
+</li>
+<li><p>减少外存信息的读写（I&#x2F;O）次数是提高外部排序效率的关键</p>
+</li>
+</ul>
+<h2 id="置换选择排序"><a href="#置换选择排序" class="headerlink" title="置换选择排序"></a>置换选择排序</h2><ul>
+<li><p>目的：将文件生成若干初始顺串（顺串越长越好，个数越少越好）</p>
+</li>
+<li><p>实现：借助在RAM中的堆来完成</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/12/08/sbYdPMKgAxpZDkW.png" alt="image.png"></p>
+<ul>
+<li><p>算法的处理过程：</p>
+<ol>
+<li>从输入文件读取一定数量的记录进入输入缓冲区</li>
+<li>向内存工作区中放入待排序的记录并且进行排序</li>
+<li>记录被处理后，写到输出缓冲区</li>
+<li>当输出缓冲区写满时，把整个缓冲区写回到外存文件</li>
+</ol>
+</li>
+<li><p>置换选择算法产生一个顺串的流程：</p>
+<ol>
+<li>初始化最小堆：目的是提高RAM中排序的效率<ol>
+<li>从缓冲区读M个记录放到数组RAM中</li>
+<li>设置堆尾标志：LAST ＝ M － 1</li>
+<li>建立一个最小值堆</li>
+</ol>
+</li>
+<li>重复以下步骤，直至堆空（结束条件）（即LAST &lt; 0）<ol>
+<li>把具有最小关键码值的记录(根结点)送到输出缓冲区</li>
+<li>设R是输入缓冲区中的下一条记录<ol>
+<li>如果R的关键码不小于刚输出的关键码值，则把R放到根结点</li>
+<li>否则，使用数组中LAST位置的记录代替根结点，然后把R放到LAST位置（等待下一顺串处理），设置LAST ＝ LAST-1</li>
+</ol>
+</li>
+<li>重新排列堆，筛出根结点</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/12/08/glZbwMzOctXKIoT.jpg" alt="1.jpg"></p>
+<p><img src="https://s2.loli.net/2024/12/08/b1iUoEcIvYzdX8V.jpg" alt="2.jpg"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 置换选择算法的实现</span></span><br><span class="line"><span class="comment">// 模板参数 Elem 代表数组中每一个元素的类型</span></span><br><span class="line"><span class="comment">// A 是从外存读入 n 个元素后所存放的数组</span></span><br><span class="line"><span class="comment">// in 和 out 分别是输入和输出文件名</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">Elem</span>&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">replacementSelection</span><span class="params">(Elem * A, <span class="type">int</span> n, <span class="type">const</span> <span class="type">char</span> * in, <span class="type">const</span> <span class="type">char</span> * out)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    Elem mval; <span class="comment">// 存放最小值堆的最小值</span></span><br><span class="line">    Elem r; <span class="comment">// 存放从输入缓冲区中读入的元素</span></span><br><span class="line">    FILE * inputFile; <span class="comment">// 输入、输出文件句柄</span></span><br><span class="line">    FILE * outputFile;</span><br><span class="line">    Buffer&lt;Elem&gt; input; <span class="comment">// 输入、输出buffer</span></span><br><span class="line">    Buffer&lt;Elem&gt; output; <span class="comment">// 初始化输入输出文件</span></span><br><span class="line">    <span class="built_in">initFiles</span>(inputFile, outputFile, in, out);</span><br><span class="line">    <span class="built_in">initMinHeapArry</span>(inputFile, n, A); <span class="comment">// 建堆</span></span><br><span class="line">    <span class="function">MinHeap&lt;Elem&gt; <span class="title">H</span><span class="params">(A, n, n)</span></span>;</span><br><span class="line">    <span class="built_in">initInputBuffer</span>(input, inputFile);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> last = (n<span class="number">-1</span>); last &gt;= <span class="number">0</span>;)</span><br><span class="line">    &#123;</span><br><span class="line">        mval = H.heapArray[<span class="number">0</span>]; <span class="comment">// 最小值</span></span><br><span class="line">        <span class="built_in">sendToOutputBuffer</span>(input, output, inputFile, outputFile, mval);</span><br><span class="line">        input.<span class="built_in">read</span>(r); <span class="comment">// 从输入缓冲区读入一个记录</span></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">less</span>(r, mval))</span><br><span class="line">            H.heapArray[<span class="number">0</span>] = r; <span class="comment">// r放到根结点</span></span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;   <span class="comment">// last记录代替根结点，r放到last位置</span></span><br><span class="line">            H.heapArray[<span class="number">0</span>] = H.heapArray[last];</span><br><span class="line">            H.heapArray[last] = r;</span><br><span class="line">            H.<span class="built_in">setSize</span>(last--);</span><br><span class="line">        &#125;</span><br><span class="line">            H.<span class="built_in">SiftDown</span>(<span class="number">0</span>); <span class="comment">// 调整根结点</span></span><br><span class="line">    &#125; <span class="comment">// for</span></span><br><span class="line">    <span class="built_in">endUp</span>(output, inputFile, outputFile);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>堆的大小 M，算法得到的顺串长度并不相等</p>
+</li>
+<li><p>最好的情况下，例如输入为正序，有可能一次就把整个文件生成为一个顺串</p>
+</li>
+<li><p>平均情况下，置换选择排序算法可以形成长度为2M 的顺串</p>
+</li>
+</ul>
+<h2 id="二路外排序"><a href="#二路外排序" class="headerlink" title="二路外排序"></a>二路外排序</h2><ul>
+<li><p>归并原理：把第一阶段所生成的顺串加以合并(例如通过若干次二路合并)，直至变为一个顺串为止，即形成一个已排序的文件</p>
+</li>
+<li><p>外排序实现两两归并时，用两个输入流读取数据，用一个输出数据流建立归并后的文件，即把内存空间分成三个页块。其中两个用于作为输入缓冲区，另一个页块作为输出缓冲区</p>
+</li>
+<li><p>例如有10个初始顺串R1,…,R10</p>
+<ol>
+<li>首先把顺串R1,R2的第一个页块读入到缓冲区，进行归并，结果放入到输出缓冲区，输出缓冲区满时写入磁盘</li>
+<li>当一个输入缓冲区为空时，便把顺串的下一个页块读入到缓冲区，继续归并，直到顺串R1,R2的归并完全完成为止</li>
+<li>此时R1,R2的归并结果就形成了一个新的顺串R1’,然后一次归并R3和R4,R5和R6…完成第一趟归并</li>
+<li>完成第二趟归并,第三趟归并直到归并成一个</li>
+</ol>
+</li>
+<li><p>为一个待排文件创建尽可能大的初始顺串，可以大大减少扫描遍数和外存读写次数</p>
+</li>
+<li><p>归并顺序的安排也能影响读写次数，把初始顺串长度作为权，其实质就是 Huffman 树最优化问题</p>
+</li>
+</ul>
+<h2 id="多路归并——选择树"><a href="#多路归并——选择树" class="headerlink" title="多路归并——选择树"></a>多路归并——选择树</h2><ul>
+<li><p>k路归并：每次将k个顺串合并成一个排好序的顺串</p>
+</li>
+<li><p>目的：提高在k个归并串的当前值中找到最小值的效率</p>
+</li>
+<li><p>对m个初始顺串进行k路归并时，归并趟数为[logk(m)]，增加每次归并的顺串数量k可以减少归并趟数</p>
+</li>
+<li><p>内部归并进行的总比较次数为：[log2(m)]*(n-1)，内部比较次数与k无关，不随k的增加而增加</p>
+</li>
+<li><p>选择树是完全二叉树，通常采用顺序结构。选择树又称竞赛树，反映了一种淘汰赛的结果，分为：赢者树和败者树</p>
+</li>
+</ul>
+<h3 id="嬴者树"><a href="#嬴者树" class="headerlink" title="嬴者树"></a>嬴者树</h3><ul>
+<li><p>叶子结点用数组 L[1..n]表示：代表各顺串在合并过程中的当前记录</p>
+</li>
+<li><p>分支结点用数组 B[1..n-1]表示：每个分支结点代表其两个儿子结点中的赢者(关键码值较小的)所对应数组L的索引</p>
+</li>
+<li><p>根结点 B[1] 是树中的最终赢者的索引，即为下一个要输出的记录结点</p>
+</li>
+<li><p>如果一个选手L[i]的分数值改变了，可以很容易地修改这棵赢者树：只需要沿着从L[i]到根结点的路径修改二叉树，而不必改变其它比赛的结果</p>
+</li>
+<li><p>为了使得过程更高效，如果沿到树根结点路径上的某一场比赛结果没有改变，则不需要再进行其祖先结点的比赛。这样修改次数再0~log2(n)之间</p>
+</li>
+<li><p>赢者树与数组的对应关系：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/12/08/7CeWNft6uzE3hdR.png" alt="image.png"></p>
+<h3 id="败者树"><a href="#败者树" class="headerlink" title="败者树"></a>败者树</h3><ul>
+<li><p>败方树是赢者树的一种变体</p>
+</li>
+<li><p>在败方树中，用父结点记录其左右子结点进行比赛的败者，而让获胜者去参加更高阶段的比赛</p>
+</li>
+<li><p>新增根结点B[0]，来记录整个比赛的全局胜者</p>
+</li>
+<li><p>败方树是为了简化重构过程，树结构未变</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/12/08/sPwhHZO5botJ2NE.jpg" alt="81a1e812fdd6f8c4fbb0301ee55f30e.jpg"></p>
+<p><img src="https://s2.loli.net/2024/12/08/xAQ9TUWu5dibs63.png" alt="image.png"></p>
+<ul>
+<li>败方树 ADT(胜者树同理)</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LoserTree</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="type">int</span> MaxSize; <span class="comment">// 最大选手数</span></span><br><span class="line">        <span class="type">int</span> n; <span class="comment">// 当前选手数</span></span><br><span class="line">        <span class="type">int</span> LowExt; <span class="comment">// 最底层外部结点数</span></span><br><span class="line">        <span class="type">int</span> offset; <span class="comment">// 最底层外部结点之上的结点总数</span></span><br><span class="line">        <span class="type">int</span> * B; <span class="comment">// 败方树数组，实际存放的是下标</span></span><br><span class="line">        T * L; <span class="comment">// 元素数组</span></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">Play</span><span class="params">(<span class="type">int</span> p,<span class="type">int</span> lc,<span class="type">int</span> rc,<span class="type">int</span>(*winner)(T A[],<span class="type">int</span> b,<span class="type">int</span> c))</span></span>;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">LoserTree</span>(<span class="type">int</span> Treesize = MAX);</span><br><span class="line">        ~<span class="built_in">LoserTree</span>()&#123;<span class="keyword">delete</span> [] B;&#125;</span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">Initialize</span><span class="params">(T A[], <span class="type">int</span> size,<span class="type">int</span> (*winner)(T A[], <span class="type">int</span> b, <span class="type">int</span> c), </span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="type">int</span>(*loser)(T A[], <span class="type">int</span> b, <span class="type">int</span> c))</span></span>; <span class="comment">// 初始化败方树</span></span><br><span class="line">        <span class="function"><span class="type">int</span> <span class="title">Winner</span><span class="params">()</span></span>; <span class="comment">// 返回最终胜者索引</span></span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">RePlay</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span>(*winner)(T A[], <span class="type">int</span> b, <span class="type">int</span> c), <span class="type">int</span> (*loser)(T A[], <span class="type">int</span> b, <span class="type">int</span> c))</span></span>; <span class="comment">// 位置 i 的选手改变后重构败方树</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 成员函数Winner，返回最终胜者 B[0] 的索引</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="type">int</span> LoserTree&lt;T&gt;::<span class="built_in">Winner</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> (n)?B[<span class="number">0</span>]:<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt; <span class="comment">// 初始化败方树</span></span><br><span class="line"><span class="type">void</span> LoserTree&lt;T&gt;::<span class="built_in">Initialize</span>(T A[], <span class="type">int</span> size, <span class="built_in">int</span>(*winner)(T A[], <span class="type">int</span> b, <span class="type">int</span> c), <span class="built_in">int</span>(*loser)(T A[], <span class="type">int</span> b, <span class="type">int</span> c)) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (size &gt; MaxSize || size &lt; <span class="number">2</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Bad Input!&quot;</span>&lt;&lt;endl&lt;&lt;endl; <span class="keyword">return</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    n = size; L = A; <span class="comment">// 初始化成员变量</span></span><br><span class="line">    <span class="type">int</span> i,s; <span class="comment">// 计算s=2^log(n-1)</span></span><br><span class="line">    <span class="keyword">for</span> (s = <span class="number">1</span>; <span class="number">2</span>*s &lt;= n<span class="number">-1</span>; s+=s);</span><br><span class="line">    LowExt = <span class="number">2</span>*(n-s); offset = <span class="number">2</span>*s<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">2</span>; i &lt;= LowExt; i+=<span class="number">2</span>) <span class="comment">// 底层外部</span></span><br><span class="line">        <span class="built_in">Play</span>((offset+i)/<span class="number">2</span>, i<span class="number">-1</span>, i, winner, loser);</span><br><span class="line">    <span class="keyword">if</span> (n%<span class="number">2</span>) </span><br><span class="line">    &#123; <span class="comment">// n奇数，内部和外部比赛</span></span><br><span class="line">        <span class="built_in">Play</span>(n/<span class="number">2</span>,B[(n<span class="number">-1</span>)/<span class="number">2</span>],LowExt<span class="number">+1</span>,winner,loser); i = LowExt<span class="number">+3</span>;</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> i = LowExt<span class="number">+2</span>;</span><br><span class="line">    <span class="keyword">for</span> (; i&lt;=n; i+=<span class="number">2</span>) <span class="comment">// 剩余外部结点的比赛</span></span><br><span class="line">        <span class="built_in">Play</span>((i-LowExt+n<span class="number">-1</span>)/<span class="number">2</span>, i<span class="number">-1</span>, i, winner, loser);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Play 比赛</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="type">void</span> LoserTree&lt;T&gt;::<span class="built_in">Play</span>(<span class="type">int</span> p, <span class="type">int</span> lc, <span class="type">int</span> rc, <span class="built_in">int</span>(* winner)(T A[], <span class="type">int</span> b, <span class="type">int</span> c), <span class="built_in">int</span>(* loser)(T A[], <span class="type">int</span> b, <span class="type">int</span> c))</span><br><span class="line">&#123;</span><br><span class="line">    B[p] = <span class="built_in">loser</span>(L, lc, rc); <span class="comment">// 败者索引放在B[p]</span></span><br><span class="line">    <span class="type">int</span> temp1, temp2;</span><br><span class="line">    temp1 = <span class="built_in">winner</span>(L, lc, rc);<span class="comment">// p处的胜者索引</span></span><br><span class="line">    <span class="keyword">while</span>(p&gt;<span class="number">1</span> &amp;&amp; p%<span class="number">2</span>) </span><br><span class="line">    &#123; <span class="comment">// 内部右，要沿路向上比赛</span></span><br><span class="line">        temp2 = <span class="built_in">winner</span>(L, temp1, B[p/<span class="number">2</span>]);</span><br><span class="line">        B[p/<span class="number">2</span>] = <span class="built_in">loser</span>(L, temp1, B[p/<span class="number">2</span>]); </span><br><span class="line">        temp1 = temp2;</span><br><span class="line">        p/=<span class="number">2</span>;</span><br><span class="line">    &#125; <span class="comment">// B[p]是左孩子，或者B[1]</span></span><br><span class="line">    B[p/<span class="number">2</span>] = temp1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>RePlay重构</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt; <span class="type">void</span> LoserTree&lt;T&gt;::<span class="built_in">RePlay</span>(<span class="type">int</span> i, <span class="built_in">int</span></span><br><span class="line">(*winner)(T A[], <span class="type">int</span> b, <span class="type">int</span> c), <span class="built_in">int</span> (*loser)(T A[], <span class="type">int</span> b, <span class="type">int</span> c))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (i &lt;= <span class="number">0</span> || i &gt; n) </span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Out of Bounds!&quot;</span>&lt;&lt;endl&lt;&lt;endl; <span class="keyword">return</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (i &lt;= LowExt) <span class="comment">// 确定父结点的位置</span></span><br><span class="line">        <span class="type">int</span> p = (i+offset)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">else</span> p = (i-LowExt+n<span class="number">-1</span>)/<span class="number">2</span>;</span><br><span class="line">    B[<span class="number">0</span>] = <span class="built_in">winner</span>(L, i, B[p]); B[p] = <span class="built_in">loser</span>(L, i, B[p]);</span><br><span class="line">    <span class="keyword">for</span>(; (p/<span class="number">2</span>)&gt;=<span class="number">1</span>; p/=<span class="number">2</span>) </span><br><span class="line">    &#123; <span class="comment">// 沿路径向上比赛</span></span><br><span class="line">        <span class="type">int</span> temp = <span class="built_in">winner</span>(L,B[p/<span class="number">2</span>], B[<span class="number">0</span>]);</span><br><span class="line">        B[p/<span class="number">2</span>] = <span class="built_in">loser</span>(L,B[p/<span class="number">2</span>], B[<span class="number">0</span>]);</span><br><span class="line">        B[<span class="number">0</span>] = temp;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>败者树初始化的思想：</p>
+<ol>
+<li>最底层的外部节点从左至右一次两两进行比赛，比赛的结果记录在败者树的内部结点中</li>
+<li>其余外部节点比赛时：<ol>
+<li>外部结点总数为奇数，倒数第二层最左端的外部节点应该与作为其左兄弟的内部结点比赛，此时剩下尚未比赛的外部结点中第一个处于右子树位置的索引值为lowext+3</li>
+<li>否则，倒数第二层第一个处于右子树位置的外部结点索引为lowext+2</li>
+</ol>
+</li>
+<li>最后完成其余外部节点的比赛</li>
+</ol>
+</li>
+<li><p>多路归并的效率:</p>
+<ol>
+<li>原始方法：找到每一个最小值的时间是Θ(k)，产生一个大小为n的顺串的总时间是 Θ (k*n)</li>
+<li>败方树方法:产生一大小为n的顺串的总时间为  (k+nlog k)</li>
+</ol>
+</li>
+</ul>
+<hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95A/">数据结构与算法A</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/b51b59a4.html" title="AI中的数学 第六章&amp;第七章统计学中的基本概念&amp;估计"><img class="cover" src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">AI中的数学 第六章&amp;第七章统计学中的基本概念&amp;估计</div></div></a></div><div class="next-post pull-right"><a href="/post/aff45373.html" title="数据结构与算法A 第八章内排序"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">数据结构与算法A 第八章内排序</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/ce4c244d.html" title="数据结构与算法A 第一章概论"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-18</div><div class="title">数据结构与算法A 第一章概论</div></div></a></div><div><a href="/post/a9e6fa8c.html" title="数据结构与算法A 第二章线性表"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-18</div><div class="title">数据结构与算法A 第二章线性表</div></div></a></div><div><a href="/post/5990a231.html" title="数据结构与算法A 第三章栈与队列"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-25</div><div class="title">数据结构与算法A 第三章栈与队列</div></div></a></div><div><a href="/post/3571a0c4.html" title="数据结构与算法A 第四章字符串"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-01</div><div class="title">数据结构与算法A 第四章字符串</div></div></a></div><div><a href="/post/ef4da500.html" title="数据结构与算法A 第五章二叉树"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-16</div><div class="title">数据结构与算法A 第五章二叉树</div></div></a></div><div><a href="/post/c353c3c1.html" title="数据结构与算法A 第六章树"><img class="cover" src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-30</div><div class="title">数据结构与算法A 第六章树</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">63</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB%E5%AD%98%E5%82%A8%E5%99%A8%E5%92%8C%E5%A4%96%E5%AD%98%E5%82%A8%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">主存储器和外存储器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%84%E7%BB%87%E5%92%8C%E7%AE%A1%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">文件的组织和管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87"><span class="toc-number">2.1.</span> <span class="toc-text">文件组织</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E7%9A%84%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81%E7%B1%BB"><span class="toc-number">2.2.</span> <span class="toc-text">C++ 的标准输入输出流类</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%96%E6%8E%92%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">外排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%AE%E6%8D%A2%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-number">3.1.</span> <span class="toc-text">置换选择排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%B7%AF%E5%A4%96%E6%8E%92%E5%BA%8F"><span class="toc-number">3.2.</span> <span class="toc-text">二路外排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E5%BD%92%E5%B9%B6%E2%80%94%E2%80%94%E9%80%89%E6%8B%A9%E6%A0%91"><span class="toc-number">3.3.</span> <span class="toc-text">多路归并——选择树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AC%B4%E8%80%85%E6%A0%91"><span class="toc-number">3.3.1.</span> <span class="toc-text">嬴者树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A5%E8%80%85%E6%A0%91"><span class="toc-number">3.3.2.</span> <span class="toc-text">败者树</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/b51b59a4.html" title="AI中的数学 第六章&amp;第七章统计学中的基本概念&amp;估计"><img src="https://s2.loli.net/2024/10/11/Kfi7398o5p1kTE4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI中的数学 第六章&amp;第七章统计学中的基本概念&amp;估计"/></a><div class="content"><a class="title" href="/post/b51b59a4.html" title="AI中的数学 第六章&amp;第七章统计学中的基本概念&amp;估计">AI中的数学 第六章&amp;第七章统计学中的基本概念&amp;估计</a><time datetime="2024-12-11T08:05:00.000Z" title="Created 2024-12-11 16:05:00">2024-12-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/35553e11.html" title="数据结构与算法A 第九章文件管理和外排序"><img src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法A 第九章文件管理和外排序"/></a><div class="content"><a class="title" href="/post/35553e11.html" title="数据结构与算法A 第九章文件管理和外排序">数据结构与算法A 第九章文件管理和外排序</a><time datetime="2024-12-08T09:59:00.000Z" title="Created 2024-12-08 17:59:00">2024-12-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/aff45373.html" title="数据结构与算法A 第八章内排序"><img src="https://s2.loli.net/2024/09/18/j8wKWGfEBsblvNn.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法A 第八章内排序"/></a><div class="content"><a class="title" href="/post/aff45373.html" title="数据结构与算法A 第八章内排序">数据结构与算法A 第八章内排序</a><time datetime="2024-12-07T05:55:00.000Z" title="Created 2024-12-07 13:55:00">2024-12-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/90f0b8d4.html" title="计算机视觉 考试复习"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 考试复习"/></a><div class="content"><a class="title" href="/post/90f0b8d4.html" title="计算机视觉 考试复习">计算机视觉 考试复习</a><time datetime="2024-12-07T05:48:00.000Z" title="Created 2024-12-07 13:48:00">2024-12-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo"><img src="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机视觉 11 Photometric Stereo"/></a><div class="content"><a class="title" href="/post/562227b1.html" title="计算机视觉 11 Photometric Stereo">计算机视觉 11 Photometric Stereo</a><time datetime="2024-11-30T06:30:00.000Z" title="Created 2024-11-30 14:30:00">2024-11-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
