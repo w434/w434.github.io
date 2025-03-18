@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>角色动画与运动仿真 03 Character Kinematics | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Character Kinematics 基本假设：人体是刚体，通过关节连接形成骨骼   How to create a pose Joint 不会自动生效…  我们需要仔细计算每个骨骼的位置和方向   Kinematics of a Chain Qi：关节i方向(全局坐标系下)  Ri：关节i旋转(局部坐标系下)  问题：在诶出旋转后如何关节连接处的位置？      首先初始化Q1-Q4为I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="角色动画与运动仿真 03 Character Kinematics">
+<meta property="og:url" content="http://example.com/post/9510ac3d.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="Character Kinematics 基本假设：人体是刚体，通过关节连接形成骨骼   How to create a pose Joint 不会自动生效…  我们需要仔细计算每个骨骼的位置和方向   Kinematics of a Chain Qi：关节i方向(全局坐标系下)  Ri：关节i旋转(局部坐标系下)  问题：在诶出旋转后如何关节连接处的位置？      首先初始化Q1-Q4为I">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg">
+<meta property="article:published_time" content="2025-03-18T06:24:00.000Z">
+<meta property="article:modified_time" content="2025-03-18T06:25:11.486Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="MOCCA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/9510ac3d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '角色动画与运动仿真 03 Character Kinematics',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-18 14:25:11'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">24</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">角色动画与运动仿真 03 Character Kinematics</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-03-18T06:24:00.000Z" title="Created 2025-03-18 14:24:00">2025-03-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-03-18T06:25:11.486Z" title="Updated 2025-03-18 14:25:11">2025-03-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%A7%92%E8%89%B2%E5%8A%A8%E7%94%BB%E4%B8%8E%E8%BF%90%E5%8A%A8%E4%BB%BF%E7%9C%9F/">角色动画与运动仿真</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="角色动画与运动仿真 03 Character Kinematics"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Character-Kinematics"><a href="#Character-Kinematics" class="headerlink" title="Character Kinematics"></a>Character Kinematics</h1><ul>
+<li>基本假设：人体是刚体，通过关节连接形成骨骼</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/Tf5LWzMjnGoSkhs.png" alt="image.png"></p>
+<h2 id="How-to-create-a-pose"><a href="#How-to-create-a-pose" class="headerlink" title="How to create a pose"></a>How to create a pose</h2><ul>
+<li><p>Joint 不会自动生效…</p>
+</li>
+<li><p>我们需要仔细计算每个骨骼的位置和方向</p>
+</li>
+</ul>
+<h2 id="Kinematics-of-a-Chain"><a href="#Kinematics-of-a-Chain" class="headerlink" title="Kinematics of a Chain"></a>Kinematics of a Chain</h2><ul>
+<li><p>Qi：关节i方向(全局坐标系下)</p>
+</li>
+<li><p>Ri：关节i旋转(局部坐标系下)</p>
+</li>
+<li><p>问题：在诶出旋转后如何关节连接处的位置？</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/loN8QesVzqpcmvR.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/03/18/4IsPrBJMcDovEFO.png" alt="image.png"></p>
+<ul>
+<li><p>首先初始化Q1-Q4为I</p>
+</li>
+<li><p>从后往前考虑：先找到Q4相对其父结点Q3的局部旋转R4:</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/I2TUHq9usGodecL.png" alt="image.png"></p>
+<ul>
+<li>再考虑Q3相对于Q2的局部旋转R3，这里R3也要叠加到Q4，每次叠加都是旋转关节本身+作用于其所有的自关节：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/zTnf8EmwSGoNRVh.png" alt="image.png"></p>
+<ul>
+<li>继续上述过程直到算到启示的关节：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/4P8TftjFNE61Qsl.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/03/18/59xRnHTqUhrYGEt.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/03/18/XhN9uKYJIZW6Uiw.png" alt="image.png"></p>
+<ul>
+<li>同时，已知两个朝向也可以计算中间的旋转：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/uXlkAq1wMJPQtGV.png" alt="image.png"></p>
+<ul>
+<li>计算关节位置要从前往后算：Pi+1 &#x3D; Pi + QiLi。可以从上一步的世界坐标系位置计算下一步的位置</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/6KVcilORdH9htGE.png" alt="image.png"></p>
+<ul>
+<li>考察终点x，可以对其进行展开得到x相对于祖先结点的相对运动</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/xJ9OezvVE4oKkBU.png" alt="image.png"></p>
+<ul>
+<li><p>若没有给出旋转矩阵而是给出旋转角θ：可以利用罗德里格公式计算旋转矩阵R</p>
+</li>
+<li><p>旋轴带动：</p>
+<ol>
+<li>局部坐标系</li>
+<li>旋转轴</li>
+<li>位置</li>
+</ol>
+</li>
+<li><p>可以将人体关节抽象为树结构：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/m6V4yhKoftM1ad7.png" alt="image.png"></p>
+<h2 id="Types-of-Joints"><a href="#Types-of-Joints" class="headerlink" title="Types of Joints"></a>Types of Joints</h2><ul>
+<li>不同的骨骼转动轴不同，旋转的自由度也不同</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/HbCyUnEphAmOKza.png" alt="image.png"></p>
+<h3 id="Degrees-of-Freedom-DoF"><a href="#Degrees-of-Freedom-DoF" class="headerlink" title="Degrees of Freedom (DoF)"></a>Degrees of Freedom (DoF)</h3><ul>
+<li><p>自由度描述了表示状态所需要的参数</p>
+</li>
+<li><p>3D场景中，刚体的自由度为6：</p>
+<ol>
+<li>表示位置DoF&#x3D;3</li>
+<li>表示旋转DoF&#x3D;4</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/E83CpzTXbn1BNcA.png" alt="image.png"></p>
+<ul>
+<li>在2D平面上移动，刚体的自由度为3：<ol>
+<li>平移DoF&#x3D;2</li>
+<li>旋转DoF&#x3D;1</li>
+</ol>
+</li>
+</ul>
+<h2 id="T-Pose-A-Pose"><a href="#T-Pose-A-Pose" class="headerlink" title="T-Pose? A-Pose?"></a>T-Pose? A-Pose?</h2><p><img src="https://s2.loli.net/2025/03/18/ngfh3JPLUiYrKNS.png" alt="image.png"></p>
+<h3 id="Retargeting-between-reference-poses"><a href="#Retargeting-between-reference-poses" class="headerlink" title="Retargeting between reference poses"></a>Retargeting between reference poses</h3><p><img src="https://s2.loli.net/2025/03/18/nYa2T1yof8xK4sR.png" alt="image.png"></p>
+<ul>
+<li>先考虑单个物体的重定向：计算RB的时候可以通过旋转的叠加求解，求解路径：B -&gt; A -&gt; C</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/i7eSapjZFuVPKLO.png" alt="image.png"></p>
+<ul>
+<li>考虑整个关节链的重定向，首先根据单个物体的重定向公式可得：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/wIqpzbEyl25dckB.png" alt="image.png"></p>
+<ul>
+<li>然后再根据父结点子结点关系旋转可得：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/Ae7r9LntX2Ky51Z.png" alt="image.png"></p>
+<ul>
+<li>最终求解可得：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/18/1PxolZkn7U6zVD3.png" alt="image.png"></p>
+<hr>
+<h1 id="Inverse-Kinematics"><a href="#Inverse-Kinematics" class="headerlink" title="Inverse Kinematics"></a>Inverse Kinematics</h1></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MOCCA/">MOCCA</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/fdd3721e.html" title="角色动画与运动仿真 04 Keyframe Animation"><img class="cover" src="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">角色动画与运动仿真 04 Keyframe Animation</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/fdd3721e.html" title="角色动画与运动仿真 04 Keyframe Animation"><img class="cover" src="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-12</div><div class="title">角色动画与运动仿真 04 Keyframe Animation</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">24</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Character-Kinematics"><span class="toc-number">1.</span> <span class="toc-text">Character Kinematics</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-create-a-pose"><span class="toc-number">1.1.</span> <span class="toc-text">How to create a pose</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kinematics-of-a-Chain"><span class="toc-number">1.2.</span> <span class="toc-text">Kinematics of a Chain</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Types-of-Joints"><span class="toc-number">1.3.</span> <span class="toc-text">Types of Joints</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Degrees-of-Freedom-DoF"><span class="toc-number">1.3.1.</span> <span class="toc-text">Degrees of Freedom (DoF)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#T-Pose-A-Pose"><span class="toc-number">1.4.</span> <span class="toc-text">T-Pose? A-Pose?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Retargeting-between-reference-poses"><span class="toc-number">1.4.1.</span> <span class="toc-text">Retargeting between reference poses</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Inverse-Kinematics"><span class="toc-number">2.</span> <span class="toc-text">Inverse Kinematics</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/9510ac3d.html" title="角色动画与运动仿真 03 Character Kinematics"><img src="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="角色动画与运动仿真 03 Character Kinematics"/></a><div class="content"><a class="title" href="/post/9510ac3d.html" title="角色动画与运动仿真 03 Character Kinematics">角色动画与运动仿真 03 Character Kinematics</a><time datetime="2025-03-18T06:24:00.000Z" title="Created 2025-03-18 14:24:00">2025-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/fdd3721e.html" title="角色动画与运动仿真 04 Keyframe Animation"><img src="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="角色动画与运动仿真 04 Keyframe Animation"/></a><div class="content"><a class="title" href="/post/fdd3721e.html" title="角色动画与运动仿真 04 Keyframe Animation">角色动画与运动仿真 04 Keyframe Animation</a><time datetime="2025-03-12T04:45:00.000Z" title="Created 2025-03-12 12:45:00">2025-03-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6ecc9b34.html" title="大模型基础与对齐 03 DeepSeek &amp; LLaMA"><img src="https://s2.loli.net/2025/02/22/Od6DiNyG73wULja.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大模型基础与对齐 03 DeepSeek &amp; LLaMA"/></a><div class="content"><a class="title" href="/post/6ecc9b34.html" title="大模型基础与对齐 03 DeepSeek &amp; LLaMA">大模型基础与对齐 03 DeepSeek &amp; LLaMA</a><time datetime="2025-03-12T04:42:00.000Z" title="Created 2025-03-12 12:42:00">2025-03-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e080db9.html" title="LLaMA3 自学笔记"><img src="https://s2.loli.net/2025/03/07/u2SEqVOMvexjFKJ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LLaMA3 自学笔记"/></a><div class="content"><a class="title" href="/post/e080db9.html" title="LLaMA3 自学笔记">LLaMA3 自学笔记</a><time datetime="2025-03-10T03:03:00.000Z" title="Created 2025-03-10 11:03:00">2025-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9307eccf.html" title="LLaMA2 自学笔记"><img src="https://s2.loli.net/2025/03/07/u2SEqVOMvexjFKJ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LLaMA2 自学笔记"/></a><div class="content"><a class="title" href="/post/9307eccf.html" title="LLaMA2 自学笔记">LLaMA2 自学笔记</a><time datetime="2025-03-09T13:00:00.000Z" title="Created 2025-03-09 21:00:00">2025-03-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
