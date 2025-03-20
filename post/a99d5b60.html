@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>角色动画与运动仿真 05 Data-driven Character Animation | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Motion CaptureThe History of Mocap 快速摄影  转描  现代动捕设备系统：  外骨骼 基于惯性 基于光学    Mechanical Mocap 外骨骼：    外骨骼的问题：影响人类运动  Inertial Mocap 惯性测量单元(IMU)：Accelerometers (3dof) + axis gyroscope (3dof)，可以通过积分得到位置和速度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="角色动画与运动仿真 05 Data-driven Character Animation">
+<meta property="og:url" content="http://example.com/post/a99d5b60.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="Motion CaptureThe History of Mocap 快速摄影  转描  现代动捕设备系统：  外骨骼 基于惯性 基于光学    Mechanical Mocap 外骨骼：    外骨骼的问题：影响人类运动  Inertial Mocap 惯性测量单元(IMU)：Accelerometers (3dof) + axis gyroscope (3dof)，可以通过积分得到位置和速度">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg">
+<meta property="article:published_time" content="2025-03-20T12:26:00.000Z">
+<meta property="article:modified_time" content="2025-03-20T12:27:35.588Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="MOCCA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/post/a99d5b60.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '角色动画与运动仿真 05 Data-driven Character Animation',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-20 20:27:35'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">97</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">25</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">角色动画与运动仿真 05 Data-driven Character Animation</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-03-20T12:26:00.000Z" title="Created 2025-03-20 20:26:00">2025-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-03-20T12:27:35.588Z" title="Updated 2025-03-20 20:27:35">2025-03-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%A7%92%E8%89%B2%E5%8A%A8%E7%94%BB%E4%B8%8E%E8%BF%90%E5%8A%A8%E4%BB%BF%E7%9C%9F/">角色动画与运动仿真</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="角色动画与运动仿真 05 Data-driven Character Animation"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Motion-Capture"><a href="#Motion-Capture" class="headerlink" title="Motion Capture"></a>Motion Capture</h1><h2 id="The-History-of-Mocap"><a href="#The-History-of-Mocap" class="headerlink" title="The History of Mocap"></a>The History of Mocap</h2><ul>
+<li><p>快速摄影</p>
+</li>
+<li><p>转描</p>
+</li>
+<li><p>现代动捕设备系统：</p>
+<ol>
+<li>外骨骼</li>
+<li>基于惯性</li>
+<li>基于光学</li>
+</ol>
+</li>
+</ul>
+<h2 id="Mechanical-Mocap"><a href="#Mechanical-Mocap" class="headerlink" title="Mechanical Mocap"></a>Mechanical Mocap</h2><ul>
+<li>外骨骼：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/xZFgv9GDLXaN8Th.png" alt="image.png"></p>
+<ul>
+<li>外骨骼的问题：影响人类运动</li>
+</ul>
+<h2 id="Inertial-Mocap"><a href="#Inertial-Mocap" class="headerlink" title="Inertial Mocap"></a>Inertial Mocap</h2><ul>
+<li><p>惯性测量单元(IMU)：Accelerometers (3dof) + axis gyroscope (3dof)，可以通过积分得到位置和速度</p>
+</li>
+<li><p>问题：误差较大，精度高的传感器价格较高</p>
+</li>
+<li><p>还需要加入其他传感器：重力加速度传感器，电磁传感器</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/KLnNhcC5TR8ApWJ.png" alt="image.png"></p>
+<h2 id="Optical-MocapOptical-Mocap"><a href="#Optical-MocapOptical-Mocap" class="headerlink" title="Optical MocapOptical Mocap"></a>Optical MocapOptical Mocap</h2><ul>
+<li><p>光学动捕：依靠光学设备采集标志点的位置</p>
+</li>
+<li><p>一般使用红外相机，精度高(毫米级)</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/IqRE2dnY3cbHBWQ.png" alt="image.png"></p>
+<ul>
+<li>计算点的位置：三角测量</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/86aUXIMqc9JKNl4.png" alt="image.png"></p>
+<ul>
+<li><p>问题：人的动作非常多非常复杂，可能造成遮挡，因而需要更多的相机进行测量</p>
+</li>
+<li><p>光学动捕只能得到标记点，之后还需labeling，进行补点</p>
+</li>
+<li><p>无需补点marker的方法：</p>
+<ol>
+<li>Markerless Mocap with Multiple Cameras</li>
+<li>Markerless Mocap with Depth Cameras</li>
+<li>Motion Estimation with Monocular Videos</li>
+<li>Motion Estimation with Sparse Sensor</li>
+<li>A Typical Motion Capture Session</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="Motion-Synthesis"><a href="#Motion-Synthesis" class="headerlink" title="Motion Synthesis"></a>Motion Synthesis</h1><h2 id="Motion-Data"><a href="#Motion-Data" class="headerlink" title="Motion Data"></a>Motion Data</h2><ul>
+<li>数据：一系列的pose,{𝑝𝑡},𝑡&#x3D;1,…,N。𝑝𝑡&#x3D;(𝒕0,𝑅0, 𝑅1,𝑅2,…)</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/4knySjeYNgObWEG.png" alt="image.png"></p>
+<ul>
+<li>数据流程：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/OaS2C5XgneDvtVM.png" alt="image.png"></p>
+<h2 id="Motion-Retargeting"><a href="#Motion-Retargeting" class="headerlink" title="Motion Retargeting"></a>Motion Retargeting</h2><ul>
+<li><p>重定位运动以驱动角色有：</p>
+<ol>
+<li>不同数量的骨骼</li>
+<li>不同骨骼名称</li>
+<li>不同的参考姿势</li>
+<li>不同的骨骼结构</li>
+</ol>
+</li>
+<li><p>将动作驱动不同的角色可能导致穿模问题，动作幅度和速度难以完成的问题…</p>
+</li>
+<li><p>A possible retargeting pipeline：</p>
+<ol>
+<li>匹配骨骼的名称</li>
+<li>缩放变换</li>
+<li>复制重定向关键固定参考pose</li>
+<li>用IK进行后处理：<ol>
+<li>Foot-skating</li>
+<li>Self penetration</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="Motion-Editing"><a href="#Motion-Editing" class="headerlink" title="Motion Editing"></a>Motion Editing</h2><ul>
+<li>可以改变动作的某一帧，通过插值曲线完成整个动作序列的修改</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/vyef4bus8WVLJaz.png" alt="image.png"></p>
+<ul>
+<li>也可以用几何的方式进行修改编辑</li>
+</ul>
+<h2 id="Motion-Transition"><a href="#Motion-Transition" class="headerlink" title="Motion Transition"></a>Motion Transition</h2><ul>
+<li>动作的迁移：例如想要从走路变成跑步</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/2VmwyIeLnOr5U8i.png" alt="image.png"></p>
+<ul>
+<li><p>播放到某一帧的时候从上面的动作变为下面的动作，问题：动作突变，不连续</p>
+</li>
+<li><p>解决方法：进行插值，逐渐过渡</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/LSV35bPaesgxEpo.png" alt="image.png"></p>
+<ul>
+<li>问题：希望走路和跑步的方向一致，还需要做一个动作的变换</li>
+</ul>
+<h3 id="“Facing-Frame”"><a href="#“Facing-Frame”" class="headerlink" title="“Facing Frame”"></a>“Facing Frame”</h3><ul>
+<li>随着角色移动的局部坐标系，且旋转不会使角色的方向发生倾斜：平移+y轴的旋转，其中一个轴指向角色的“朝向”</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/2iqZT4xlKsWruH8.png" alt="image.png"></p>
+<ul>
+<li>Possible definitions of R:<ol>
+<li>R是将全局框架的 z 轴与航向对齐的 y 旋转</li>
+<li>R是将全局帧的 x 轴与肩部和臀部之间矢量的平均方向对齐的 y 旋转</li>
+<li>将根关节旋转分解为 R0&#x3D;RyRxz</li>
+</ol>
+</li>
+</ul>
+<h3 id="Rotation-Decomposition"><a href="#Rotation-Decomposition" class="headerlink" title="Rotation Decomposition"></a>Rotation Decomposition</h3><ul>
+<li>旋转在某个方向上做分解：e.g. facing frame</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/fkOsqlTQ5mY3XE2.png" alt="image.png"></p>
+<ul>
+<li>首先用R旋转y向量，R’是旋转后的y用最小的旋转转回到原来y的旋转，可以通过叉乘来计算</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/1d2vDkbAq5gQe8t.png" alt="image.png"></p>
+<ul>
+<li>计算两帧的facing frame，然后应用变换做一个对齐</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/iqeS3oCmPguWNz4.png" alt="image.png"></p>
+<ul>
+<li>通过facing frame的对齐插值，可以使得前后的动作连续</li>
+</ul>
+<h3 id="Path-Fitting"><a href="#Path-Fitting" class="headerlink" title="Path Fitting"></a>Path Fitting</h3><p><img src="https://s2.loli.net/2025/03/20/UMc6VE1pxWfiHag.png" alt="image.png"></p>
+<h2 id="Motion-Composition"><a href="#Motion-Composition" class="headerlink" title="Motion Composition"></a>Motion Composition</h2><ul>
+<li>根据实时的信息的计算生成运动：<ol>
+<li>玩家控制</li>
+<li>同一环境中的对象交互</li>
+<li>其他角色的动作</li>
+</ol>
+</li>
+</ul>
+<h2 id="Motion-Graphs"><a href="#Motion-Graphs" class="headerlink" title="Motion Graphs"></a>Motion Graphs</h2><ul>
+<li>本质上是状态机，每个状态节点保存一些动作(动捕数据)，根据搜索的结果完成动作<ol>
+<li>节点表示运动剪辑</li>
+<li>边表示潜在的过渡</li>
+<li>必要时触发过渡：User input或 Clip end</li>
+<li>检查下一个动作剪辑的即时连接</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/cZmRJ2S7DVkqxPa.png" alt="image.png"></p>
+<ul>
+<li><p>动作的结束和下一个动作的开始尽量接近，否则会导致动作不连续</p>
+</li>
+<li><p>motion graphs整体流程：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/ri4baIFV3gjPXfN.png" alt="image.png"></p>
+<ul>
+<li><p>问题：动作结束之后才能考虑下一个动作，维护状态机非常复杂</p>
+</li>
+<li><p>改进：在每一帧都考虑做切换</p>
+</li>
+</ul>
+<h2 id="Motion-Fields"><a href="#Motion-Fields" class="headerlink" title="Motion Fields"></a>Motion Fields</h2><p><img src="https://s2.loli.net/2025/03/20/5BzaUCSoDYEnThN.png" alt="image.png"></p>
+<ul>
+<li>动作构成了空间上的一个场(motion field)，在场中有很多和该动作相似的状态(让角色看起来比较自然)，这些动作构成集合</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/bE6vGsrMHFZVaSh.png" alt="image.png"></p>
+<ul>
+<li>在动作的集合中做一个k近邻搜索，假设动作平滑，因而可对动作做加权平均，根据状态调整权重</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/JOqbaGZgWMNpnzl.png" alt="image.png"></p>
+<ul>
+<li><p>问题：该用什么权重混合最近邻</p>
+</li>
+<li><p>改进：Motion Matching</p>
+</li>
+</ul>
+<h2 id="Motion-Matching"><a href="#Motion-Matching" class="headerlink" title="Motion Matching"></a>Motion Matching</h2><ul>
+<li>只找一个最近邻，做切换使其平滑的切换到下一个动作</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/mMYR4o5LSBDzKZl.png" alt="image.png"></p>
+<ul>
+<li>问题：需要一个距离函数&#x2F;度量来定义最近邻</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/ZXz8rEIGdDqiKk5.png" alt="image.png"></p>
+<ul>
+<li>问题：需要一个方式来进行动作切换混合过度从而得到平滑的动作：仅每隔几帧执行一次搜索</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/03/20/kn2ZVrlJ6uhN5Wc.png" alt="image.png"></p>
+<hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MOCCA/">MOCCA</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/b3dcc626.html" title="自然语言处理 lec4-3 nlm"><img class="cover" src="https://s2.loli.net/2025/03/18/WoNFLe1mGTDzSsb.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">自然语言处理 lec4-3 nlm</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/fdd3721e.html" title="角色动画与运动仿真 04 Keyframe Animation"><img class="cover" src="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-12</div><div class="title">角色动画与运动仿真 04 Keyframe Animation</div></div></a></div><div><a href="/post/9510ac3d.html" title="角色动画与运动仿真 03 Character Kinematics"><img class="cover" src="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-18</div><div class="title">角色动画与运动仿真 03 Character Kinematics</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">97</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">25</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Motion-Capture"><span class="toc-number">1.</span> <span class="toc-text">Motion Capture</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-History-of-Mocap"><span class="toc-number">1.1.</span> <span class="toc-text">The History of Mocap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mechanical-Mocap"><span class="toc-number">1.2.</span> <span class="toc-text">Mechanical Mocap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Inertial-Mocap"><span class="toc-number">1.3.</span> <span class="toc-text">Inertial Mocap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optical-MocapOptical-Mocap"><span class="toc-number">1.4.</span> <span class="toc-text">Optical MocapOptical Mocap</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Motion-Synthesis"><span class="toc-number">2.</span> <span class="toc-text">Motion Synthesis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Data"><span class="toc-number">2.1.</span> <span class="toc-text">Motion Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Retargeting"><span class="toc-number">2.2.</span> <span class="toc-text">Motion Retargeting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Editing"><span class="toc-number">2.3.</span> <span class="toc-text">Motion Editing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Transition"><span class="toc-number">2.4.</span> <span class="toc-text">Motion Transition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9CFacing-Frame%E2%80%9D"><span class="toc-number">2.4.1.</span> <span class="toc-text">“Facing Frame”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rotation-Decomposition"><span class="toc-number">2.4.2.</span> <span class="toc-text">Rotation Decomposition</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Path-Fitting"><span class="toc-number">2.4.3.</span> <span class="toc-text">Path Fitting</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Composition"><span class="toc-number">2.5.</span> <span class="toc-text">Motion Composition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Graphs"><span class="toc-number">2.6.</span> <span class="toc-text">Motion Graphs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Fields"><span class="toc-number">2.7.</span> <span class="toc-text">Motion Fields</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motion-Matching"><span class="toc-number">2.8.</span> <span class="toc-text">Motion Matching</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/a99d5b60.html" title="角色动画与运动仿真 05 Data-driven Character Animation"><img src="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="角色动画与运动仿真 05 Data-driven Character Animation"/></a><div class="content"><a class="title" href="/post/a99d5b60.html" title="角色动画与运动仿真 05 Data-driven Character Animation">角色动画与运动仿真 05 Data-driven Character Animation</a><time datetime="2025-03-20T12:26:00.000Z" title="Created 2025-03-20 20:26:00">2025-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b3dcc626.html" title="自然语言处理 lec4-3 nlm"><img src="https://s2.loli.net/2025/03/18/WoNFLe1mGTDzSsb.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自然语言处理 lec4-3 nlm"/></a><div class="content"><a class="title" href="/post/b3dcc626.html" title="自然语言处理 lec4-3 nlm">自然语言处理 lec4-3 nlm</a><time datetime="2025-03-18T13:50:00.000Z" title="Created 2025-03-18 21:50:00">2025-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/64857d47.html" title="自然语言处理 lec4-2 Language Modelling"><img src="https://s2.loli.net/2025/03/18/WoNFLe1mGTDzSsb.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自然语言处理 lec4-2 Language Modelling"/></a><div class="content"><a class="title" href="/post/64857d47.html" title="自然语言处理 lec4-2 Language Modelling">自然语言处理 lec4-2 Language Modelling</a><time datetime="2025-03-18T13:49:00.000Z" title="Created 2025-03-18 21:49:00">2025-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/53eacd1.html" title="自然语言处理 lec4-1 pre"><img src="https://s2.loli.net/2025/03/18/WoNFLe1mGTDzSsb.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自然语言处理 lec4-1 pre"/></a><div class="content"><a class="title" href="/post/53eacd1.html" title="自然语言处理 lec4-1 pre">自然语言处理 lec4-1 pre</a><time datetime="2025-03-18T13:44:15.000Z" title="Created 2025-03-18 21:44:15">2025-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9510ac3d.html" title="角色动画与运动仿真 03 Character Kinematics"><img src="https://s2.loli.net/2025/03/12/otfm56i8uqDXbKQ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="角色动画与运动仿真 03 Character Kinematics"/></a><div class="content"><a class="title" href="/post/9510ac3d.html" title="角色动画与运动仿真 03 Character Kinematics">角色动画与运动仿真 03 Character Kinematics</a><time datetime="2025-03-18T06:24:00.000Z" title="Created 2025-03-18 14:24:00">2025-03-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
