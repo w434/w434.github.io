@@ -1,0 +1,414 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机视觉 04 Feature Detection | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Edge Detection Edge Detection: Identify sudden changes (discontinuities) in an image  可以用导数来描述”sudden changes”   Partial Derivative 导数：函数 f（x） 沿某个方向在某一点上变化的速率；梯度：所有偏导数堆叠在一起而形成    图像的偏导数(图像可以描述为2D func">
+<meta property="og:type" content="website">
+<meta property="og:title" content="计算机视觉 04 Feature Detection">
+<meta property="og:url" content="http://example.com/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-04-Feature-Detection.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="Edge Detection Edge Detection: Identify sudden changes (discontinuities) in an image  可以用导数来描述”sudden changes”   Partial Derivative 导数：函数 f（x） 沿某个方向在某一点上变化的速率；梯度：所有偏导数堆叠在一起而形成    图像的偏导数(图像可以描述为2D func">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg">
+<meta property="article:published_time" content="2024-11-19T00:23:00.000Z">
+<meta property="article:modified_time" content="2024-11-19T03:33:26.000Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="计算机视觉">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-04-Feature-Detection.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机视觉 04 Feature Detection',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-11-19 11:33:26'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">计算机视觉 04 Feature Detection</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="Edge-Detection"><a href="#Edge-Detection" class="headerlink" title="Edge Detection"></a>Edge Detection</h1><ul>
+<li><p>Edge Detection: Identify sudden changes (discontinuities) in an image</p>
+</li>
+<li><p>可以用导数来描述”sudden changes”</p>
+</li>
+</ul>
+<h2 id="Partial-Derivative"><a href="#Partial-Derivative" class="headerlink" title="Partial Derivative"></a>Partial Derivative</h2><ul>
+<li>导数：函数 f（x） 沿某个方向在某一点上变化的速率；梯度：所有偏导数堆叠在一起而形成</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/MYhW3viTyxg2uQl.png" alt="image.png"></p>
+<ul>
+<li>图像的偏导数(图像可以描述为2D function f(x,y)):</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/8Ng6IUfK14uGo5v.png" alt="image.png"></p>
+<ul>
+<li>图像的偏导数可以用图像的滤波来计算：水平竖直方向分别用滤波卷积计算</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/bB2hsLZ7Hf3gAIc.png" alt="image.png"></p>
+<ul>
+<li><p>每一个方向先前向差分再归一化，水平、竖直方向拼起来形成梯度</p>
+</li>
+<li><p>Noise Severely Affects Derivatives of an Image：求梯度的时候噪音的梯度被放大，主导图像的梯度</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/xtQwKXoPyb5NqTc.png" alt="image.png"></p>
+<ul>
+<li><p>解决办法：先对图像做平滑处理，可以先对图像用高斯滤波，然后再进行边缘检测求梯度。经过数学推导改变偏导顺序可以把这个过程变为：</p>
+<ol>
+<li>先对高斯求偏导</li>
+<li>再对函数进行滤波求梯度</li>
+<li>最后归一化<br>  <img src="https://s2.loli.net/2024/11/19/Bm4gGd9WvpOobZ6.png" alt="image.png"></li>
+</ol>
+</li>
+<li><p>The gradient direction is given by:</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/dXqSMzN3TAncxsw.png" alt="image.png"></p>
+<ul>
+<li>The edge strength is given by the gradient magnitude(梯度幅度):</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/wZEgn8QzHShd5Ka.png" alt="image.png"></p>
+<h2 id="Canny-Edge-Detector"><a href="#Canny-Edge-Detector" class="headerlink" title="Canny Edge Detector"></a>Canny Edge Detector</h2><ul>
+<li>Canny Edge Detector的流程：<ol>
+<li>预处理: Grayscale conversion + Gaussion blur</li>
+<li>使用中心差分来计算梯度图像（而不是第一次前向差分），这样更准确。<br>  kernelX &#x3D; {1,0,-1,2,0,-2,1,0,-1}<br>  KernelY &#x3D; {1,2,1,0,0,0,-1,-2,-1}</li>
+<li>计算梯度幅度，是连续变化，需要加阈值<br>  <img src="https://s2.loli.net/2024/11/19/zMBJXjbfrT9NQUh.png" alt="image.png"></li>
+<li>NMS非极大值抑制：消除误判导致的边界很粗现象，利用NMS使得Edge变得更细。遍历所有像素，仅保留edge detection中的最大值</li>
+<li>Double threshold(双阈值)：<ol>
+<li>高于高阈值，则置为edge(1)</li>
+<li>低于低阈值，则置为非edge(0)</li>
+<li>处于低阈值~高阈值之间的(weak edges)进入下一阶段的检测<br>  <img src="https://s2.loli.net/2024/11/19/Pvd569iMmUpZClE.png" alt="image.png"></li>
+</ol>
+</li>
+<li>Edge Tracking by Hysteresis(滞后现象)：<ol>
+<li>weak edges如果能连接到此前置为1的edge则置为1</li>
+<li>否则置为0</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/pxitGbuAUhvwasI.png" alt="image.png"></p>
+<h1 id="Corners-角点检测"><a href="#Corners-角点检测" class="headerlink" title="Corners(角点检测)"></a>Corners(角点检测)</h1><ul>
+<li>初步定义角点：两条或多条边的交点</li>
+</ul>
+<h2 id="Harris-Corner-Detector"><a href="#Harris-Corner-Detector" class="headerlink" title="Harris Corner Detector"></a>Harris Corner Detector</h2><ul>
+<li>Key idea: characterize corners by measuring the intensity change when shifting a small local window，移动窗口查看变化</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/GrC7k9adiwtsbEg.png" alt="image.png"></p>
+<ul>
+<li><p>移动窗口 W by (u,v)(点的平移)</p>
+</li>
+<li><p>移位前后每个像素的强度变化可以通过将平方差 （SSD） 相加来定义：其中，I(x,y)是像素的值，w(x,y)是像素的权重</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/s7DctwqJoEXryjZ.png" alt="image.png"></p>
+<ul>
+<li><p>缺点：循环遍历，精确计算所需时间很长</p>
+</li>
+<li><p>泰勒展开：一种线性化函数的方法</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/ukR1lYFgdCjoXOQ.png" alt="image.png"></p>
+<ul>
+<li>将其用于图像中(Harris Corner Detector)可得：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/i75DdxKgCOhRTQS.png" alt="image.png"></p>
+<ul>
+<li>The Sum of Squared Differences with Taylor Series：形成二次型，M是半正定对称矩阵</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/1HRCXbfdzrlwSJU.png" alt="image.png"></p>
+<ul>
+<li><p>对称矩阵M和向量[u,v]，假设：𝐸 [𝑢, 𝑣] &#x3D; [𝑢, 𝑣] 𝑴 [𝑢, 𝑣].T。那么其等值线&#x2F;切面，即是一个椭圆。𝐸 [𝑢, 𝑣]取不同值对应的椭圆面不同</p>
+</li>
+<li><p>可以通过将 M 分解为旋转 + 缩放来查看这个椭圆的形状。其中𝜆1𝜆2是特征值</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/XC1YGQvVqMxcFEr.png" alt="image.png"></p>
+<ul>
+<li>特征值的解释：只有当𝜆1𝜆2都很大时，R才会很大，说明E在任何方向的变化都很大，此时为角点。否则𝜆1𝜆2任意一者小，R都会很小，不判定为角点</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/IJacVLDAwYQOb8y.png" alt="image.png"></p>
+<ul>
+<li>summary:<ol>
+<li>预处理：将输入图像转换为灰度并应用高斯滤波器 </li>
+<li>求梯度：应用 Sobel 算子查找 x 和 y 渐变值 </li>
+<li>求Harris 值：对于每个像素 p，考虑其周围一个 3×3 窗口，并计算第二个矩矩阵 M 和角强度函数 R </li>
+<li>设置阈值 R 和应用非最大值抑制NMS</li>
+</ol>
+</li>
+</ul>
+<h2 id="Properties-of-Corners-角点的性质"><a href="#Properties-of-Corners-角点的性质" class="headerlink" title="Properties of Corners(角点的性质)"></a>Properties of Corners(角点的性质)</h2><ul>
+<li><p>所有操作通过卷积完成，卷积操作具有平移不变性</p>
+</li>
+<li><p>旋转只会导致角旋转发生变化，特征值保持不变。角点具有旋转不变性</p>
+</li>
+<li><p>将仿射强度变化(颜色值的变化)定义为：𝐼𝑛𝑒𝑤 &#x3D; 𝛼𝐼𝑜𝑙𝑑 + β(𝛼是对比度，β是明暗)。二阶矩矩阵 M 只取决于导数，所以 β 无关。但是，α 影响图像导数的缩放，并且存在阈值。角点对仿射强度变化部分不变</p>
+</li>
+<li><p>角点不随缩放而等变。欲使角点随缩放而等变，则可以使用高斯金字塔在尺度空间中执行 Harris 检测</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/dFefkWzoLngUSRc.png" alt="image.png"></p>
+<h1 id="Blobs-图像色块检测"><a href="#Blobs-图像色块检测" class="headerlink" title="Blobs(图像色块检测)"></a>Blobs(图像色块检测)</h1><ul>
+<li><p>Limitations of Points and Edges：</p>
+<ol>
+<li>Edge难以被定位</li>
+<li>角点可以被定位但是描述性低</li>
+</ol>
+</li>
+<li><p>Blobs：图像色块，是数字图像中与周围区域相比在属性（如亮度或颜色）上不同的区域</p>
+</li>
+<li><p>Blob 具有固定的位置和大小，可以localized，是很好的interest points</p>
+</li>
+<li><p>Blob detection是SIFT feature的前身</p>
+</li>
+<li><p>1D Blobs：和周围不一样，有两条边夹着Blobs,可以通过Edge detection完成Blobs检测</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/2nrdTuEh5by3JfD.png" alt="image.png"></p>
+<h2 id="高斯梯度下的-Edge-Detection"><a href="#高斯梯度下的-Edge-Detection" class="headerlink" title="高斯梯度下的 Edge Detection"></a>高斯梯度下的 Edge Detection</h2><ul>
+<li><p>Filtering with convolution:𝑓 ∗ ℎ &#x3D; ∫ 𝑓(𝜏) ℎ(𝑥 − 𝜏) 𝑑𝜏,其中*是卷积操作</p>
+</li>
+<li><p>Calculate gradient for edge detection:</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/An1O7cZPiNVXh8Y.png" alt="image.png"></p>
+<ul>
+<li><p>Extremum of 𝑓 ∗ ℎ′ is an edge：设𝑓(𝑥) &#x3D; 𝑢(𝑥 − 𝑥0)为阶跃函数,ℎ(𝑥) &#x3D; 𝐺𝛿(𝑥) is a Gaussian function:𝑓 ∗ ℎ′&#x3D; 𝑓 ∗ ℎ′&#x3D; 𝑓′∗ ℎ&#x3D; 𝐺𝛿(𝑥) ∗ 𝛿(𝑥 − 𝑥0)&#x3D; 𝐺𝛿(𝑥 − 𝑥0)</p>
+</li>
+<li><p>The edge is at the location of 𝑥:</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/n2plLSGeqAP7Xh8.png" alt="image.png"></p>
+<ul>
+<li>使用归一化高斯导数不依赖于 δ(冲击函数，采样函数) 的极值，即 f ∗ δ Gδ’</li>
+</ul>
+<h2 id="二阶高斯梯度下的-Edge-Detection"><a href="#二阶高斯梯度下的-Edge-Detection" class="headerlink" title="二阶高斯梯度下的 Edge Detection"></a>二阶高斯梯度下的 Edge Detection</h2><ul>
+<li>Extremum of 𝑓 ∗ ℎ′ is an edge → Zero-crossing of 𝑓 ∗ ℎ′′ is an edge</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/pVC8tR3uMKc19nY.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2024/11/19/NwV3cKbdaSo12sI.png" alt="image.png"></p>
+<h2 id="二阶高斯梯度下的-Blobs-Detection"><a href="#二阶高斯梯度下的-Blobs-Detection" class="headerlink" title="二阶高斯梯度下的 Blobs Detection"></a>二阶高斯梯度下的 Blobs Detection</h2><ul>
+<li>Blob小，极值点加强。一个边两个极值。与之匹配的机制σ是Blob的大小，极值σ的位置是Blob的位置。图像随着σ的变化而变化</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/lwkgHy2tATPVjNh.png" alt="image.png"></p>
+<ul>
+<li>Summary of 1D Blob Detection：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/UkinIrDE5VtXJwf.png" alt="image.png"></p>
+<h2 id="2D-Blob-Detection-Laplacian-of-Gaussian"><a href="#2D-Blob-Detection-Laplacian-of-Gaussian" class="headerlink" title="2D Blob Detection: Laplacian of Gaussian"></a>2D Blob Detection: Laplacian of Gaussian</h2><ul>
+<li>直观地说，我们可以用高斯的二阶导数 G′′（x; σ） 在 x 方向上检测Blob，然后用 G′′ (y;σ) 在 y 方向上检测Blob;，然后对两个方向求和</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/sxAViqZK86nrBeL.png" alt="image.png"></p>
+<ul>
+<li>可以使用多尺度高斯归一化拉普拉斯算力（NLoG： σ²∇²G x， y;σ ）来检测二维Blob，即过滤具有不同σ值的图像，并提取极值</li>
+</ul>
+<h2 id="2D-Blob-Detection-Scale-Selection"><a href="#2D-Blob-Detection-Scale-Selection" class="headerlink" title="2D Blob Detection: Scale Selection"></a>2D Blob Detection: Scale Selection</h2><ul>
+<li>给定一个二进制圆和尺度为 σ 的 NLoG 滤波器，我们可以将结果计算为尺度 I（x， y; σ） 的函数：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/3kj92Tfi78FDKAE.png" alt="image.png"></p>
+<ul>
+<li>Summary of 2D Blob Detection：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/ZEYgCs7oODHucjp.png" alt="image.png"></p>
+<h1 id="SIFT-Feature"><a href="#SIFT-Feature" class="headerlink" title="SIFT Feature"></a>SIFT Feature</h1><ul>
+<li><p>尺度不变关键点的显著图像特征</p>
+</li>
+<li><p>将Blob作为尺度不变的关键点:</p>
+<ol>
+<li>通过提取多尺度 NLoG 的极值来检测Blob</li>
+<li>如果重新缩放了Blob，仍然可以在 NLoG 的移位滤波输出中检测到</li>
+<li>在缩放归一化后，我们使Blob缩放不变</li>
+<li>Blob对旋转、遮挡、杂波或噪声也很鲁棒</li>
+</ol>
+</li>
+</ul>
+<h2 id="Fast-NLoG-Approximation-DoG"><a href="#Fast-NLoG-Approximation-DoG" class="headerlink" title="Fast NLoG Approximation: DoG"></a>Fast NLoG Approximation: DoG</h2><ul>
+<li>高斯差值 （DoG） 是高斯归一化拉普拉斯量 （LoG） 的近似值和快速实现</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/BMlFuDpfgrO8HCc.png" alt="image.png"></p>
+<h2 id="Blob-Detection-with-the-Image-Pyramid"><a href="#Blob-Detection-with-the-Image-Pyramid" class="headerlink" title="Blob Detection with the Image Pyramid"></a>Blob Detection with the Image Pyramid</h2><p><img src="https://s2.loli.net/2024/11/19/4HVXTCEiB6MrtS2.png" alt="image.png"></p>
+<ul>
+<li>通过在当前和相邻比例（用圆圈标记）下将像素与 3x3x3 区域中的 26 个相邻像素进行比较来检测 DoG 图像的极值</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/mCGbKOTE6MildsX.png" alt="image.png"></p>
+<h2 id="Blob-Keypoint-Selection"><a href="#Blob-Keypoint-Selection" class="headerlink" title="Blob Keypoint Selection"></a>Blob Keypoint Selection</h2><p><img src="https://s2.loli.net/2024/11/19/DKXoS4bICcLWUnw.png" alt="image.png"></p>
+<h2 id="Computing-the-Principal-Orientation-of-the-Feature-计算特征的主方向"><a href="#Computing-the-Principal-Orientation-of-the-Feature-计算特征的主方向" class="headerlink" title="Computing the Principal Orientation of the Feature(计算特征的主方向)"></a>Computing the Principal Orientation of the Feature(计算特征的主方向)</h2><p><img src="https://s2.loli.net/2024/11/19/BIe1Vn2CT9wZQoO.png" alt="image.png"></p>
+<ul>
+<li><p>通过计算梯度的方向和幅度来构建梯度方向直方图，选择梯度方向直方图中的峰值方向作为特征的主方向</p>
+</li>
+<li><p>可以用主方向来消除旋转带来的变化</p>
+</li>
+<li><p>可以使用梯度直方图作为描述符，实施细节：</p>
+<ol>
+<li>使用关键点的缩放来选择图像的高斯模糊级别</li>
+<li>预先计算金字塔所有级别的梯度以提高效率</li>
+<li>使用高斯窗口（蓝色圆圈）以避免突然变化</li>
+<li>将特征标准化为单位长度以减少照明的影响</li>
+<li>在实践中，使用 4x4 本地窗口，每个窗口有 8 个方向，因此维度为 128</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/CU2VwS6hsgcNqpL.png" alt="image.png"></p>
+<ul>
+<li>Summary of SIFT：</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/11/19/rnHKj6MAOGE1o5y.png" alt="image.png"></p>
+<h2 id="Histogram-of-Oriented-Gradients-HoG-Feature"><a href="#Histogram-of-Oriented-Gradients-HoG-Feature" class="headerlink" title="Histogram of Oriented Gradients (HoG) Feature"></a>Histogram of Oriented Gradients (HoG) Feature</h2><ul>
+<li><p>局部物体的外观和形状可以通过梯度分布来表征，甚至无需精确了解梯度位置：</p>
+<ol>
+<li>将图像大小调整为 128x64，并计算每个像素的梯度</li>
+<li>将无符号梯度（幅度和角度）划分为 8x8 个单元格，并计算 9 点直方图</li>
+<li>将 2x2 单元格分组，步幅为 1</li>
+<li>标准化直方图（对照明和阴影具有鲁棒性）</li>
+</ol>
+</li>
+<li><p>HoG vs SIFT：</p>
+<ol>
+<li>对于计算：<ol>
+<li>HoG 特征以单一比例在密集网格中计算，而不进行主导方向对齐</li>
+<li>SIFT 特征在一组稀疏的比例不变关键点处计算，旋转以对齐其主导方向</li>
+</ol>
+</li>
+<li>对于用法：<ol start="2">
+<li>SIFT 功能针对稀疏宽基线匹配进行了优化</li>
+<li>HOG 功能用于空间形式的密集稳健编码</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="HoG-Feature-for-Detection"><a href="#HoG-Feature-for-Detection" class="headerlink" title="HoG Feature for Detection"></a>HoG Feature for Detection</h2><ul>
+<li><p>提取 HoG 特征并训练线性分类器 （SVM）</p>
+</li>
+<li><p>使用具有不同尺度的滑动窗口运行分类器</p>
+</li>
+</ul>
+<hr>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"></div></div><div class="card-widget card-archives"></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">0</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-04-29T17:12:51.756Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

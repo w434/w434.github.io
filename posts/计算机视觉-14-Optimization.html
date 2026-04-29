@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机视觉 14 Optimization | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="OptimizationOptimization with Grid Search 均匀采集样本点，遍历样本点遇到损失值更小的就进行更新  123456best, bestScore &#x3D; None, Inffor d1 in range1:    for d2 in range2:        w &#x3D; [d1, d2]        if L(w) &lt; bestScore:">
+<meta property="og:type" content="website">
+<meta property="og:title" content="计算机视觉 14 Optimization">
+<meta property="og:url" content="http://example.com/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-14-Optimization.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="OptimizationOptimization with Grid Search 均匀采集样本点，遍历样本点遇到损失值更小的就进行更新  123456best, bestScore &#x3D; None, Inffor d1 in range1:    for d2 in range2:        w &#x3D; [d1, d2]        if L(w) &lt; bestScore:">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg">
+<meta property="article:published_time" content="2025-01-26T08:18:00.000Z">
+<meta property="article:modified_time" content="2025-01-26T12:05:12.000Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="计算机视觉">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-14-Optimization.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机视觉 14 Optimization',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2025-01-26 20:05:12'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">计算机视觉 14 Optimization</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="Optimization"><a href="#Optimization" class="headerlink" title="Optimization"></a>Optimization</h1><h2 id="Optimization-with-Grid-Search"><a href="#Optimization-with-Grid-Search" class="headerlink" title="Optimization with Grid Search"></a>Optimization with Grid Search</h2><ul>
+<li>均匀采集样本点，遍历样本点遇到损失值更小的就进行更新</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">best, bestScore = <span class="literal">None</span>, Inf</span><br><span class="line"><span class="keyword">for</span> d1 <span class="keyword">in</span> range1:</span><br><span class="line">    <span class="keyword">for</span> d2 <span class="keyword">in</span> range2:</span><br><span class="line">        w = [d1, d2]</span><br><span class="line">        <span class="keyword">if</span> L(w) &lt; bestScore:</span><br><span class="line">            best, bestScore = w, L(w)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>优点：简单，只需要评估模型，对函数没有要求</p>
+</li>
+<li><p>缺点：计算代价高，高维求值困难</p>
+</li>
+</ul>
+<h2 id="Optimization-with-Random-Search"><a href="#Optimization-with-Random-Search" class="headerlink" title="Optimization with Random Search"></a>Optimization with Random Search</h2><ul>
+<li>随机采样，与问题维度无关</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">best, bestScore = <span class="literal">None</span>, Inf</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">iter</span> <span class="keyword">in</span> <span class="built_in">range</span>(numIters):</span><br><span class="line">    w = random(N,<span class="number">1</span>) <span class="comment"># sample</span></span><br><span class="line">    score = 𝐿(𝒘) <span class="comment"># evaluate</span></span><br><span class="line">    <span class="keyword">if</span> score &lt; bestScore:</span><br><span class="line">        best, bestScore = w, score</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>优点：简单：只需要评估模型，对函数无要求</p>
+</li>
+<li><p>缺点：维度高的时候可能因为随机采样点稀疏而错过最优解</p>
+</li>
+</ul>
+<h2 id="When-to-Use-Grid-Random-Search"><a href="#When-to-Use-Grid-Random-Search" class="headerlink" title="When to Use Grid&#x2F;Random Search"></a>When to Use Grid&#x2F;Random Search</h2><ul>
+<li><p>维度低</p>
+</li>
+<li><p>定义域受限</p>
+</li>
+<li><p>目标函数难以分析系</p>
+</li>
+<li><p>Random search与其他策略结合使用时通常更有效，Grid search使系统地测试某些内容变得容易</p>
+</li>
+</ul>
+<h1 id="Optimization-with-Gradient-Decent"><a href="#Optimization-with-Gradient-Decent" class="headerlink" title="Optimization with Gradient Decent"></a>Optimization with Gradient Decent</h1><ul>
+<li><p>梯度表示函数最快增长的方向和速率</p>
+</li>
+<li><p>Gradient Decent：在当前点沿函数的负梯度方向执行重复步骤，以找到函数的（局部）最小值</p>
+</li>
+<li><p>起始位置随机，不能保证全局最优，只能保证最后的梯度&#x3D;0，即局部最优</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/qymAjrSPYiZCoOf.png" alt="image.png"></p>
+<h2 id="Compute-Gradients-Numerical-Method-数值方法"><a href="#Compute-Gradients-Numerical-Method-数值方法" class="headerlink" title="Compute Gradients: Numerical Method(数值方法)"></a>Compute Gradients: Numerical Method(数值方法)</h2><ul>
+<li>使用有限差分来近似导数，一般使用中心差分准确率最高</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/SzUEMoTcakKQqGu.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/01/26/wOcVMP5bs9L4thN.png" alt="image.png"></p>
+<ul>
+<li>Numerical gradient: approximate, slow, easy to write</li>
+</ul>
+<h2 id="Computing-Gradients-Analytic-Method-解析法"><a href="#Computing-Gradients-Analytic-Method-解析法" class="headerlink" title="Computing Gradients: Analytic Method(解析法)"></a>Computing Gradients: Analytic Method(解析法)</h2><ul>
+<li>对于线性回归问题，梯度计算如下：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/IkaZTBWyjPtguK9.png" alt="image.png"></p>
+<ul>
+<li><p>Analytic gradient: exact, fast, error-prone</p>
+</li>
+<li><p>在使用中通常使用Analytic gradient</p>
+</li>
+</ul>
+<h1 id="Stochastic-Gradient-Descent-SGD"><a href="#Stochastic-Gradient-Descent-SGD" class="headerlink" title="Stochastic Gradient Descent: SGD"></a>Stochastic Gradient Descent: SGD</h1><ul>
+<li>梯度下降的问题：当 N 很大时，计算总和代价很高</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/8Kcp5CE3L7SiIwu.png" alt="image.png"></p>
+<ul>
+<li>解决方法：蒙特卡洛积分，用minibatch来对N进行逼近</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/GXbl1YAFzasjPLi.png" alt="image.png"></p>
+<ul>
+<li>超参数：<ol>
+<li>迭代步数</li>
+<li>batch size</li>
+<li>wight初始化</li>
+<li>lr</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">w = initialize_weights()</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(num_steps):</span><br><span class="line">    minibatch = sample_data(data,batch_size)</span><br><span class="line">    dw = compute_gradient(loss_fn,minibatch,w)</span><br><span class="line">    w -= lr * dw</span><br></pre></td></tr></table></figure>
+
+<h2 id="Problems-of-SGD-1"><a href="#Problems-of-SGD-1" class="headerlink" title="Problems of SGD: #1"></a>Problems of SGD: #1</h2><ul>
+<li>目标函数在某一方向变化剧烈在另一方向变化很小。条件数差大的时候，梯度抖动很大</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/cluTSXpIJedh2my.png" alt="image.png"></p>
+<ul>
+<li>如果减小step size可以减小梯度抖动，但是更新速度会变慢</li>
+</ul>
+<h2 id="Problems-of-SGD-2"><a href="#Problems-of-SGD-2" class="headerlink" title="Problems of SGD: #2"></a>Problems of SGD: #2</h2><ul>
+<li>难以跳脱局部最小值和鞍点</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/h1Ab5DpUBVIXxiK.png" alt="image.png"></p>
+<h2 id="Problems-of-SGD-3"><a href="#Problems-of-SGD-3" class="headerlink" title="Problems of SGD: #3"></a>Problems of SGD: #3</h2><ul>
+<li>噪声大，如果batch size &lt;&lt; total sample number N</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/FVMdztyWU1P82Qp.png" alt="image.png"></p>
+<h1 id="SGD-with-Momentum"><a href="#SGD-with-Momentum" class="headerlink" title="SGD with Momentum"></a>SGD with Momentum</h1><ul>
+<li>Key idea: Build up the velocity for loss decent as a running mean of gradients，每一次的更新受到历史因素的影响</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/RgubjnOpGS6HADi.png" alt="image.png"></p>
+<ul>
+<li>考虑历史因素在局部最小或者鞍点仍有扰动</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/3RhMTO9lFDvpoS1.png" alt="image.png"></p>
+<ul>
+<li>SGD with Momentum抖动小，收敛更快，噪音低</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/Hy7Pzl632iuECbq.png" alt="image.png"></p>
+<h1 id="Nesterov-Momentum"><a href="#Nesterov-Momentum" class="headerlink" title="Nesterov Momentum"></a>Nesterov Momentum</h1><ul>
+<li>先按照历史累计的v走一步到A，然后再在A处找梯度下降</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/2jOp5xC9hTnvigb.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/01/26/U52KBwZJTWDRknC.png" alt="image.png"></p>
+<ul>
+<li>Nesterov Momentum收敛速度更快，但是当lr太高的时候会导致overshooting</li>
+</ul>
+<h1 id="Learning-Rate"><a href="#Learning-Rate" class="headerlink" title="Learning Rate"></a>Learning Rate</h1><ul>
+<li>lr是一个重要的超参数：<ol>
+<li>lr太小会导致更新速度太慢</li>
+<li>lr太大会导致overshooting</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/A5srOSlL7Kw6zbu.png" alt="image.png"></p>
+<h2 id="Stepwise-Decay"><a href="#Stepwise-Decay" class="headerlink" title="Stepwise Decay"></a>Stepwise Decay</h2><ul>
+<li><p>Idea: Start with high learning rate, reduce it over time.Reduce by some factor at fixed iterations</p>
+</li>
+<li><p>在某个迭代次数后，lr下降</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/xf1P9gHsqD5TJbk.png" alt="image.png"></p>
+<h2 id="Cosine-Decay"><a href="#Cosine-Decay" class="headerlink" title="Cosine Decay"></a>Cosine Decay</h2><ul>
+<li>Idea: Start with high learning rate, reduce it over time.reduce the learning rate following：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/Y3ZyX5iQDfvprFE.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/01/26/Uw3P9TptBMHfFhN.png" alt="image.png"></p>
+<h1 id="Adaptive-Learning-Rate-Methods"><a href="#Adaptive-Learning-Rate-Methods" class="headerlink" title="Adaptive Learning Rate Methods"></a>Adaptive Learning Rate Methods</h1><ul>
+<li>稀疏梯度问题：当参数比较多时，很多梯度约等于0，且样本类出现次数不同，可能有的偶尔被激活，应该应用不同的lr</li>
+</ul>
+<h2 id="AdaGrad"><a href="#AdaGrad" class="headerlink" title="AdaGrad"></a>AdaGrad</h2><ul>
+<li><p>调整学习率是一个代价很高的过程;因而希望自适应地调整学习率，甚至按参数进行调整</p>
+</li>
+<li><p>AdaGrad 根据每个维度中的历史平方和添加了梯度的元素缩放，这适用于稀疏梯度</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grad_squard = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(num_steps):</span><br><span class="line">    dw = compute_gradint(w)</span><br><span class="line">    grad_squared += dw * dw</span><br><span class="line">    w -= lr * dw / (grad_squared.sqrt() + <span class="number">1e-7</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>问题：AdaGrad 积累grad_squared，从而不受限制地不断增长</li>
+</ul>
+<h2 id="RMSProp-“Leaky-Adagrad”"><a href="#RMSProp-“Leaky-Adagrad”" class="headerlink" title="RMSProp: “Leaky Adagrad”"></a>RMSProp: “Leaky Adagrad”</h2><p><img src="https://s2.loli.net/2025/01/26/5t3ksN9ZvPMzame.png" alt="image.png"></p>
+<ul>
+<li>梯度归一化，而不是累加梯度，对grad_squared和dw*dw进行加权平均</li>
+</ul>
+<h2 id="Adam-RMSProp-Momentum"><a href="#Adam-RMSProp-Momentum" class="headerlink" title="Adam: RMSProp + Momentum"></a>Adam: RMSProp + Momentum</h2><ul>
+<li><p>Adam (Adaptive Momentum) combines the benefits of RMSProp and Momentum</p>
+</li>
+<li><p>误差校正：用1&#x2F;(1-β**t)进行校正</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/8Pkfam2YIF5uTeC.png" alt="image.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">moment1 = <span class="number">0</span></span><br><span class="line">moment2 = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, num_steps + <span class="number">1</span>):</span><br><span class="line">    dw = compute_gradient(w)</span><br><span class="line">    <span class="comment"># 累积一阶矩、二阶矩</span></span><br><span class="line">    moment1 = beta1 * moment1 + (<span class="number">1</span> - beta1) * dw</span><br><span class="line">    moment2 = beta2 * moment2 + (<span class="number">1</span> - beta2) * dw * dw</span><br><span class="line">    moment1_unbias = moment1 / (<span class="number">1</span> - beta1 ** t)</span><br><span class="line">    moment2_unbias = moment2 / (<span class="number">1</span> - beta2 ** t)</span><br><span class="line">    w -= lr * moment1_unbias / (moment2_unbias.sqrt() + <span class="number">1e-7</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>L2 Regularization vs Weight Decay:Due to the gradient normalization in Adam, Weight Decay is “canceled”，因此应该显式的加入weight decay</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/26/tZBEFLkayISmYo6.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/01/26/9FVs2ulgrSYU47w.png" alt="image.png"></p>
+<hr>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"></div></div><div class="card-widget card-archives"></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">0</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-04-29T17:12:51.756Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

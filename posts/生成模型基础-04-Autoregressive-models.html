@@ -1,0 +1,497 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>生成模型基础 04 Autoregressive models | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Autoregressive modelsProbabilistic model in high-dimensional space 概率建模，生成模型：希望采样数据分布达到真实数据类似的效果  问题：高维数据  Image：sample出image &#x3D; 给定image的概率为sample出每个像素概率 &#x3D; 给定image概率的联合概率     Sentence：sample出">
+<meta property="og:type" content="website">
+<meta property="og:title" content="生成模型基础 04 Autoregressive models">
+<meta property="og:url" content="http://example.com/posts/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80-04-Autoregressive-models.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="Autoregressive modelsProbabilistic model in high-dimensional space 概率建模，生成模型：希望采样数据分布达到真实数据类似的效果  问题：高维数据  Image：sample出image &#x3D; 给定image的概率为sample出每个像素概率 &#x3D; 给定image概率的联合概率     Sentence：sample出">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2025/09/16/g4dekXTQ6smLh3v.jpg">
+<meta property="article:published_time" content="2025-10-14T05:54:00.000Z">
+<meta property="article:modified_time" content="2025-10-14T09:11:43.316Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="生成模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/09/16/g4dekXTQ6smLh3v.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/posts/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80-04-Autoregressive-models.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '生成模型基础 04 Autoregressive models',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2025-10-14 17:11:43'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('https://s2.loli.net/2025/09/16/g4dekXTQ6smLh3v.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">生成模型基础 04 Autoregressive models</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="Autoregressive-models"><a href="#Autoregressive-models" class="headerlink" title="Autoregressive models"></a>Autoregressive models</h1><h2 id="Probabilistic-model-in-high-dimensional-space"><a href="#Probabilistic-model-in-high-dimensional-space" class="headerlink" title="Probabilistic model in high-dimensional space"></a>Probabilistic model in high-dimensional space</h2><ul>
+<li><p>概率建模，生成模型：希望采样数据分布达到真实数据类似的效果</p>
+</li>
+<li><p>问题：高维数据</p>
+</li>
+<li><p>Image：sample出image &#x3D; 给定image的概率为sample出每个像素概率 &#x3D; 给定image概率的联合概率</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/uQR1EajIpBFPGnO.png" alt="image.png"></p>
+<ul>
+<li>Sentence：sample出句子的概率 &#x3D; 给定句子的概率等于sample出每个词的概率 &#x3D; 给定每个词的联合概率</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/dQEV5JAfwNSR8Lo.png" alt="image.png"></p>
+<hr>
+<h2 id="General-setting"><a href="#General-setting" class="headerlink" title="General setting"></a>General setting</h2><ul>
+<li><p>高维数据可以由一个高位向量表示：Data 𝑥 &#x3D; (𝑥1,𝑥2,…,𝑥𝑑)：</p>
+<ol>
+<li>Image：d表示image的大小(pixel x pixel)，xi代表每个pixel的三通道RGB值</li>
+<li>Language：d表示句子长度，xi表示对应位置的每个词</li>
+</ol>
+</li>
+<li><p>目标：model 𝑃(𝑋 &#x3D; 𝑥) -&gt; 联合概率分布：𝑃(𝑋1 &#x3D; 𝑥1,…,𝑋𝑑 &#x3D; 𝑥𝑑)</p>
+</li>
+<li><p>可以通过条件概率的chain rule分解为条件概率密度函数的乘积：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/DYHov9C8GXjrTAf.png" alt="image.png"></p>
+<ul>
+<li><p>知道条件概率分布可以反推联合概率分布 -&gt; 建模后可以计算数据出现的概率</p>
+</li>
+<li><p>希望建模每个条件概率，学习模型参数θ，maximize Pθ</p>
+</li>
+</ul>
+<hr>
+<h2 id="Different-factorizations"><a href="#Different-factorizations" class="headerlink" title="Different factorizations"></a>Different factorizations</h2><ul>
+<li><p>factorization 是数据生成的顺序：</p>
+<ol>
+<li>Left-to-right factorization：从左向右逐字生成</li>
+<li>Right-to-left factorization：从右向左逐字生成</li>
+</ol>
+</li>
+<li><p>将image建模为序列时，可以任意方式选择条件概率顺序的路径</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/asjBckglKmT612X.png" alt="image.png"></p>
+<ul>
+<li><p>在本课中，只讨论:</p>
+<ol>
+<li>围绕自然语言的</li>
+<li>从左到右生成模式的</li>
+<li>用AR建模的</li>
+</ol>
+</li>
+<li><p>具备上面三重特征的称为”language model”</p>
+</li>
+<li><p>研究方面：</p>
+<ol>
+<li>[Method] 如何让它对任何i都通用</li>
+<li>[Optimization] 如何训练它</li>
+<li>[Evaluation] 如何比较两个模型</li>
+<li>[Inference] 如何使用</li>
+</ol>
+</li>
+<li><p>自然语言处理对”language model”的定义：给定一段上下文，预测下一个token（和自回归模型定义类似）</p>
+</li>
+</ul>
+<hr>
+<h2 id="oldest-non-parametric-N-gram-language-model"><a href="#oldest-non-parametric-N-gram-language-model" class="headerlink" title="(oldest non-parametric) N-gram language model"></a>(oldest non-parametric) N-gram language model</h2><ul>
+<li><p>直接从数据进行估计，已知条件概率，不用参数，而是从统计角度”count”</p>
+</li>
+<li><p>“N”表示连续词语上限：</p>
+<ol>
+<li>Unigram: 只看一个词</li>
+<li>Bigram: 看词+相邻词</li>
+<li>Trigram: 看词+相邻词+前两个词</li>
+<li>……</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/c8VkELz342QhD5i.png" alt="image.png"></p>
+<ul>
+<li><p>问题：当i很大的时候，需要估计当1,2,…,i-1时，i出现的概率，难度很高计算困难</p>
+</li>
+<li><p>解决方法：马尔科夫假设，固定当前次只和前k个词有关</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/hJxWYQ2urUbnaNz.png" alt="image.png"></p>
+<ul>
+<li>从而可以从数据中通过”count”方法估计：k个词片在训练数据中的频率：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/9281gVWkPIbXn4T.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/10/14/yN6e1cRJbmSXgis.png" alt="image.png"></p>
+<ul>
+<li>问题：需要存储连续多个词的所有可能来计算频率，需要很大的空间，v^(n-1)</li>
+</ul>
+<h3 id="N-gram-language-model-example"><a href="#N-gram-language-model-example" class="headerlink" title="N-gram language model: example"></a>N-gram language model: example</h3><p><img src="https://s2.loli.net/2025/10/14/ZU2QrkOyngPb4Kl.png" alt="image.png"></p>
+<h3 id="Disadvantages-of-n-gram-LM"><a href="#Disadvantages-of-n-gram-LM" class="headerlink" title="Disadvantages of n-gram LM"></a>Disadvantages of n-gram LM</h3><ul>
+<li><p>Accuracy, Memory, Sparsity(稀疏性)构成了不可能三角(不可能三者同时最优)</p>
+</li>
+<li><p>当n增加时：Acc增加，但是需要存储空间v^(n-1)极大增加，稀疏性也增加：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/S9RI5VDufxrqHbY.png" alt="image.png"></p>
+<hr>
+<h2 id="A-fixed-window-neural-language-model"><a href="#A-fixed-window-neural-language-model" class="headerlink" title="A fixed-window neural language model"></a>A fixed-window neural language model</h2><ul>
+<li><p>和N-gram相同，window的窗口不变</p>
+</li>
+<li><p>和N-gram的区别：不靠count估计，而是参数化训练，依靠神经网络输出，解决了memory和sparsity问题</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/aMFrU3WH1ODeEs7.png" alt="image.png"></p>
+<ul>
+<li><p>输入的word(one-hot vectors)首先经过查表得到需学习的embeddings</p>
+</li>
+<li><p>由于window size固定，因此神经网络的input size固定，可以直接放入hidden layer，随后经过softmax后进行预测</p>
+</li>
+<li><p>优点：</p>
+<ol>
+<li>No memory issue：Parameters &#x3D; embeddings + hidden layer</li>
+<li>No sparsity issue</li>
+</ol>
+</li>
+<li><p>缺点：</p>
+<ol>
+<li>窗口大小N固定</li>
+<li>线性变化，效果较差</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="RNN-based-neural-language-model"><a href="#RNN-based-neural-language-model" class="headerlink" title="RNN-based neural language model"></a>RNN-based neural language model</h2><ul>
+<li>核心思想：希望有一个模块可以提取历史信息H，H需要在新的信息出现后迭代维护更新</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/17RNBxlvcHdg45I.png" alt="image.png"></p>
+<h3 id="RNN-based-v-s-fixed-window-model"><a href="#RNN-based-v-s-fixed-window-model" class="headerlink" title="RNN-based v.s. fixed-window model"></a>RNN-based v.s. fixed-window model</h3><ul>
+<li><p>不再受window size的限制</p>
+</li>
+<li><p>非线性增加，非线性次数与序列长度相关</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/wOHIoUvS8TgucDe.png" alt="image.png"></p>
+<h3 id="Simple-form-of-RNN-LM"><a href="#Simple-form-of-RNN-LM" class="headerlink" title="Simple form of RNN LM"></a>Simple form of RNN LM</h3><p><img src="https://s2.loli.net/2025/10/14/B9hymuNfDdo5cnw.png" alt="image.png"></p>
+<ul>
+<li>最后再接一个head，可以输出任意位置预测下一位置token的概率：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/ve97nYl5OKXVa8d.png" alt="image.png"></p>
+<h3 id="RNN-LM-training-objective"><a href="#RNN-LM-training-objective" class="headerlink" title="(RNN) LM training objective"></a>(RNN) LM training objective</h3><ul>
+<li><p>当已知建模时，参数如何训练</p>
+</li>
+<li><p>训练数据集𝐷 &#x3D; {𝑠1, 𝑠2, …, 𝑠𝑁}：由多个相互独立的句子组成</p>
+</li>
+<li><p>目标：最大化似然𝑃𝜃(𝑆1 &#x3D; 𝑠1,…,𝑆𝑁 &#x3D; 𝑠𝑁)，模型能够生成D中句子的概率越大，说明其能够还原数据集的能力越强</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/ndqQbgxO4HKXDcM.png" alt="image.png"></p>
+<ul>
+<li>在RNN中，将联合概率密度应用chain rule拆成条件概率密度时，在log作用下变为加法：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/bEljF4mxPqVs9I2.png" alt="image.png"></p>
+<ul>
+<li>[SOS]是特殊标记，作为第一个输入引导句子生成，更新h1</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/gTO2JsoDeMXv9Hq.png" alt="image.png"></p>
+<ul>
+<li>连接prediction head输出x1后，将x1与h1应用RNN更新维护得到h2，继续预测x2……重复上述过程，直到得到xn</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/k3WubvSah6jP8ow.png" alt="image.png"></p>
+<ul>
+<li><p>实质是next token pridiction</p>
+</li>
+<li><p>给定一个句子：</p>
+<ol>
+<li>逐一的计算loss</li>
+<li>梯度下降更新模型参数θ</li>
+</ol>
+</li>
+<li><p>优点：</p>
+<ol>
+<li>可以适用于任何长度的句子</li>
+<li>固定的参数量</li>
+<li>高度非线性</li>
+</ol>
+</li>
+<li><p>缺点：只有看到前面的词才能够更新hidden state，只能串行无法并行，效率低下</p>
+</li>
+</ul>
+<hr>
+<h2 id="LM-Training-Teacher-forcing"><a href="#LM-Training-Teacher-forcing" class="headerlink" title="LM Training: Teacher forcing"></a>LM Training: Teacher forcing</h2><ul>
+<li><p>next token prediction：给定前一个词，预测下一个词</p>
+</li>
+<li><p>Teacher forcing：</p>
+<ol>
+<li>teacher：假设前面的tokens都是teacher给出的ground truth</li>
+<li>forcing：强制进行下一个词的预测</li>
+</ol>
+</li>
+<li><p>在LM training中二者相同</p>
+</li>
+</ul>
+<h2 id="LM-Training-Transformer"><a href="#LM-Training-Transformer" class="headerlink" title="LM Training: Transformer"></a>LM Training: Transformer</h2><ul>
+<li>首先，进行embedding准备输入</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/JVnzyTQLxEWvhfN.png" alt="image.png"></p>
+<ul>
+<li>将embedding后的向量输入，其中self-attention负责收集、整理数据，而FFN负责加工信息</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/PTuBxpS9Dq6AQeH.png" alt="image.png"></p>
+<ul>
+<li><p>问题：希望看不到后面的tokens，但是注意力机制使其可以直接看到需要预测的单词</p>
+</li>
+<li><p>在transformer实现过程中，计算注意力权重矩阵时，加权会加权后面的信息：</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/pCrcknEgofeuL21.png" alt="image.png"></p>
+<ul>
+<li><p>因而需要引入attention mask用于掩盖后面的信息</p>
+</li>
+<li><p>核心思想：由于softmax操作会使得很大的值接近于1，而很小的值接近于0.因而不掩码的部分可以+0，而掩码部分+(-inf)，这样归一化后，需要掩码的部分变为-inf归一化到0，从而看不到后面的信息</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/vLiIuEl9xBdnRVz.png" alt="image.png"></p>
+<ul>
+<li>decoding only attention的加入attn_mask后的流程如下：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/V1HCFpgqhrYjiKU.png" alt="image.png"></p>
+<hr>
+<h2 id="Large-scale-LM-training-must-known-tips"><a href="#Large-scale-LM-training-must-known-tips" class="headerlink" title="Large-scale LM training must-known tips"></a>Large-scale LM training must-known tips</h2><ul>
+<li><p>Mixed precision training (混合精度训练)</p>
+<ol>
+<li>fp32, fp16 and bf16 (&gt;&#x3D;A100)</li>
+<li>不同的部分使用不同的精度：例如前向传播中涉及矩阵乘法可以使用低精度；而涉及到除法的例如layer norm必须使用高精度</li>
+<li>optimizer</li>
+</ol>
+</li>
+<li><p>Large-batch training (Production-level model)：minibatch当batch_size小(加入噪音大)时，导致训练速度很慢</p>
+<ol>
+<li>Training data (3.4B~4T, tokens)</li>
+<li>1M tokens per batch at least (512 token&#x2F;sen * 2048 sen)</li>
+<li>由于显存有限，无法同时满足大tokens同时训练，所以需要：Gradient accumulation</li>
+</ol>
+</li>
+<li><p>Gradient accumulation：时间换空间的体现，先储存梯度不更新，加载多次batch，直到达到某一个tokens数量后才一起更新一次梯度</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/Ejl3KsArgePF8tX.png" alt="image.png"></p>
+<ul>
+<li>Ways to stabilize training (Production-level model)：<ol>
+<li>Small dropout</li>
+<li>Learning rate warm-up</li>
+<li>Gradient clipping</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="Evaluation-Perplexity"><a href="#Evaluation-Perplexity" class="headerlink" title="Evaluation: Perplexity"></a>Evaluation: Perplexity</h2><ul>
+<li><p>实质：nLL的变种</p>
+</li>
+<li><p>给定长度为n的句子s： nLL(𝑠; 𝜃) &#x3D; −log𝑃𝜃(𝑠)</p>
+</li>
+<li><p>问题：对长度敏感，长度越长，效果越差，而数据集的长短不同</p>
+</li>
+<li><p>解决方法： Per-word negative log-likelihood</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/LMZTRUpBXQxWlj5.png" alt="image.png"></p>
+<ul>
+<li>perplexity：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/uyjQCkd2MgshtzE.png" alt="image.png"></p>
+<ul>
+<li>其他的评估指标：BLEU, ROUGE…(learn from NLP courses)</li>
+</ul>
+<hr>
+<h2 id="What-will-happen-if-you-do-a-wrong-mask"><a href="#What-will-happen-if-you-do-a-wrong-mask" class="headerlink" title="What will happen if you do a wrong mask"></a>What will happen if you do a wrong mask</h2><ul>
+<li>If you forget to add the mask in LM…<ol>
+<li>Training LM: loss会很低，接近于0，学习到了捷径，即下一个位置已知，下一个input即为prediction的pattern<br>  <img src="https://s2.loli.net/2025/10/14/EPd3YebArkMi2UJ.png" alt="image.png"></li>
+<li>Evaluating LM: loss会很低，在test set中仍可应用这个捷径的bug</li>
+<li>Inference: 实际使用时，效果会极差因为捷径不再适用。甚至接近纯随机</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="Inference"><a href="#Inference" class="headerlink" title="Inference"></a>Inference</h2><ul>
+<li><p>Inference在使用LM时，一个一个词的生成，因而不知道下一个词</p>
+</li>
+<li><p>常见的采样方法有： (top-k) stochastic sampling, greedy search</p>
+</li>
+</ul>
+<h3 id="Inference-stochastic-sampling"><a href="#Inference-stochastic-sampling" class="headerlink" title="Inference (stochastic sampling)"></a>Inference (stochastic sampling)</h3><ul>
+<li>AR可以给出下一个token的分布，stochastic sampling根据分布随机采样得到结果：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/RqwsUk3NZOTplKX.png" alt="image.png"></p>
+<ul>
+<li><p>问题：随机性过大，有小概率sample出很不好的结果</p>
+</li>
+<li><p>解决方法：</p>
+<ol>
+<li>Top-K:先选出K个概率最大的候选，再以一定策略在候选中sample</li>
+<li>Top-P:先选出概率&gt;P的候选，再以一定策略在候选中sample</li>
+</ol>
+</li>
+</ul>
+<h3 id="Inference-greedy-search"><a href="#Inference-greedy-search" class="headerlink" title="Inference (greedy search)"></a>Inference (greedy search)</h3><ul>
+<li><p>贪心搜索可以认为是K&#x3D;1时的Top-K</p>
+</li>
+<li><p>argmax选出概率最大的词</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/HLCITDlYydv5Uoh.png" alt="image.png"></p>
+<h3 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h3><ul>
+<li>效率、多样性和准确率构成了不可能三角：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/HIZgUvY3EcaJ2Vy.png" alt="image.png"></p>
+<hr>
+<h2 id="Computational-cost"><a href="#Computational-cost" class="headerlink" title="Computational cost"></a>Computational cost</h2><h3 id="Computational-cost-of-attention"><a href="#Computational-cost-of-attention" class="headerlink" title="Computational cost of attention"></a>Computational cost of attention</h3><p><img src="https://s2.loli.net/2025/10/14/xfkUjRsAZWl4Vvr.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/10/14/O1sRZbtiJVmNxKn.png" alt="image.png"></p>
+<ul>
+<li>可并行，d可以去掉</li>
+</ul>
+<h3 id="Inference-cost"><a href="#Inference-cost" class="headerlink" title="Inference cost"></a>Inference cost</h3><p><img src="https://s2.loli.net/2025/10/14/S8h7oiqUCgMjYKR.png" alt="image.png"></p>
+<ul>
+<li>若将更新计算一次hidden state的时间步记为1，则RNN的inference time count和序列长度呈线性关系：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/UNHqh79yYRoCEnK.png" alt="image.png"></p>
+<ul>
+<li>而transformer在每个位置还需要和前面的每个位置作用，因此时间复杂度更高</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/9DozxW8cZviJ5YX.png" alt="image.png"></p>
+<ul>
+<li>因此在inference输出序列时，RNN的速度要快于Transformer</li>
+</ul>
+<h3 id="Training-cost"><a href="#Training-cost" class="headerlink" title="Training cost"></a>Training cost</h3><ul>
+<li>Transformer的training cost是O(n²)，但是可以并行，因此训练速度很快：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/5y4MFwVSTxqYgZJ.png" alt="image.png"></p>
+<ul>
+<li>RNN的training cost是O(n)，但是不可并行，因此训练速度很慢</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/10/14/bWTaIQN6GygEAr3.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/10/14/wtNFDS5UZx9ld1e.png" alt="image.png"></p>
+<hr>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"></div></div><div class="card-widget card-archives"></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">0</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-04-29T17:12:51.756Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

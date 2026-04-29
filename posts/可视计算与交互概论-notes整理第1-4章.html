@@ -1,0 +1,487 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>可视计算与交互概论 notes整理第1-4章 | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第一章 引言 可视计算 (visual computing) 是针对视觉内容生成与处理的所有计算机科学分支的总称，是由计算机图形学、计算机视觉等多个学科间越来越广泛的交叉而产生的交叉领域或学科。它涉及到的学科或领域有计算机图形学、图像处理、可视化、计算机视觉、虚拟现实和增强现实以及视频处理。同时，可视计算还包括模式识别、人机交互、机器学习和数字图书馆等方面。  计算机图形学的主要研究内容 计算机图">
+<meta property="og:type" content="website">
+<meta property="og:title" content="可视计算与交互概论 notes整理第1-4章">
+<meta property="og:url" content="http://example.com/posts/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA-notes%E6%95%B4%E7%90%86%E7%AC%AC1-4%E7%AB%A0.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="第一章 引言 可视计算 (visual computing) 是针对视觉内容生成与处理的所有计算机科学分支的总称，是由计算机图形学、计算机视觉等多个学科间越来越广泛的交叉而产生的交叉领域或学科。它涉及到的学科或领域有计算机图形学、图像处理、可视化、计算机视觉、虚拟现实和增强现实以及视频处理。同时，可视计算还包括模式识别、人机交互、机器学习和数字图书馆等方面。  计算机图形学的主要研究内容 计算机图">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg">
+<meta property="article:published_time" content="2024-10-12T09:15:00.000Z">
+<meta property="article:modified_time" content="2024-10-28T07:44:46.000Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="可视计算与交互概论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/posts/%E5%8F%AF%E8%A7%86%E8%AE%A1%E7%AE%97%E4%B8%8E%E4%BA%A4%E4%BA%92%E6%A6%82%E8%AE%BA-notes%E6%95%B4%E7%90%86%E7%AC%AC1-4%E7%AB%A0.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '可视计算与交互概论 notes整理第1-4章',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-10-28 15:44:46'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('https://s2.loli.net/2024/10/12/Vpne4IKYRGgU3cB.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">可视计算与交互概论 notes整理第1-4章</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="第一章-引言"><a href="#第一章-引言" class="headerlink" title="第一章 引言"></a>第一章 引言</h1><ul>
+<li>可视计算 (visual computing) 是针对视觉内容生成与处理的所有计算机科学分支的总称，是由计算机图形学、计算机视觉等多个学科间越来越广泛的交叉而产生的交叉领域或学科。它涉及到的学科或领域有计算机图形学、图像处理、可视化、计算机视觉、虚拟现实和增强现实以及视频处理。同时，可视计算还包括模式识别、人机交互、机器学习和数字图书馆等方面。</li>
+</ul>
+<h2 id="计算机图形学的主要研究内容"><a href="#计算机图形学的主要研究内容" class="headerlink" title="计算机图形学的主要研究内容"></a>计算机图形学的主要研究内容</h2><ul>
+<li>计算机图形学主要研究三个课题：<ol>
+<li>建模：三维模型建模方法是计算机图形学的重要基础，它研究如何在计算机中表示物体以及如何建立这些表示。在对几何进行表示时，我们可以使用样条函数来表示曲线，用网格、样条函数、细分曲面等来表示表面，用网格 (mesh)、构造实体几何(Constructive Solid Geometry, CSG)、二进制空间划分(Binary SpacePartitioning, BSP) 等来表示立体图形。</li>
+<li>渲染：渲染是在计算机中模拟图像的形成过程。在得到 3D 模型及场景之后，要使其能够被直观地观看，就需要将虚拟的 3D 物体和场景，通过设置虚拟的相机、光照参数等，最终转换为 2D 图片，这一过程便是通过渲染来完成的。渲染过程中通常包含模型变换、视角变换、隐藏表面去除、打光和添加纹理、剪裁等步骤。为了达到更好的光照效果，研究者们还提出了辐射度 (Radiosity)、光线追踪(Ray tracing) 等渲染技术。</li>
+<li>动画：动画是指场景中任何随时间而发生的视觉变化，它通常采用播放图像序列的方式来呈现。计算机动画除了通过平移、旋转来改变对象的位置之外，还可以随时间进展而改变对象的大小、颜色、透明性和表面纹理等。同时，计算机动画还可以由改变相机的参数（如位置、朝向和焦距等）产生，也可以通过改变光照效果和绘制过程来产生。</li>
+</ol>
+</li>
+</ul>
+<h2 id="可视计算的应用"><a href="#可视计算的应用" class="headerlink" title="可视计算的应用"></a>可视计算的应用</h2><ul>
+<li>娱乐、计算机辅助设计、科学可视化、教育、计算艺术</li>
+</ul>
+<hr>
+<h1 id="第二章-颜色"><a href="#第二章-颜色" class="headerlink" title="第二章 颜色"></a>第二章 颜色</h1><h2 id="光的视觉效应"><a href="#光的视觉效应" class="headerlink" title="光的视觉效应"></a>光的视觉效应</h2><ul>
+<li><p>颜色是一种光的视觉效应．颜色视觉（简称“色觉”）是视觉感知的一部分，是一种用来区分由不同波长的光波组成的光的能力</p>
+</li>
+<li><p>颜色，或称色彩，是眼、脑和我们生活经验对光的类别描述的视觉感知特征。这种对颜色的感知来自于可见光光谱对人眼视锥细胞的刺激。</p>
+</li>
+<li><p>颜色是由光反射所产生的，这种反射是由物体的物理性质决定的，如光的吸收、发射光谱等。在实际中，人眼对颜色的感知不仅取决于光的物理性质，还被心理因素等影响。人类有着一种天然的神经基础，使其对颜色的感知有一种比较通用的划分，即将颜色大致划分为红色、黄色、绿色、蓝色。</p>
+</li>
+<li><p>人眼只能看到波长位于某一范围的光，即可见光。可见光是人眼可以见到的电磁波，其只是电磁波谱上的很窄的一段频谱，一般具有介于 400nm−700nm 之间的波长，可见光是波长比紫外线长、比红外线短的电磁波</p>
+</li>
+<li><p>靠两种细胞来感知光：视锥细胞和视杆细胞</p>
+<ol>
+<li>视锥细胞分布在视网膜的中央，它对光的波长敏感。视锥细胞按照其所敏感的光的波长可以分为三种：长、中、短，分别对红、绿、蓝三种光敏感。视锥细胞可以在较明亮的环境中提供辨别颜色和形成精细视觉的功能</li>
+<li>视杆细胞分散分布在视网膜上，这类细胞不区分光线波长，对光线更为敏感。由于视杆细胞对波长不敏感，它无法感受颜色，但在较弱的光线下可以提供对环境的分辨能力，感知物体的轮廓</li>
+</ol>
+</li>
+</ul>
+<h2 id="颜色空间"><a href="#颜色空间" class="headerlink" title="颜色空间"></a>颜色空间</h2><ul>
+<li><p>颜色空间：为了表示颜色，人们建立了多种颜色模型，以一维、二维、三维甚至四维空间来表示某一颜色，这种坐标系统所能定义的颜色范围即颜色空间</p>
+</li>
+<li><p>不同的颜色空间所适用的应用背景有所不同，如显示器中采用的 RGB 颜色空间是基于物体发光定义的（R、G、B 刚好对应于光的三原色）；工业印刷中常用的 CMYK 颜色空间是一种减光模式(C、M、Y、K 分别对应青(Cyan)、品红(Magenta)、黄(Yellow) 和黑(Black))；HSV空间是从人的视觉直观反映提出的（H、S、V 分别对应于色调、饱和度和明度）</p>
+</li>
+<li><p>颜色之所以能构成“空间”，是建立在格拉斯曼定律 (Grassmann’s law)的基础上的。格拉斯曼总结出色光混合的四大定律：</p>
+<ol>
+<li>人眼能且仅能感知颜色的三种特征，即：色相、饱和度和亮度</li>
+<li>两种色光，若它们对人眼的色觉刺激相同，则它们在色光混合实验中的表现就完全相同，无论这两种色光的光谱组成如何</li>
+<li>无论两种色光的功率谱如何，只要它们具有相同的色相和饱和度，混合时就会产生另一种具有相同色相和饱和度的色光</li>
+<li>混合色光的亮度等于各组分色光的亮度之和</li>
+</ol>
+</li>
+</ul>
+<h3 id="RGB-颜色空间"><a href="#RGB-颜色空间" class="headerlink" title="RGB 颜色空间"></a>RGB 颜色空间</h3><ul>
+<li><p>RGB 颜色空间是工业界的一种颜色标准，通过对红、绿、蓝三原色以不同的比例相加而产生多种多样的颜色</p>
+</li>
+<li><p>当三种原色相加时，形成白色。反之，当所有基色的值都为 0 时，便得到黑色。以 R、G、B 作为坐标系的轴，同时以<br>每条轴上的分量来代表其对应的原色的比例，使用三个轴上不同分量的组合便可表示不同的颜色，便构成了 rgb 颜色空间。</p>
+</li>
+</ul>
+<h3 id="CMYK-颜色空间"><a href="#CMYK-颜色空间" class="headerlink" title="CMYK 颜色空间"></a>CMYK 颜色空间</h3><ul>
+<li>CMYK 颜色空间是一种减光模型，而且它是一种减色模型。在打印时，我们通常是在白色的纸张上进行打印．纸张呈现白色是因为它反射了照在其表面的光中所有波长的成分．因此，当纸张的一个位置被打印上墨水后，它便不再反射入射光中的所有成分，即吸收了光中大部分的成分，只反射部分光，从而使得该位置呈现出特定的颜色。</li>
+</ul>
+<h3 id="HSV-颜色空间"><a href="#HSV-颜色空间" class="headerlink" title="HSV 颜色空间"></a>HSV 颜色空间</h3><ul>
+<li><p>H 表示色相，通常取值范围是[0◦, 360◦], 以红橙黄绿青蓝紫的顺序对应不同的颜色（0◦ 对应红色，120◦ 对应绿色，240◦ 对应蓝色），构成一个首尾相接的色相环</p>
+</li>
+<li><p>S（Saturation）是饱和度，即颜色的纯净程度（颜色被白色稀释的程度）</p>
+</li>
+<li><p>V（Value）表示明度，它决定颜色色空间中颜色的明暗程度。明度的<br>取值范围为 0% −100%，值越高，表示颜色越明亮，值为 0% 时则表示纯黑色</p>
+</li>
+</ul>
+<h2 id="颜色感知"><a href="#颜色感知" class="headerlink" title="颜色感知"></a>颜色感知</h2><h3 id="颜色立体视觉"><a href="#颜色立体视觉" class="headerlink" title="颜色立体视觉"></a>颜色立体视觉</h3><ul>
+<li><p>当光线通过角膜时，会发生轻微衍射．眼睛通常能够将黄色波长的光（598nm）调到最清晰的焦点，从而使得波长较长的红色光波会聚在视网膜后面．波长较短的绿色和蓝色光波会聚在视网膜前面</p>
+</li>
+<li><p>即长波长的光（颜色）会被认为比波长短的光（颜色）来自更近的地方(红近蓝远)</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/12/RLZePM5siGQJYzk.png" alt="1.png"></p>
+<h3 id="颜色恒常特性"><a href="#颜色恒常特性" class="headerlink" title="颜色恒常特性"></a>颜色恒常特性</h3><ul>
+<li>颜色恒常特性指的是我们能够在不同的照明条件下保持对颜色的感知较为恒定的能力</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/12/BTasZM6PO3EpXU2.png" alt="2.png"></p>
+<h3 id="边界效应"><a href="#边界效应" class="headerlink" title="边界效应"></a>边界效应</h3><ul>
+<li>当我们观察形状或物体时，它的边界的颜色会影响我们对其内部的颜色的感知</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/12/3fTl8IjWnzEu94S.png" alt="3.png"></p>
+<h3 id="同时颜色对比"><a href="#同时颜色对比" class="headerlink" title="同时颜色对比"></a>同时颜色对比</h3><ul>
+<li>将同一种颜色的表面放置在不同颜色的背景中时，它会被感知为不同的颜色</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/12/7ZofeOcuwJraUQx.png" alt="4.png"></p>
+<h3 id="色诱导"><a href="#色诱导" class="headerlink" title="色诱导"></a>色诱导</h3><p>色诱导（color induction）亦称“诱导色觉”：我们对某一物体颜色的感知受到另一物体颜色的影响，使其邻近的灰色变为其补色的现象</p>
+<p><img src="https://s2.loli.net/2024/10/12/OeAkx1Q69btqML5.png" alt="5.png"></p>
+<h3 id="动视错觉"><a href="#动视错觉" class="headerlink" title="动视错觉"></a>动视错觉</h3><ul>
+<li>它使我们在观看静态图片时会产生图片里的内容在运动的错觉</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/12/N14jYoWZT632Dka.png" alt="6.png"></p>
+<h3 id="一些颜色感知缺陷"><a href="#一些颜色感知缺陷" class="headerlink" title="一些颜色感知缺陷"></a>一些颜色感知缺陷</h3><ul>
+<li><p>当眼睛中只有一种或者没有视锥细胞时，便会造成全色盲(Monochromatism), 即只能感知明暗以及不同程度的灰色</p>
+</li>
+<li><p>当眼睛中只有两种视锥细胞时，会造成三种主要的双色视觉：患有红色盲（Protanopia）的人无法看到红色光，患有绿色盲（Deuteranopia）的人无法看到绿色光，患有黄蓝色盲（Tritanopia）的人无法看到蓝色光</p>
+</li>
+</ul>
+<hr>
+<h1 id="第三章-显示与交互设备"><a href="#第三章-显示与交互设备" class="headerlink" title="第三章 显示与交互设备"></a>第三章 显示与交互设备</h1><ul>
+<li>显示设备将数字信号转变为人能观察到的光照、声音、触觉等信号</li>
+</ul>
+<h2 id="显示设备"><a href="#显示设备" class="headerlink" title="显示设备"></a>显示设备</h2><ul>
+<li><p>数字设备里的信息通过显示设备转化成图像、声音乃至体感信息传达给用户</p>
+</li>
+<li><p>显示设备的制造依托于显示基元的选取，常见的显示基元有像素 (pixel) 和矢量 (vector)两种</p>
+<ol>
+<li>基于像素的显示方法以其成本低廉、适用广泛的优势，逐渐成为显示设备的主流</li>
+<li>以矢量作为基元的显示设备以绘图仪为主</li>
+</ol>
+</li>
+<li><p>对于基于像素的显示方式，图形处理器，也即 GPU 的发明大大提升了显示前的处理效率。然而，GPU 的处理单元泛化性弱于 CPU，却具有远多于 CPU 的单元数目</p>
+</li>
+</ul>
+<h3 id="2D显示"><a href="#2D显示" class="headerlink" title="2D显示"></a>2D显示</h3><h4 id="数码管"><a href="#数码管" class="headerlink" title="数码管"></a>数码管</h4><ul>
+<li><p>数码管，也称作辉光管，是一种可以显示数字和其他信息的电子设备</p>
+</li>
+<li><p>数码管一般有两种驱动方式，静态显示和动态显示</p>
+<ol>
+<li>静态显示中每一个段都由一个单片机的 I&#x2F;O 端口驱动，优点是编程简单，显示亮度高，但需要占用较多 I&#x2F;O 端口</li>
+<li>动态驱动则是通过电路分时轮流控制各个数码管，由于视觉暂留的效果和余辉效应，视觉上不会有闪烁感，这种方式能够节省大量 I&#x2F;O 端口，且功耗更低</li>
+</ol>
+</li>
+</ul>
+<h4 id="阴极射线显像设备"><a href="#阴极射线显像设备" class="headerlink" title="阴极射线显像设备"></a>阴极射线显像设备</h4><ul>
+<li><p>阴极射线管显示器，又叫 CRT(cathode-ray tube) 显示器</p>
+</li>
+<li><p>工作原理：由电子枪发射出的电子束，通过聚焦系统和偏转系统打到涂有荧光层的屏幕上的指定位置</p>
+<ol>
+<li>电子束的强度由控制栅极控制，通过施加负电压，控制发射的电子数量，电子束轰击荧光层会发光，光的强度与轰击的电子数量有关，因此可以通过控制栅极控制显示屏的亮度</li>
+<li>聚焦系统用来控制电子束轰击荧光层时会聚到一个小点</li>
+<li>电子束的偏转受电场或磁场控制，CRT 颈部包括两对线圈，一对实现水平偏转，一对实现垂直偏转，通过调节经过线圈的电流强度，可以得到适当的偏转量</li>
+</ol>
+</li>
+<li><p>刷新式 CRT：电子束轰击在荧光屏上，激活荧光层发光，轰击产生的发光随时间衰减，需要反复发射电子束。在屏幕上画图的频率称为刷新频率．CRT 无重叠显示的最多点数称为分辨率</p>
+</li>
+<li><p>使用 CRT 的普通图形监视器通常是光栅扫描显示器电子束横向扫描屏幕，一次一行，从顶到底依次进行</p>
+</li>
+<li><p>图形定义保存在帧缓存中，保存了一组对应屏幕所有点的强度值</p>
+</li>
+<li><p>在部分光栅扫描系统中，采用了隔行扫描的方式分两次显示每一帧，一次从顶到底，一行隔一行扫描，另一次扫描另一半扫描线。帧率提高一倍</p>
+</li>
+<li><p>CRT 监视器能利用发射不同颜色光的荧光层的组合来显示彩色图形</p>
+<ol>
+<li>电子束穿透法：通过在屏幕上涂上多层不同的荧光粉，发射颜色由电子束在荧光层中的穿透深度决定</li>
+<li>荫罩法：每一个像素位置有三个荧光彩色点，分别能发出红、绿、蓝三种颜色的光，电子枪也有三支，与这些点一一对应，荫罩栅格位于屏幕之后，上面包含了一系列孔，对应屏幕上的像素</li>
+</ol>
+</li>
+</ul>
+<h4 id="液晶显示器"><a href="#液晶显示器" class="headerlink" title="液晶显示器"></a>液晶显示器</h4><ul>
+<li><p>液晶显示器(LCD)是一种“非发射型”平板显示器</p>
+</li>
+<li><p>LCD 是一种采用液晶为材料的显示器．液晶 (Liquid Crystal, LC) 是一类介于固态和液态间的有机化合物，加热会变成透明液态，冷却后会变成结晶的混浊固态</p>
+</li>
+<li><p>在电场作用下，液晶分子会发生排列上的变化，从而影响入射光束透过液晶产生方向上的变化</p>
+</li>
+<li><p>液晶材料因为本身并不发光，所以 LCD 通常都需要为显示面板配置额外的光源，主要光源系统称之为背光模组</p>
+<ol>
+<li>侧光式背光模组：手机、笔记本电脑</li>
+<li>直射式背光模组：液晶电视</li>
+</ol>
+</li>
+<li><p>彩色 LCD 的面板中，每一个像素由 3 个液晶单元格构成，每一个单元格前面分别有红色、绿色和蓝色的三色滤光片</p>
+</li>
+<li><p>“视觉残留”现象：高速运动的画面在人脑中会形成短暂的印象</p>
+</li>
+<li><p>响应时间是 LCD 的一个特殊指标。LCD 的响应时间指的是显示器各像素点对输入信号反应的速度，就是液晶由“暗转亮”或由“亮转暗”的反应时间。越小越连贯</p>
+</li>
+</ul>
+<h4 id="OLED-显示器"><a href="#OLED-显示器" class="headerlink" title="OLED 显示器"></a>OLED 显示器</h4><ul>
+<li>有机电致发光器件 (OLED) 是一种低电压式发光器件，具有发光二极管的性质</li>
+</ul>
+<h4 id="显示器颜色指标"><a href="#显示器颜色指标" class="headerlink" title="显示器颜色指标"></a>显示器颜色指标</h4><ul>
+<li><p>色深：代表画面颜色数量的多少，数值越大色彩过渡越平滑自然</p>
+</li>
+<li><p>色域：指的是屏幕能呈现的色彩范围，色域越广，能呈现的色彩就越丰富</p>
+</li>
+<li><p>高动态范围成像（High Dynamic Range，简称 HDR）是用来实现比普通数位图像技术更大曝光动态范围的技术。和普通的图像相比，它可以提供更多的动态范围和图像细节，与之对应的是标准动态范围成像（Standard Dynamic Range，简称 SDR）</p>
+</li>
+</ul>
+<h3 id="3D显示"><a href="#3D显示" class="headerlink" title="3D显示"></a>3D显示</h3><ul>
+<li>基本原理：利用人眼的双目视差，由于两只眼睛的瞳距和注视角度不同造成左右眼看物体时存在一定程度的水平差异，经过大脑对不同的图像信息进行分析，就能推测物体到眼睛的距离和自身的形状，也就是立体感</li>
+</ul>
+<h4 id="3D眼镜"><a href="#3D眼镜" class="headerlink" title="3D眼镜"></a>3D眼镜</h4><ul>
+<li><p>常见的有红蓝眼镜、偏振镜和液晶快门眼镜</p>
+</li>
+<li><p>红蓝眼镜（色分法）是一般左眼红色镜片右眼蓝色，画面也是红蓝错位的，红色镜片只有红光能通过，蓝色镜片只有蓝光能通过。左右眼看到视差画面而产生立体感</p>
+</li>
+<li><p>偏振镜（光分法）是使用 XY 两个偏转方向，也就是通过眼镜上两个不同偏转方向的偏振镜片，让两只眼睛分别只能看到屏幕上叠加的纵向、横向图像中的一个，从而观看到立体效果</p>
+</li>
+<li><p>圆偏振的镜片偏振方式是圆形旋转的，一个向左旋转，一个向右旋转，这样两个不同方向的图像就会被区分开</p>
+</li>
+<li><p>液晶快门眼镜（时分法）通过 3D 眼镜与显示器同步的信号来实现。两幅图像是交替快速闪烁，A 图出现则 B 图消失，B 图出现 A 图则消失．同时液晶快门眼镜会按照影片所给的信号，对应相应的 AB 二图进行同步交替的镜片开关动作</p>
+</li>
+</ul>
+<h4 id="裸眼-3D"><a href="#裸眼-3D" class="headerlink" title="裸眼 3D"></a>裸眼 3D</h4><ul>
+<li><p>光屏障式技术：使用一个开关液晶屏、偏振膜和高分子液晶层，利用液晶层和偏振膜制造出一系列方向为 90 度的垂直条纹。这些条纹宽几十微米，通过它们的光就形成了垂直的细条栅模式，称之为“视差障壁”</p>
+</li>
+<li><p>柱状透镜技术：柱状透镜技术也被称为微柱透镜 3D 技术，使液晶屏的像平面位于透镜<br>的焦平上，这样在每个柱透镜下面的图像的像素被分成几个子像素，这样透镜就能以不同的方向投影每个子像素。于是双眼从不同的角度观看显示屏，就看到不同的子像素</p>
+</li>
+</ul>
+<h4 id="虚拟现实和增强现实"><a href="#虚拟现实和增强现实" class="headerlink" title="虚拟现实和增强现实"></a>虚拟现实和增强现实</h4><ul>
+<li><p>虚拟现实（Virtual Reality，简称 VR）技术是利用计算机技术模拟产生一个三维的虚拟世界，提供使用者关于视觉等感官的模拟</p>
+</li>
+<li><p>增强现实（Augmented Reality，简称 AR）技术则是把虚拟的物体“放置”在真实世界中。通过计算机实施模拟仿真处理，将虚拟信息内容叠加在真实世界中</p>
+</li>
+</ul>
+<h4 id="全息摄影"><a href="#全息摄影" class="headerlink" title="全息摄影"></a>全息摄影</h4><ul>
+<li><p>全息投影技术属于 3D 技术的一种，原指利用干涉和衍射原理记录并再现物体真实的三维图像的技术</p>
+</li>
+<li><p>佩珀尔幻象的原理：来自明亮舞台的入射光线在穿过玻璃射向观众时发生折射，而代表“幻象”的入射光线则被玻璃反射。两个影像都会进入观众视线，从而形成“幻象”在舞台出现的效果</p>
+</li>
+</ul>
+<h4 id="GigaPixel-Display"><a href="#GigaPixel-Display" class="headerlink" title="GigaPixel Display"></a>GigaPixel Display</h4><ul>
+<li>通过围成一圈 2D 显示屏来实现沉浸式3D 体验的方式，这种方式直接通过展示各个方向的视频，来实现 3D 展示的效果</li>
+</ul>
+<h2 id="交互设备"><a href="#交互设备" class="headerlink" title="交互设备"></a>交互设备</h2><ul>
+<li>交互设备也指输入设备，即用户向计算机提供输入信号的设备</li>
+</ul>
+<h3 id="体感交互"><a href="#体感交互" class="headerlink" title="体感交互"></a>体感交互</h3><ul>
+<li>体感交互：通过交互设备理解人体的运动</li>
+</ul>
+<h3 id="手势交互"><a href="#手势交互" class="headerlink" title="手势交互"></a>手势交互</h3><ul>
+<li>手势交互是非接触式用户交互方式的一种，用户可以通过手势与虚拟 3D 对象交互</li>
+</ul>
+<h3 id="动作捕捉"><a href="#动作捕捉" class="headerlink" title="动作捕捉"></a>动作捕捉</h3><ul>
+<li>体感交互中就包含了动作捕捉技术。动作捕捉不止能用于肢体动作，也能用于面部表情的捕捉</li>
+</ul>
+<hr>
+<h1 id="第四章-画图"><a href="#第四章-画图" class="headerlink" title="第四章 画图"></a>第四章 画图</h1><h2 id="光栅化"><a href="#光栅化" class="headerlink" title="光栅化"></a>光栅化</h2><ul>
+<li><p>描述形状的时候我们往往使用的是参数化的连续表示</p>
+</li>
+<li><p>将参数表示的图形转换为可显示的点阵图的过程称为光栅化 (Ras-terization)(将连续的几何形状转换为离散的图像表达)</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/16/3ICrnh9oYgwOaFQ.png" alt="1.png"></p>
+<h2 id="直线"><a href="#直线" class="headerlink" title="直线"></a>直线</h2><ul>
+<li>假设我们有一块 N 行 M 列的屏幕，在屏幕空间里我们建立坐标系，左下角像素中心为零点，右上角像素中心的坐标为 (M - 1, N - 1)，在这个坐标系中我们希望绘制方程为y(x) &#x3D; mx + b 的直线段，从 (x0, y0) 到 (x1, y1)</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/16/w5X6mbQKUHsxnzE.png" alt="2.png"></p>
+<ul>
+<li>在最简单的想法下，我们可以遍历横坐标从 x0 到 x1，根据方程计算出对应的 y，然后绘制对应像素</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绘制直线的简单算法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">draw_line</span> <span class="params">( <span class="type">int</span> x0 , <span class="type">int</span> x1 , <span class="type">float</span> m, <span class="type">float</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> x ;</span><br><span class="line">    <span class="keyword">for</span> ( x=x0 ; x&lt;=x1 ; x++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">float</span> y = m * x + b ;</span><br><span class="line">        <span class="built_in">draw_pixel</span> (x , <span class="built_in">Round</span>( y ) ) ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>主要的时间花费为浮点数乘法、加法以及取整运算</p>
+</li>
+<li><p>由于我们是等间隔采样直线上的点，自然想到可以使用累加代替乘法操作</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直线绘制的 DDA 算法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">draw_line</span> <span class="params">( <span class="type">int</span> x0 , <span class="type">int</span> y0 , <span class="type">int</span> x1 , <span class="type">int</span> y1 )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">float</span> y = y0 ;</span><br><span class="line">    <span class="type">float</span> m = ( y1 - y0 ) / ( <span class="type">float</span> ) ( x1 - x0 ) ;</span><br><span class="line">    <span class="type">int</span> x ;</span><br><span class="line">    <span class="keyword">for</span> ( x=x0 ; x&lt;=x1 ; x++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">draw_pixel</span> (x , <span class="built_in">Round</span>( y ) ) ;</span><br><span class="line">        y += m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>在 DDA 算法中，我们成功在循环中去掉了浮点数乘法操作，仅保留了加法和取整</p>
+</li>
+<li><p>布雷森汉姆直线算法（Bresenham’sLine Algorithm）能够去掉取整操作。基本思想同 DDA 算法一样也是累加。在整数空间累加的关键在于判断何时在 y 坐标上加 1</p>
+</li>
+<li><p>换言之，假设我们已经在 (x, y) 处（这里 x，y 均为整数）画出了一个像素，算法需要确定下一个像素是画在 (x + 1, y) 处还是 (x + 1, y + 1) 处</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/16/JcbrwG3oZ8lqyaL.png" alt="4.png"></p>
+<ul>
+<li><p>布雷森汉姆直线算法为这个判断提出了一个简洁的准则：当点 (x + 1, y + 1&#x2F;2) 位于直线的上方时，我们应该选择像素点 (x + 1, y)，反之选择 (x + 1, y + 1)．这个选择方式保证了在 0 &lt; m &lt; 1 时，我们所绘制的像素点在 y 方向上与直线最多相差 0.5 个像素单位，于是从 x0 绘制到 x1 就能得到整条直线的光栅化结果</p>
+</li>
+<li><p>判断点在直线的哪一侧可以通过直线的隐式方程得到。定义向量 N 垂直于经过 P0 和 P1 的直线，对于任意一点 P，直线的隐式方程定义为 F(P) :&#x3D; N ·(P − P0)。当 F &lt; 0 时，P 点位于直线上方，当 F &gt; 0 时位于线下方，F &#x3D; 0 时点 P 在直线上</p>
+</li>
+<li><p>与 DDA算法类似，我们使用累加的方法计算 F(P) 来避免乘法。假设我们已经知道了P &#x3D; (x, y) 点处的 F(P)，P + ∆ &#x3D; (x, y) + (1, 1&#x2F;2) &#x3D; (x + 1, y + 1&#x2F;2) 处的值可以表示为：F(P + ∆) &#x3D; N · (P + ∆ − P0) &#x3D; N · (P − P0) + N · ∆ &#x3D; F(P) + N · ∆ 。N · ∆ 是跟坐标无关的定值，这表示我们确实可以通过累加的方法得到 (x +1, y + 1&#x2F;2) 处的 F</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 布雷森汉姆直线算法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">draw_line</span> <span class="params">( <span class="type">int</span> x0 , <span class="type">int</span> y0 , <span class="type">int</span> x1 , <span class="type">int</span> y1 )</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> x , y = y0 ;</span><br><span class="line">    <span class="type">int</span> dx = <span class="number">2</span> ∗ ( x1−x0 ) , dy = <span class="number">2</span> ∗ ( y1−y0 ) ;</span><br><span class="line">    <span class="type">int</span> dydx = dy − dx , F = dy − dx /<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">for</span> ( x = x0 ; x &lt;= x1 ; x++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">draw_pixel</span> (x , y ) ;</span><br><span class="line">        <span class="keyword">if</span> (F &lt; <span class="number">0</span>) F += dy ;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            y++; F += dydx ; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>布雷森汉姆直线算法的推广:圆的隐式函数为 F(P) &#x3D; |P − P0|² − r²，因此可以尝试用类似布雷森汉姆直线算法中的累加方法绘制圆</li>
+</ul>
+<h2 id="多边形"><a href="#多边形" class="headerlink" title="多边形"></a>多边形</h2><ul>
+<li><p>与绘制线不同，绘制多边形需要对多边形的内部进行填充</p>
+</li>
+<li><p>任意一个二维多边形都可以切割成多个三角形的组合，同时三角形也是三维模型的重要组成部分</p>
+</li>
+<li><p>考虑绘制由 P0 &#x3D; (x0, y1)，P1 &#x3D; (x1, y1)，P2 &#x3D; (x2, y2) 三个顶点定义的三角形，三个顶点保证逆时针顺序</p>
+</li>
+<li><p>我们可以判断每个像素是否在三角形内部，如果是就绘制颜色</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 最简单的三角形绘制算法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">draw_triangle</span> <span class="params">( <span class="type">int</span> x0 , <span class="type">int</span> y0 , <span class="type">int</span> x1 , <span class="type">int</span> y1 , <span class="type">int</span> x2 , <span class="type">int</span> y2 )</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> xmin = <span class="built_in">min</span>( x0 , x1 , x2 ) , xmax = <span class="built_in">max</span>( x0 , x1 , x2 ) ;</span><br><span class="line">    <span class="type">int</span> ymin = <span class="built_in">min</span>( y0 , y1 , y2 ) , ymax = <span class="built_in">max</span>( y0 , y1 , y2 ) ;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="type">int</span> x = xmin ; x &lt;= xmax ; ++x ) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> ( <span class="type">int</span> y = ymin ; y &lt;= ymax ; ++y ) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">inside</span> (x , y , x0 , y0 , x1 , y1 , x2 , y2 ) ) </span><br><span class="line">                <span class="built_in">draw</span> (x , y ) ;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2024/10/16/Yd7vURm3xkNlEDp.png" alt="6.png"></p>
+<ul>
+<li><p>可以借助上面提到的直线的隐式函数判断点是否在三角形内部。我们规定边的方向为逆时针方向，也就是从 Pi 指向 Pi+1（P2 指向 P0），将其逆时针旋转 90 度得到垂直于边的法向 Ni，那么 Ni 一定指向三角形的内部</p>
+</li>
+<li><p>如果点 P位于三条边的法向一侧，也就是代入三条边的隐式方程 Fi(P) 都大于0，那么点 P 就位于三角形内部。反之那么点 P 就位于三角形的外部</p>
+</li>
+<li><p>扫描线算法（Sweep-Line）：绘制直线的 DDA 算法。如果已知三角形在一行中的左边端点 yL 和右边端点 yR，中间的像素其实没有必要进行内外检测，可以直接绘制</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 扫描线算法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">draw_triangle</span> <span class="params">( Triangle T)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> each edge pair </span><br><span class="line">    &#123;</span><br><span class="line">        initialize x_L, x_R;</span><br><span class="line">        compute dx_L/dy_L , dx_R/dy_R;</span><br><span class="line">        <span class="keyword">for</span> each scanline at y </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> ( <span class="type">int</span> x = x_L; x &lt;= x_R; ++x ) </span><br><span class="line">                <span class="built_in">draw</span> (x , y ) ;</span><br><span class="line">            x_L += dx_L/dy_L ;</span><br><span class="line">            x_R += dx_R/dy_R;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>扫描线算法的想法可以自然拓展到多边形中．我们可以首先对多边形的所有边进行排序，然后用类似方法维护左右交点，从上到下进行扫描线的绘制</p>
+</li>
+<li><p>在面对多边形时，我们还要额外注意多边形非凸的情况。一条扫描线有可能和多边形有不只两个交点。为了处理这种情况，我们可以将所有边与扫描线的交点从左到右排序，可以发现第奇数交点到第偶数交点中间就是需要绘制的像素，而第偶数交点到第奇数交点之间是在多边形外部的区域</p>
+</li>
+</ul>
+<h2 id="4-4-纹理填充"><a href="#4-4-纹理填充" class="headerlink" title="4.4 纹理填充"></a>4.4 纹理填充</h2><ul>
+<li><p>纹理（Texture）：填充到多边形中的图片</p>
+</li>
+<li><p>在绘制线段时，假设我们给定了线段两端的颜色，那么中间的部分的颜色可以由线性插值给出</p>
+</li>
+<li><p>具体来说，假设两个顶点 (x0, y0) 和 (x1, y1)的颜色分别为 c0 和 c1，那么 (x, y) 像素点上的颜色为：c &#x3D; c0 (1 − t) + c1*t, t &#x3D; (x − x0) &#x2F; (x1 − x0)</p>
+</li>
+<li><p>通过这种方式线段上的颜色就能从 c0 渐变到 c1</p>
+</li>
+<li><p>在二维情况中，我们可以通过上面介绍的扫描线算法，使用类似的插值策略先得到需要绘制的左端点和右端点，然后水平绘制.我们可以通过线性插值得到左右端点的颜色，然后再在左右端点之间再使用线性插值．这样两次线性插值的方法往往被称为双线性插值（Bi-linear Interpolation）</p>
+</li>
+<li><p>对于图像填充而言，我们的问题不再是如何通过插值得到颜色，而是需要得到需要绘制的像素对应原图像的哪一个点</p>
+</li>
+<li><p>用数学来描述，我们可以为原图像建立一个二维坐标系，一般称之为 UV 坐标（UV Coordinate）.原图像就是从 UV 坐标到颜色的映射</p>
+</li>
+<li><p>在进行顶点拉伸变形中，顶点的 UV 坐标是固定的，我们只需要知道每个像素对应的 UV 坐标，就能通过原图像查找到对应的颜色</p>
+</li>
+<li><p>在图像拉伸中，我们需要插值的不再是颜色，而是每个像素的 UV 坐标．就像上面介绍的颜色插值一样，我们已知了每个顶点的 UV 坐标，在扫描线算法中通过双线性插值的方法可以得到每个像素的 UV 坐标，再在原图像中查找就能得到对应像素的颜色</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/10/16/ECNSY5rL8UFobdM.png" alt="5.png"></p>
+<h2 id="合成"><a href="#合成" class="headerlink" title="合成"></a>合成</h2><ul>
+<li><p>在合成中我们会遇到可见性的问题，也就是谁覆盖谁的问题</p>
+</li>
+<li><p>画家算法（Painter’s Algorithm）：定义深度 z，z 越小表示离我们越近，于是应该被放到前面．那么自然想到，我们可以对所有的图形深度进行排序，然后按照从后向前的顺序依次绘制每个图形</p>
+</li>
+<li><p>深度缓存算法（Z-buffer）：深度缓存算法在每个像素上额外储存了像素的深度值，如果当前绘制的图形的深度小于像素的深度，我们就覆盖像素的颜色，并更新像素的深度</p>
+</li>
+<li><p>相比于画家算法需要 O(n log n) 的时间对所有图形进行排序，深度缓存只需要 O(n) 的复杂度</p>
+</li>
+</ul>
+<hr>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"></div></div><div class="card-widget card-archives"></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">0</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-04-29T17:12:51.756Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

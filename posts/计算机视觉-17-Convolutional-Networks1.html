@@ -1,0 +1,423 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机视觉 17 Convolutional Networks1 | w434's blog</title><meta name="author" content="w434"><meta name="copyright" content="w434"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Convolutional Neural NetworksReview: Multilayer Perceptions MLP的层被称为全连接层，层与层之间通过激活函数相连  MLP的第一步是将图像拉成长向量  缺点：没有遵从像素间的关系，没有利用邻域之间关系   Three Important Priors in Vision 平移不变性：左右平移，语义内容保持不变，feature map跟着平">
+<meta property="og:type" content="website">
+<meta property="og:title" content="计算机视觉 17 Convolutional Networks1">
+<meta property="og:url" content="http://example.com/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-17-Convolutional-Networks1.html">
+<meta property="og:site_name" content="w434&#39;s blog">
+<meta property="og:description" content="Convolutional Neural NetworksReview: Multilayer Perceptions MLP的层被称为全连接层，层与层之间通过激活函数相连  MLP的第一步是将图像拉成长向量  缺点：没有遵从像素间的关系，没有利用邻域之间关系   Three Important Priors in Vision 平移不变性：左右平移，语义内容保持不变，feature map跟着平">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg">
+<meta property="article:published_time" content="2025-01-28T08:21:00.000Z">
+<meta property="article:modified_time" content="2025-02-03T08:11:16.000Z">
+<meta property="article:author" content="w434">
+<meta property="article:tag" content="计算机视觉">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-17-Convolutional-Networks1.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机视觉 17 Convolutional Networks1',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2025-02-03 16:11:16'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('https://s2.loli.net/2024/11/18/zAG9fYxh35LIWK2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="w434's blog"><span class="site-name">w434's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fa-solid fa-school"></i><span> 课程笔记</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa-regular fa-face-smile"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/matches/"><i class="fa-fw fa-solid fa-futbol"></i><span> 足球赛事</span></a></li><li><a class="site-page child" href="/chess/"><i class="fa-fw fa-solid fa-chess"></i><span> 国际象棋</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-film"></i><span> 影评&amp;演出评论&amp;书评</span></a></li><li><a class="site-page child" href="/jottings/"><i class="fa-fw fa-solid fa-book"></i><span> 随笔</span></a></li><li><a class="site-page child" href="/varietyShow/"><i class="fa-fw fa-solid fa-tv"></i><span> 综艺</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fa-solid fa-gamepad"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/musics/"><i class="fa-fw fa-solid fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">计算机视觉 17 Convolutional Networks1</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="Convolutional-Neural-Networks"><a href="#Convolutional-Neural-Networks" class="headerlink" title="Convolutional Neural Networks"></a>Convolutional Neural Networks</h1><h2 id="Review-Multilayer-Perceptions"><a href="#Review-Multilayer-Perceptions" class="headerlink" title="Review: Multilayer Perceptions"></a>Review: Multilayer Perceptions</h2><ul>
+<li><p>MLP的层被称为全连接层，层与层之间通过激活函数相连</p>
+</li>
+<li><p>MLP的第一步是将图像拉成长向量</p>
+</li>
+<li><p>缺点：没有遵从像素间的关系，没有利用邻域之间关系</p>
+</li>
+</ul>
+<h2 id="Three-Important-Priors-in-Vision"><a href="#Three-Important-Priors-in-Vision" class="headerlink" title="Three Important Priors in Vision"></a>Three Important Priors in Vision</h2><ul>
+<li>平移不变性：左右平移，语义内容保持不变，feature map跟着平移。显然MLP因为拉成长向量，平移后的长向量运算完可能输出不同，因而MLP不具备平移不变性</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/4yXZuCcSf2bUKJz.png" alt="image.png"></p>
+<ul>
+<li>局部性：局部+权重共享的参数量少，而MLP作为全连接层有全局的感受野，参数量非常大</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/Dm4oHkOXefV5g9b.png" alt="image.png"></p>
+<ul>
+<li>尺度不变性：尺度改变，语义内容不变；尺度改变会形成层级结构，逐步增加感受野，形成特征金字塔</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/KQWrzfUEtZLOswM.png" alt="image.png"></p>
+<h2 id="Convolution-Layer"><a href="#Convolution-Layer" class="headerlink" title="Convolution Layer"></a>Convolution Layer</h2><ul>
+<li>全连接层输出是weight和x矩阵的点乘结果：</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/fCRYDKPhiBwakFn.png" alt="image.png"></p>
+<ul>
+<li>卷积层则具有局部性，和局部对应的可以训练的weight(称为kernel)进行点乘，然后让kernel划过每个位置进行运算</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/mpC7joFwAZfHDbM.png" alt="image.png"></p>
+<ul>
+<li>卷积层可以理解为局部的权重共享的MLP，因而具有平移不变性(权重不变)</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/oGbyxlLDnSJI261.png" alt="image.png"></p>
+<ul>
+<li><p>kernel的参数为：输出通道；输入通道；kernel的长；kernel的宽</p>
+</li>
+<li><p>N是batch_size</p>
+</li>
+<li><p>偏置bias的通道数和卷积层的输出通道数相同</p>
+</li>
+</ul>
+<h2 id="Convolution-Layer-Boundary-Effects"><a href="#Convolution-Layer-Boundary-Effects" class="headerlink" title="Convolution Layer: Boundary Effects"></a>Convolution Layer: Boundary Effects</h2><ul>
+<li>kernel到边界时，可能延伸到边界外，称为边界问题，处理方法：<ol>
+<li>忽略：会导致图像尺寸变化</li>
+<li>补0</li>
+<li>周期：顶行环绕到底行;最左边的列换行到最右边的列</li>
+<li>反射：通过在边缘上反射在本地复制行&#x2F;列</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/8aq3B4QchfMPimT.png" alt="image.png"></p>
+<h2 id="Stacking-Convolutions"><a href="#Stacking-Convolutions" class="headerlink" title="Stacking Convolutions"></a>Stacking Convolutions</h2><ul>
+<li>在卷积层间需要加入激活函数，卷积操作仍然可以理解为不同权重的线性操作，需要激活函数提供非线性性</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/g86jRlBihaI12N9.png" alt="image.png"></p>
+<h2 id="Receptive-Fields"><a href="#Receptive-Fields" class="headerlink" title="Receptive Fields"></a>Receptive Fields</h2><ul>
+<li>感受野的范围：每个连续的卷积都会将 K – 1 添加到感受野大小中，对于 L 层，感受野大小为 1 + L * （K – 1）</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/TCYdPu9FoN4G8t6.png" alt="image.png"></p>
+<ul>
+<li><p>有限感受野：虽然经过很多层后感受野的范围很大，但是仍然对于边界的感受能力弱</p>
+</li>
+<li><p>问题：感受野增大的效率很低，每次只添加K-1</p>
+</li>
+<li><p>解决方法：可以进行降采样，构建特征金字塔(Hierarchy)</p>
+</li>
+</ul>
+<h2 id="Pooling-Layer"><a href="#Pooling-Layer" class="headerlink" title="Pooling Layer"></a>Pooling Layer</h2><ul>
+<li>特征金字塔(Hierarchy)：池化层在每个通道中独立地对特征进行空间下采样，生成不同分辨率的要素</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/k8G6hs7WPZbqX9d.png" alt="image.png"></p>
+<ul>
+<li><p>上面池化层的 kernel size 和 stride 都是 2，这是常见的设置，尽管也可以使用其他 kernel sizes 和 stride，stride是步长</p>
+</li>
+<li><p>下采样也可以先进行平滑(高斯模糊)</p>
+</li>
+<li><p>#1：合并MAX&#x2F;AVGpooling以聚合信息</p>
+</li>
+<li><p>#2：以 &gt;1（步幅） 的增量在图像上滑动卷积滤波</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/28/un5HYvWmNekgEy8.png" alt="image.png"></p>
+<h2 id="Grouped-Convolution"><a href="#Grouped-Convolution" class="headerlink" title="Grouped Convolution"></a>Grouped Convolution</h2><ul>
+<li><p>对于较大的输入&#x2F;输出通道，kernels（Cout，Cin，KH，KW）仍然有大量的参数，可能导致过拟合 + 计算慢</p>
+</li>
+<li><p>Grouped convolution:output 中的通道组仅取决于 Input 中相应的通道组</p>
+</li>
+<li><p>Depthwise convolution(深度卷积):组数等于通道数，缺点是通道之间无交互</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/HDbe6LkGFT1npqg.png" alt="image.png"></p>
+<ul>
+<li>Point-wise Convolution:也称为1x1convolution，通道间交互</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/CEMXAD6h52BTWxI.png" alt="image.png"></p>
+<h2 id="Atrous-Dilated-Convolution-空洞卷积"><a href="#Atrous-Dilated-Convolution-空洞卷积" class="headerlink" title="Atrous &#x2F; Dilated Convolution(空洞卷积)"></a>Atrous &#x2F; Dilated Convolution(空洞卷积)</h2><ul>
+<li><p>空洞卷积可以避免进行降采样操作</p>
+</li>
+<li><p>空洞卷积可以获得更大的感受野</p>
+</li>
+<li><p>运用空洞卷积，则获取相同大小的图像需要添加更多填充</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/OZnNIeGE5XrsBxA.png" alt="image.png"></p>
+<h2 id="PyTorch-Convolution-Layers"><a href="#PyTorch-Convolution-Layers" class="headerlink" title="PyTorch Convolution Layers"></a>PyTorch Convolution Layers</h2><ul>
+<li>Conv2d:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride = <span class="number">1</span>, padding = <span class="number">0</span>, dilation = <span class="number">1</span>, groups = <span class="number">1</span>, bias = <span class="literal">True</span>, padding_mode = <span class="string">&#x27;zeros&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Conv1d:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.Conv1d(in_channels, out_channels, kernel_size, stride = <span class="number">1</span>, padding = <span class="number">0</span>, dilation = <span class="number">1</span>, groups = <span class="number">1</span>, bias = <span class="literal">True</span>, padding_mode = <span class="string">&#x27;zeros&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Conv3d:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.Conv3d(in_channels, out_channels, kernel_size, stride = <span class="number">1</span>, padding = <span class="number">0</span>, dilation = <span class="number">1</span>, groups = <span class="number">1</span>, bias = <span class="literal">True</span>, padding_mode = <span class="string">&#x27;zeros&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数大小计算"><a href="#参数大小计算" class="headerlink" title="参数大小计算"></a>参数大小计算</h2><h3 id="Convolution"><a href="#Convolution" class="headerlink" title="Convolution"></a>Convolution</h3><ul>
+<li><p>input: N x Cin x H x W</p>
+</li>
+<li><p>超参数：</p>
+<ol>
+<li>Kernel size: KH x KW</li>
+<li>Number filters: Cout</li>
+<li>Padding: P</li>
+<li>Stride: S</li>
+</ol>
+</li>
+<li><p>Kernel: Cout x Cin x KH x KW</p>
+</li>
+<li><p>Bias vector: Cout</p>
+</li>
+<li><p>Output size: N x Cout x H’ x W’：</p>
+<ol>
+<li>H’ &#x3D; (H – K + 2P) &#x2F; S + 1</li>
+<li>W’ &#x3D; (W – K + 2P) &#x2F; S + 1</li>
+</ol>
+</li>
+</ul>
+<h3 id="Pooling"><a href="#Pooling" class="headerlink" title="Pooling"></a>Pooling</h3><ul>
+<li><p>input: C x H x W</p>
+</li>
+<li><p>超参数：</p>
+<ol>
+<li>Kernel size: KH x KW</li>
+<li>Padding: P</li>
+<li>Stride: S</li>
+</ol>
+</li>
+<li><p>Pooling function (max, avg)</p>
+</li>
+<li><p>Output: C x H’ x W’ </p>
+<ol>
+<li>H’ &#x3D; (H – K) &#x2F; S + 1</li>
+<li>W’ &#x3D; (W – K) &#x2F; S + 1</li>
+</ol>
+</li>
+</ul>
+<h2 id="Convolutional-Networks-LeNet-5"><a href="#Convolutional-Networks-LeNet-5" class="headerlink" title="Convolutional Networks: LeNet-5"></a>Convolutional Networks: LeNet-5</h2><ul>
+<li>网络结构：[Conv， Sigmoid， Pool] x 2， [FC， Sigmoid] x 2， FC</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/MieuqWah4n1zNE5.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/01/29/HzvgnauM36C84jZ.png" alt="image.png"></p>
+<h1 id="Deep-Convolutional-Neural-Networks"><a href="#Deep-Convolutional-Neural-Networks" class="headerlink" title="Deep Convolutional Neural Networks"></a>Deep Convolutional Neural Networks</h1><h2 id="AlexNet-Deep-CNNs-for-ImageNet-Classification"><a href="#AlexNet-Deep-CNNs-for-ImageNet-Classification" class="headerlink" title="AlexNet: Deep CNNs for ImageNet Classification"></a>AlexNet: Deep CNNs for ImageNet Classification</h2><ul>
+<li><p>“Several tricks”: ReLU(1), data augmentation(2), dropout(3) → Deep CNNs</p>
+</li>
+<li><p>ReLU 加快了训练速度;数据增强和 dropout 减少过拟合</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/R35WlBgYT4vm1xM.png" alt="image.png"></p>
+<ul>
+<li>deep:增加了3个卷积层；big:增加了很多可训练的参数</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/VUrxSibPg5B3MzJ.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2025/01/29/m6ZUjpGuCo3cEhH.png" alt="image.png"></p>
+<h3 id="Image-Whitening-and-Augmentation"><a href="#Image-Whitening-and-Augmentation" class="headerlink" title="Image Whitening and Augmentation"></a>Image Whitening and Augmentation</h3><ul>
+<li><p>Whitening:减去平均值并使用标准差进行归一化，使得特征重要性相同</p>
+</li>
+<li><p>Augmentation：使用随机变换变换图像</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/OLFZyitHDMlbm5G.png" alt="image.png"></p>
+<ul>
+<li>Data Augmentation: Horizontal Flips</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/MbgsVoi2HeOkZIu.png" alt="image.png"></p>
+<ul>
+<li><p>Data Augmentation: Random Crops and Scales</p>
+<ol>
+<li>PyTorch:torchvision.transforms.RandomResizedCrop</li>
+<li>训练：裁剪图像的随机部分并将其调整为给定大小。用插值进行缩放，裁剪具有随机区域 （H * W） 和随机纵横比</li>
+<li>测试：在图像中心裁剪部分</li>
+<li>广泛用于训练深度神经网络</li>
+</ol>
+</li>
+<li><p>Data Augmentation: Color Jitter(随机更改图像的亮度、对比度、饱和度和色相)</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/EQdzshBxmKePva7.png" alt="image.png"></p>
+<ul>
+<li>Regularization: CutOut<ol>
+<li>训练：将随机图像区域设置为 0 或随机值</li>
+<li>测试：使用整个图像</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/9HbTrCWAXRaNPD2.png" alt="image.png"></p>
+<ul>
+<li>Regularization: Mixup<ol>
+<li>训练：对图像的随机混合进行训练</li>
+<li>测试：使用原始图像</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/J7Zta6QNECV1nKj.png" alt="image.png"></p>
+<ul>
+<li>Regularization: CutMix<ol>
+<li>训练：对图像的随机混合进行训练</li>
+<li>测试：使用原始图像</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/krwMC8Oepq23Yzu.png" alt="image.png"></p>
+<h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><ul>
+<li><p>加在全连接层中间，随机进行丢弃，形成稀疏链接可以避免过拟合，并提高模型的泛化能力</p>
+</li>
+<li><p>在测试期间，使用权重较小的整个网络</p>
+</li>
+<li><p>Example forward pass with a 3-layer network using dropout:</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/QcophZKFCH17j2y.png" alt="image.png"></p>
+<ul>
+<li>理解1：Dropout 强制网络阻止特征的协同适应，防止其互相迁就。给定若干个特征即可进行识别而非必须依赖全部特征</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/nRQlFNCjBpfOP3e.png" alt="image.png"></p>
+<ul>
+<li><p>理解2：Dropout 正在训练共享参数的大型模型系综，通过mask一些神经元从而把大的模型变成小的多个神经网络一起训练；而在测试的时候所有神经元始终处于激活状态</p>
+</li>
+<li><p>问题：必须缩放激活，以便对于每个神经元：测试时的输出是训练时的预期输出</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/x4l7wEL6AyXO3HN.png" alt="image.png"></p>
+<ul>
+<li>解决方法：训练的时候÷p，测试阶段的代码则不用修改</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/6MgebQ9x4I2rZJz.png" alt="image.png"></p>
+<h2 id="Transfer-Learning-Feature-Extraction"><a href="#Transfer-Learning-Feature-Extraction" class="headerlink" title="Transfer Learning: Feature Extraction"></a>Transfer Learning: Feature Extraction</h2><ul>
+<li><p>数据集不够的时候可以少训练一层，将CNN作为特征提取器后跟SVM，使用小型数据集在预训练的 CNN 特征之上训练线性分类器</p>
+</li>
+<li><p>重新初始化最后一层并继续在数据集上训练整个网络</p>
+<ol>
+<li>降低学习率：使用原始训练中使用的 LR 的 ~1&#x2F;10</li>
+<li>有时冻结较低层以节省计算</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/01/29/wzJirTuB6jomVlQ.png" alt="image.png"></p>
+<ul>
+<li>AlexNet:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AlexNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_of_classes=<span class="number">1000</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(AlexNet, <span class="variable language_">self</span>).__init__()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 卷积层部分</span></span><br><span class="line">        <span class="variable language_">self</span>.conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_channels=<span class="number">3</span>, out_channels=<span class="number">96</span>, kernel_size=<span class="number">11</span>, stride=<span class="number">4</span>, padding=<span class="number">1</span>),  <span class="comment"># 1st layer</span></span><br><span class="line">            nn.LocalResponseNorm(size=<span class="number">5</span>),</span><br><span class="line">            nn.MaxPool2d(kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            </span><br><span class="line">            nn.Conv2d(in_channels=<span class="number">96</span>, out_channels=<span class="number">256</span>, kernel_size=<span class="number">5</span>, padding=<span class="number">2</span>),  <span class="comment"># 2nd layer</span></span><br><span class="line">            nn.LocalResponseNorm(size=<span class="number">5</span>),</span><br><span class="line">            nn.MaxPool2d(kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>),  <span class="comment"># 3rd layer</span></span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            </span><br><span class="line">            nn.Conv2d(in_channels=<span class="number">256</span>, out_channels=<span class="number">384</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>),  <span class="comment"># 4th layer</span></span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            </span><br><span class="line">            nn.Conv2d(in_channels=<span class="number">384</span>, out_channels=<span class="number">256</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>),  <span class="comment"># 5th layer</span></span><br><span class="line">            nn.MaxPool2d(kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 全连接层部分</span></span><br><span class="line">        <span class="variable language_">self</span>.classifier = nn.Sequential(</span><br><span class="line">            nn.Flatten(),</span><br><span class="line">            nn.Dropout(),</span><br><span class="line">            nn.Linear(<span class="number">256</span> * <span class="number">6</span> * <span class="number">6</span>, <span class="number">4096</span>),  <span class="comment"># 输入是256 * 6 * 6, 4096是中间全连接层的输出</span></span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Dropout(),</span><br><span class="line">            nn.Linear(<span class="number">4096</span>, <span class="number">4096</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">4096</span>, num_of_classes)  <span class="comment"># 输出类别数</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化参数</span></span><br><span class="line">        <span class="variable language_">self</span>.init_parameters()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">init_parameters</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 初始化卷积层权重</span></span><br><span class="line">        <span class="keyword">for</span> layer <span class="keyword">in</span> <span class="variable language_">self</span>.convs:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(layer, nn.Conv2d):</span><br><span class="line">                nn.init.normal_(layer.weight, mean=<span class="number">0</span>, std=<span class="number">0.01</span>)</span><br><span class="line">                nn.init.constant_(layer.bias, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 初始化全连接层权重</span></span><br><span class="line">        <span class="keyword">for</span> layer <span class="keyword">in</span> <span class="variable language_">self</span>.classifier:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(layer, nn.Linear):</span><br><span class="line">                nn.init.normal_(layer.weight, mean=<span class="number">0</span>, std=<span class="number">0.01</span>)</span><br><span class="line">                nn.init.constant_(layer.bias, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = <span class="variable language_">self</span>.conv(x)</span><br><span class="line">        x = <span class="variable language_">self</span>.classifier(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+<ul>
+<li>paper:<a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf</a></li>
+</ul>
+<hr>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/16/lsEXfWtGT6eRu7k.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">w434</div><div class="author-info__description">An undergraduate majoring in AI at PKU.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">0</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/w434"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/w434" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcom to my blog.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"></div></div><div class="card-widget card-archives"></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">0</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-04-29T17:12:51.756Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By w434</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcom to my blog.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
